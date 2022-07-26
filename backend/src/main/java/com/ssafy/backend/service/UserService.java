@@ -17,9 +17,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     @Transactional
@@ -50,4 +52,5 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities(){
         return SecurityUtil.getCurrentUseremail().flatMap(userRepository::findOneWithAuthoritiesByUserEmail);
     }
+
 }

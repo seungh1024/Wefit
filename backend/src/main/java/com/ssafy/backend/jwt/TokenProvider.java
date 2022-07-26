@@ -1,14 +1,19 @@
 package com.ssafy.backend.jwt;
 
+import com.ssafy.backend.dto.TokenDto;
+import com.ssafy.backend.radis.RedisService;
+import com.ssafy.backend.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -24,17 +29,25 @@ public class TokenProvider implements InitializingBean {
     private final String secret;
     private Key key;
     private final long tokenValidityInMilliseconds;
-    private static final String AUTHORITIES_KEY = "auth";
 
+    private static final String AUTHORITIES_KEY = "auth";
+    private final UserRepository userRepository;
+
+    private final RedisService redisService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder; // 0726 refactoring
     // 생성자
     // application.yml에서 데이터 값 가져오기
     // jwt secret 및 유효기간 초기화
     public TokenProvider(
             @Value("${jwt.secret}") String secret, //jwt secret
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds //토큰 유효기간
-    ) {
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds, //토큰 유효기간
+            UserRepository userRepository, RedisService redisService, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.userRepository = userRepository;
+        this.redisService = redisService;
+        this.authenticationManagerBuilder = authenticationManagerBuilder; // 0726 refactoring
+
     }
 
     // InitializingBean에 필수적인 메소드
@@ -45,20 +58,48 @@ public class TokenProvider implements InitializingBean {
     }
 
     // 토큰 생성
-    public String createToken(Authentication authentication){
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public String createToken(String userEmail, String userRole, long tokenValidtime){
 
         long now = (new Date()).getTime(); //현재 시간 가져오고
-        Date validity = new Date(now + this.tokenValidityInMilliseconds); // 토큰의 유효기간
+        Date validity = new Date(now + tokenValidtime); // 토큰의 유효기간
 
         return Jwts.builder()
-                .setSubject(authentication.getName()) // 클레임중 subject 클레임 이름 생성
-                .claim(AUTHORITIES_KEY, authorities)  // payload에 들어갈 정보 <key, value>
+                .setHeaderParam("type", "jwt")
+                .setSubject(userEmail) // 클레임중 subject 클레임 이름 생성
+                .claim(AUTHORITIES_KEY, userRole)  // payload에 들어갈 정보 <key, value>
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+    }
+    public String createRefreshToken(long tokenValidtime){
+        long now = (new Date()).getTime(); //현재 시간 가져오고
+        Date validity = new Date(now + tokenValidtime); // 토큰의 유효기간
+
+        return Jwts.builder()
+                .setHeaderParam("type", "jwt")
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+
+    public String getAuthorities(Authentication authentication){
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return authorities;
+    }
+
+
+
+    // authenticationToken 생성 0726
+    public Authentication createAuthenticate(String userEmail, String userPassword){
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userEmail, userPassword);
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return authentication;
     }
 
     // authentication 객체 리턴
@@ -96,4 +137,12 @@ public class TokenProvider implements InitializingBean {
         }
         return false;
     }
+
+    public void checkRefreshToken(String userId, String refreshToken) {
+        String redisRT = redisService.getValues(userId);
+        if (!refreshToken.equals(redisRT)) {
+            //만료된 토큰
+        }
+    }
+
 }
