@@ -145,4 +145,15 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
+    public Date getExpiration(String token){
+        Date expiration = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expiration;
+    }
+
 }
