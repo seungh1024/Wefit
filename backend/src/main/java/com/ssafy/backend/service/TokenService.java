@@ -4,6 +4,7 @@ import com.ssafy.backend.dto.TokenDto;
 import com.ssafy.backend.entity.Authority;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.jwt.TokenProvider;
+import com.ssafy.backend.radis.RedisService;
 import com.ssafy.backend.repository.UserRepository;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TokenService {
@@ -21,14 +24,17 @@ public class TokenService {
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
 
+    private final RedisService redisService;
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    public TokenService(TokenProvider tokenProvider, UserRepository userRepository){
+    public TokenService(TokenProvider tokenProvider, UserRepository userRepository, RedisService redisService){
 
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
-        this.accessTokenValidityInMilliseconds = 1000L * 60 * 3; //3m
+        this.accessTokenValidityInMilliseconds = 1000L * 30 * 1; //3m
         this.refreshTokenValidityInMilliseconds = 1000L * 60 * 60 * 24 * 14; // 14d
+        this.redisService = redisService;
     }
 
     // AccessToken 생성
@@ -99,5 +105,16 @@ public class TokenService {
         }
 
         return token;
+    }
+
+    public void setBlackList(HttpServletRequest request){
+        String token = getToken(request);
+
+        Date expiration = tokenProvider.getExpiration(token);
+        Date now = new Date();
+
+        //expiration이 끝나는 시간이므로 현재 시간을 빼주어야 남은 시간이 설정됨
+        redisService.setValues(token,"logout",expiration.getTime()-now.getTime(), TimeUnit.MILLISECONDS);
+
     }
 }

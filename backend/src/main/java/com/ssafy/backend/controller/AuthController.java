@@ -94,6 +94,8 @@ public class AuthController {
         //아직 유효한 토큰인데 접근한 경우
         //우리와 다른 시크릿 키를 사용해서 권한이 없는경우?(이메일로 jwt위조한 경우?) 등
         if(!tokenService.checkAccessToken(request)){
+            // accessToken을 블랙 리스트로 등록 -> 해당 토큰이 유효기간이 남았으니 이걸로 뭔가를 못하도록 막음
+            tokenService.setBlackList(request);
             redisService.deleteValues(userEmail);
             return new ResponseEntity<String>("잘못된 접근방식으로 로그아웃 합니다",HttpStatus.OK);
         }
@@ -116,14 +118,8 @@ public class AuthController {
         if(redisService.getValues(authentication.getName()) != null){
             redisService.deleteValues(authentication.getName());
         }
-        String token = tokenService.getToken(request);
-
-        Date expiration = tokenProvider.getExpiration(token);
-        Date now = new Date();
-
-        //expiration이 끝나는 시간이므로 현재 시간을 빼주어야 남은 시간이 설정됨
-        redisService.setValues(token,"logout",expiration.getTime()-now.getTime(),TimeUnit.MILLISECONDS);
-
+        // accessToken을 블랙 리스트로 등록
+        tokenService.setBlackList(request);
 
         return new ResponseEntity<String>("로그아웃 되었습니다",HttpStatus.OK);
     }
