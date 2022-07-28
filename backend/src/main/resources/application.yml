@@ -26,4 +26,5 @@ spring:
 jwt:
   header: Authorization
   secret: ${env.jwt.secret}
-  token-validity-in-seconds: 86400 #1?
+#  token-validity-in-seconds: 86400 #1?
+  token-validity-in-seconds: 10000 #1?
