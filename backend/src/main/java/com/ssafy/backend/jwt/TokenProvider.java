@@ -1,5 +1,7 @@
 package com.ssafy.backend.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.backend.dto.TokenDto;
 import com.ssafy.backend.radis.RedisService;
 import com.ssafy.backend.repository.UserRepository;
@@ -18,9 +20,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -138,10 +138,24 @@ public class TokenProvider implements InitializingBean {
         return false;
     }
 
-    public void checkRefreshToken(String userId, String refreshToken) {
-        String redisRT = redisService.getValues(userId);
-        if (!refreshToken.equals(redisRT)) {
-            //만료된 토큰
+    //redis에 토큰이 로그아웃 처리되어 블랙리스트 등록되었는지 확인
+    public boolean isNotLogin(String token){
+        //null이 아니면 토큰이 들어있는 것임 -> 블랙리스트 등록된 것
+        if(redisService.getValues(token)!=null){
+            return false;
+        }
+
+        //블랙리스트 등록되지 않아 사용할 수 있는 토큰큰
+        return true;
+    }
+
+    public boolean checkRefreshToken(String userId) {
+        String refreshToken = redisService.getValues(userId);
+        //유효한 토큰인 경우
+        if (validateToken(refreshToken)) {
+            return true;
+        }else{ //유효하지 않은 토큰인 경우
+            return false;
         }
     }
 
@@ -154,6 +168,31 @@ public class TokenProvider implements InitializingBean {
                 .getBody()
                 .getExpiration();
         return expiration;
+    }
+
+    public String getUserEmail(String token)  {
+        String[] check = token.split("\\.");
+        Base64.Decoder decoder = Base64.getDecoder();
+        String payload = new String(decoder.decode(check[1]));
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            Map<String,Object> returnMap = mapper.readValue(payload,Map.class);
+            return (String)returnMap.get("sub");
+        }catch(JsonProcessingException e){
+            return null;
+        }
+
+
+    }
+
+    //만료기간이 지났는지만 확인인
+   public boolean checkUnauthorize(String token){
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            return true; //403인 경우만 true
+        }
+        return false;
     }
 
 }

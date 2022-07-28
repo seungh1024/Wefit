@@ -5,9 +5,12 @@ import com.ssafy.backend.entity.Authority;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.jwt.TokenProvider;
 import com.ssafy.backend.repository.UserRepository;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 
 @Service
@@ -17,6 +20,8 @@ public class TokenService {
     private final UserRepository userRepository;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     public TokenService(TokenProvider tokenProvider, UserRepository userRepository){
 
@@ -37,9 +42,29 @@ public class TokenService {
         return tokenProvider.createRefreshToken(refreshTokenValidityInMilliseconds);
     }
 
-    public TokenDto reIssueAccessToken(String userEmail, String refreshToken) {
+    //redis에 저장된 refresh token 만료 여부
+    public boolean checkRefreshToken(String userEmail){
+        return tokenProvider.checkRefreshToken(userEmail);
+    }
+
+    public boolean checkAccessToken(HttpServletRequest request){
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String token = null;
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+
+        //토큰이 있다면 유효성 검사후 결과 리턴
+        if(tokenProvider.checkUnauthorize(token)){
+            return true; //만료되어 403애러가 발생한 경우
+        }else{
+            return false; //만료되지 않아 403 에러가 발생하지 않은 경우
+        }
+    }
+
+    public String reIssueAccessToken(String userEmail) {
         User user = userRepository.findUserByUserEmail(userEmail);
-        tokenProvider.checkRefreshToken(userEmail, refreshToken);
 
         StringBuilder userRole = new StringBuilder();
 
@@ -47,7 +72,32 @@ public class TokenService {
             userRole.append(a.getAuthorityName());
         }
 
-        String accessToken = tokenProvider.createToken(userEmail, userRole.toString(), this.accessTokenValidityInMilliseconds);
-        return new TokenDto(accessToken, refreshToken);
+        return tokenProvider.createToken(userEmail, userRole.toString(), this.accessTokenValidityInMilliseconds);
+
+    }
+
+    public String getUserEmailFromToken(HttpServletRequest request){
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String token = null;
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        if(token.equals(null)){
+            return token;
+        }
+
+        return tokenProvider.getUserEmail(token);
+    }
+
+    //header token
+    public String getToken(HttpServletRequest request){
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String token = null;
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        return token;
     }
 }
