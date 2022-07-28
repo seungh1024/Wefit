@@ -2,9 +2,9 @@ spring:
   # MySQL
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ssafy?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: ${mysql.url}
+    username: ${mysql.username}
+    password: ${mysql.password}
 
   # JPA
   jpa:
@@ -25,5 +25,5 @@ spring:
 # JWT
 jwt:
   header: Authorization
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: ${env.jwt.secret}
   token-validity-in-seconds: 86400 #1?
