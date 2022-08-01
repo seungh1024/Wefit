@@ -102,7 +102,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/user").permitAll()
                 .antMatchers("/api/v1/re-issue").permitAll()
                 .antMatchers("/api/v1/remove-user").permitAll()
-                .antMatchers("/api/v1/get-seesionToken").permitAll()
+                .antMatchers("/api/v1/createSession").permitAll()
+                .antMatchers("/api/v1/joinSession").permitAll()
 
                 .anyRequest().authenticated() // 권한이 필요 없는 부분
 
