@@ -60,6 +60,9 @@ public class OpenviduService {
             JSONObject responseJson = new JSONObject();
 
             String sessionName = createRandName(15); //15자리의 랜덤 문자열
+            while (mapSessions.get(sessionName) != null){ // 중복 방지
+                sessionName = createRandName(15);
+            }
             System.out.println("Random Session Name: " + sessionName);
 
             // Store the session and the token in our collections
@@ -69,7 +72,8 @@ public class OpenviduService {
             this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER);
 
             // Prepare the response with the token
-            responseJson.put(0, token);
+            responseJson.put("token", token);
+            responseJson.put("sessionName", sessionName);
 
             // Return the response to the client
             // 토큰정보와 상태 정보 리턴
