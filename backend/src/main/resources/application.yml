@@ -1,0 +1,30 @@
+spring:
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${mysql.url}
+    username: ${mysql.username}
+    password: ${mysql.password}
+
+  # JPA
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+  # RedisConfig
+  redis:
+    host: localhost
+    port: 6379
+
+# JWT
+jwt:
+  header: Authorization
+  secret: ${env.jwt.secret}
+#  token-validity-in-seconds: 86400 #1?
+  token-validity-in-seconds: 10000 #1?
