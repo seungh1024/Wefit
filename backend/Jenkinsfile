@@ -44,12 +44,12 @@ pipeline {
         stage('Bulid Docker') {
             steps {
                 sh 'echo " Image Bulid Start"'
-                script {
-                    DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
-                }
-//                 agent {
-//                     docker { image DOCKER_IMAGE_NAME }
+//                 script {
+//                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
 //                 }
+                agent {
+                    docker { image DOCKER_IMAGE_NAME }
+                }
 //                 script{
 //                     DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
 //                 }
@@ -66,9 +66,14 @@ pipeline {
             steps {
                 sh 'echo "Docker Image Push Start"'
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
-                        DOCKER_IMAGE.push("latest")
-                    }
+//                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
+//                         DOCKER_IMAGE.push("latest")
+//                     }
+                        docker.withRegistry('https://registry.hub.docker.com', 'DockerIdPw') {
+                          def dockerImage = docker.build("seungh1024/wefit:latest", './')
+                          dockerImage.push()
+                          dockerImage.push('latest')
+                        }
                 }
             }
             post {
