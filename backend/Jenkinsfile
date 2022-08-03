@@ -68,7 +68,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
 //                         DOCKER_IMAGE.push("latest")
-                        sh 'docker push seungh1024/wefit:latest'
+                        sh 'sudo docker push seungh1024/wefit:latest'
                     }
 
                 }
