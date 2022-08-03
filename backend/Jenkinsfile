@@ -29,7 +29,7 @@ pipeline {
                 sh 'echo "Bulid Gradle Start"'
                 dir('backend') {
                     sh """
-                    ./gradlew clean build --exclude-task test
+                    sudo ./gradlew clean build --exclude-task test
                     """
                 }
             }
