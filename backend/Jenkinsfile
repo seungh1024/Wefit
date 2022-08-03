@@ -44,12 +44,12 @@ pipeline {
         stage('Bulid Docker') {
             steps {
                 sh 'echo " Image Bulid Start"'
-//                 script {
-//                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
-//                 }
-                agent {
-                    DOCKER_IMAGE=docker { image DOCKER_IMAGE_NAME }
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
                 }
+//                 agent {
+//                     docker { image DOCKER_IMAGE_NAME }
+//                 }
 //                 script{
 //                     DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
 //                 }
@@ -67,7 +67,7 @@ pipeline {
                 sh 'echo "Docker Image Push Start"'
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
-                        DOCKER_IMAGE.push("latest")
+                        app.push("latest")
                     }
 
                 }
