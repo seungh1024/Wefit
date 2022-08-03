@@ -1,0 +1,108 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = 'seungh1024/wefit' 도커 허브 레포지토리
+        DOCKER_IMAGE = ''
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                sh 'echo "Clonning Repository"'
+                git branch: 'develop-back',
+                    url: 'https://lab.ssafy.com/s07-webmobile1-sub2/S07P12B206.git',
+                    credentialsId: 'IDPW'
+            }
+            post {
+                success {
+                     sh 'echo "Successfully Cloned Repository"'
+                 }
+                 failure {
+                     sh 'echo "Fail Cloned Repository"'
+                 }
+            }
+        }
+
+        stage('Bulid Gradle') {
+            steps {
+                sh 'echo "Bulid Gradle Start"'
+                dir('.') {
+                    sh """
+                    ./gradlew clean build --exclude-task test
+                    """
+                }
+            }
+            post {
+                 failure {
+                     sh 'echo "Bulid Gradle Fail"'
+                }
+            }
+        }
+
+        stage('Bulid Docker') {
+            steps {
+                sh 'echo " Image Bulid Start"'
+                script {
+                    DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
+                }
+            }
+
+            post {
+                failure {
+                    sh 'echo "Bulid Docker Fail"'
+                }
+              }
+        }
+
+        stage('Push Docker') {
+            steps {
+                sh 'echo "Docker Image Push Start"'
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
+                        DOCKER_IMAGE.push("latest")
+                    }
+
+                }
+            }
+            post {
+                success {
+                    sh 'docker rmi $(docker images -q -f dangling=true)'
+                }
+                failure {
+                    error 'Docker Image Push Fail'
+                }
+            }
+        }
+
+
+       stage('Remote Server Docker Pull') {
+            steps([$class: 'BapSshPromotionPublisherPlugin']) {
+                sh 'echo "Remote Server Docker Pull Start"'
+                 sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "wefit-server",
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(
+                                    execCommand: "sh /home/scripts/spring-container.sh"
+                                )
+                            ]
+                        )
+                    ]
+                )
+            }
+
+            post {
+                 success {
+                    sh 'echo "Completed Remote Server Docker Pull"'
+                }
+                failure {
+                    sh 'echo "Fail Remote Server Docker Pull"'
+                }
+            }
+        }
+    }
+}
