@@ -99,7 +99,7 @@ public class OpenviduService {
 
             JSONObject responseJson = new JSONObject();
             // Prepare the response with the token
-            responseJson.put(0, token);
+            responseJson.put("token", token);
 
             // Return the response to the client
             // 토큰 정보와 상태 정보 리턴

@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/createSession").permitAll()
                 .antMatchers("/api/v1/joinSession").permitAll()
 
-                .anyRequest().authenticated() // 권한이 필요 없는 부분
+                .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

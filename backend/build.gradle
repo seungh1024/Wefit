@@ -46,6 +46,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
+    //stomp & socket
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
 }
 
 tasks.named('test') {
