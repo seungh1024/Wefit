@@ -38,9 +38,21 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    //openvidu
+    // https://mavenlibs.com/maven/dependency/io.openvidu/openvidu-java-client
+    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.22.0'
+
+    // json-simple
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    //stomp & socket
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
+
 //    // Querydsl 추가 시작
 //    implementation 'com.querydsl:querydsl-jpa'
 //    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+
 }
 
 tasks.named('test') {
