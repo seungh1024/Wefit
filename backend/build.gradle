@@ -47,3 +47,7 @@ tasks.named('test') {
 jar{
     enabled = false
 }
+
+bootJar {
+    mainClass = 'com.ssafy.backend.BackendApplication'
+}
