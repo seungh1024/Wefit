@@ -68,8 +68,8 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
 //                         DOCKER_IMAGE.push("latest")
-                        sh 'docker tag wefit seungh1024/wefit'
-                        sh 'docker push seungh1024/wefit'
+                        sh 'docker tag latest seungh1024/wefit:latest'
+                        sh 'docker push seungh1024/wefit:latest'
                     }
 
                 }
