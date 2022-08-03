@@ -47,12 +47,12 @@ pipeline {
 //                 script {
 //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
 //                 }
-//                 agent {
-//                     docker { DOCKER_IMAGE DOCKER_IMAGE_NAME }
-//                 }
-                script{
-                    DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
+                agent {
+                    docker { image DOCKER_IMAGE_NAME }
                 }
+//                 script{
+//                     DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
+//                 }
             }
 
             post {
@@ -67,7 +67,7 @@ pipeline {
                 sh 'echo "Docker Image Push Start"'
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
-                        DOCKER_IMAGE.push("latest")
+                        image.push("latest")
                     }
 
                 }
