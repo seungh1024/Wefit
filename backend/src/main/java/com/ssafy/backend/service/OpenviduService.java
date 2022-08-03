@@ -118,6 +118,31 @@ public class OpenviduService {
         }
     }
 
+    // 방 나가기
+    public HttpStatus exitSession(String sessionName, String token){
+        // If the session exists
+        if (this.mapSessions.get(sessionName) != null && this.mapSessionNamesTokens.get(sessionName) != null) {
+            // If the token exists
+            if (this.mapSessionNamesTokens.get(sessionName).remove(token) != null) { // 토큰 제거
+                // User left the session
+                if (this.mapSessionNamesTokens.get(sessionName).isEmpty()) { //세션에 모든 사람이 나간경우
+                    // Last user left: session must be removed
+                    this.mapSessions.remove(sessionName); // 저장된 세션 제거
+                }
+                return HttpStatus.OK;
+            } else {
+                // The TOKEN wasn't valid
+                System.out.println("Problems in the app server: the TOKEN wasn't valid");
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+
+        } else {
+            // The SESSION does not exist
+            System.out.println("Problems in the app server: the SESSION does not exist");
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
     private JSONObject getErrorResponse(Exception e) {
         JSONObject json = new JSONObject();
         json.put("cause", e.getCause());

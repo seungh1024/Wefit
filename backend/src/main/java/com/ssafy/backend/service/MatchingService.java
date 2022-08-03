@@ -20,7 +20,7 @@ public class MatchingService {
 
     // 메칭 알고리즘 돌리기
     public void matchingAlgo(){
-        
+
     }
 
     // 매칭된 대상에게 메시지 날리기 (/sub/유저이메일 로 연결된 소켓에 메시지 보냄)

@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -46,41 +47,21 @@ public class webRtcController {
     }
 
     // 방 나가기
-//    @RequestMapping(value = "/api/v1/remove-user", method = RequestMethod.POST)
-//    public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
-//            throws Exception {
-//
-//        // Retrieve the params from BODY
-//        // 받은 데이터 파싱 작업
-//        JSONObject sessionNameTokenJSON = (JSONObject) new JSONParser().parse(sessionNameToken);
-//        String sessionName = (String) sessionNameTokenJSON.get("sessionName");
-//        String token = (String) sessionNameTokenJSON.get("token");
-//
-//        // If the session exists
-//        if (this.mapSessions.get(sessionName) != null && this.mapSessionNamesTokens.get(sessionName) != null) {
-//            // If the token exists
-//            if (this.mapSessionNamesTokens.get(sessionName).remove(token) != null) { // 토큰 제거
-//                // User left the session
-//                if (this.mapSessionNamesTokens.get(sessionName).isEmpty()) { //세션에 모든 사람이 나간경우
-//                    // Last user left: session must be removed
-//                    this.mapSessions.remove(sessionName); // 저장된 세션 제거
-//                }
-//                return new ResponseEntity<>(HttpStatus.OK);
-//            } else {
-//                // The TOKEN wasn't valid
-//                System.out.println("Problems in the app server: the TOKEN wasn't valid");
-//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//
-//        } else {
-//            // The SESSION does not exist
-//            System.out.println("Problems in the app server: the SESSION does not exist");
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @RequestMapping(value = "/api/v1/remove-user", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
+            throws Exception {
+
+        // Retrieve the params from BODY
+        // 받은 데이터 파싱 작업
+        JSONObject sessionNameTokenJSON = (JSONObject) new JSONParser().parse(sessionNameToken);
+        String sessionName = (String) sessionNameTokenJSON.get("sessionName");
+        String token = (String) sessionNameTokenJSON.get("token");
+
+        return new ResponseEntity<>(openviduService.exitSession(sessionName, token));
+    }
 
     // 방 매칭 요청
-    @PostMapping("/api/v1/maching/{userEmail}")
+    @PostMapping("/api/v1/matching/{userEmail}")
     public String maching(@PathVariable("userEmail") String userEmail) {
 
         // 매칭 테이블에 해당 이메일 저장
