@@ -47,9 +47,10 @@ pipeline {
 //                 script {
 //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
 //                 }
-                agent {
-                    docker { DOCKER_IMAGE DOCKER_IMAGE_NAME }
-                }
+//                 agent {
+//                     docker { DOCKER_IMAGE DOCKER_IMAGE_NAME }
+//                 }
+                DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
             }
 
             post {
