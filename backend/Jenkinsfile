@@ -28,8 +28,9 @@ pipeline {
             steps {
                 sh 'echo "Bulid Gradle Start"'
                 dir('backend') {
+                    sh "chmod +x gradlew"
                     sh """
-                    sudo ./gradlew clean build --exclude-task test
+                    ./gradlew clean build --exclude-task test
                     """
                 }
             }
