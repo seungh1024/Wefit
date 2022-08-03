@@ -79,6 +79,16 @@ public class webRtcController {
 //        }
 //    }
 
+    // 방 매칭 요청
+    @PostMapping("/api/v1/maching/{userEmail}")
+    public String maching(@PathVariable("userEmail") String userEmail) {
+
+        // 매칭 테이블에 해당 이메일 저장
+
+        return "매칭을 시작합니다.";
+    }
+
+
     private ResponseEntity<JSONObject> getErrorResponse(Exception e) {
         JSONObject json = new JSONObject();
         json.put("cause", e.getCause());

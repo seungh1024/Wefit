@@ -1,5 +1,6 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.service.MatchingService;
 import com.ssafy.backend.service.SocketService;
 import com.ssafy.backend.vo.SocketVo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,18 +13,19 @@ public class SocketController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
     private final SocketService socketService;
+    private final MatchingService matchingService;
 
-    public SocketController(SimpMessageSendingOperations simpMessageSendingOperations, SocketService socketService) {
+    public SocketController(SimpMessageSendingOperations simpMessageSendingOperations, SocketService socketService, MatchingService matchingService) {
         this.simpMessageSendingOperations = simpMessageSendingOperations;
         this.socketService = socketService;
+        this.matchingService = matchingService;
     }
 
     @MessageMapping("/sub")
     @SendTo("/pub")
     public void socketHandler(SocketVo socketVo){
-        System.out.println("111111111111111" + socketVo);
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + socketVo.getChannelId(), socketVo);
-        System.out.println("222222222222222" + socketVo);
-        socketService.serverToClientMessage(socketVo);
+
+        matchingService.completeMatchingMessage("qwe");
     }
 }
