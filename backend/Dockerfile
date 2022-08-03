@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 LABEL maintaner = "seungh1024@naver.com"
 EXPOSE 8080
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=backend/build/libs/backend-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
