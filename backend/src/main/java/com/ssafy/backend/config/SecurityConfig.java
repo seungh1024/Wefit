@@ -100,9 +100,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/login").permitAll()
                 .antMatchers("/api/v1/user").permitAll()
+                .antMatchers("/api/v1/re-issue").permitAll()
+                .antMatchers("/api/v1/user-info").permitAll()
                 .antMatchers("/ws").permitAll()
-
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
