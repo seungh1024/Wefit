@@ -66,14 +66,11 @@ pipeline {
             steps {
                 sh 'echo "Docker Image Push Start"'
                 script {
-//                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
+                    docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
 //                         DOCKER_IMAGE.push("latest")
-//                     }
-                        docker.withRegistry('https://registry.hub.docker.com', 'DockerIdPw') {
-                          def dockerImage = docker.build("seungh1024/wefit:latest", './')
-                          dockerImage.push()
-                          dockerImage.push('latest')
-                        }
+                        sh 'docker push seungh1024/wefit:latest'
+                    }
+
                 }
             }
             post {
