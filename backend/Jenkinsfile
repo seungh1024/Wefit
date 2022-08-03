@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'seungh1024/wefit' 도커 허브 레포지토리
+        DOCKER_IMAGE_NAME = 'seungh1024/wefit'
         DOCKER_IMAGE = ''
     }
 
