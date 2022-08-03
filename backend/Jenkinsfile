@@ -65,11 +65,11 @@ pipeline {
         stage('Push Docker') {
             steps {
                 sh 'echo "Docker Image Push Start"'
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
-                        DOCKER_IMAGE.push("latest")
-                    }
-                }
+//                 script {
+//                     docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
+//                         DOCKER_IMAGE.push("latest")
+//                     }
+//                 }
                 node {
                     checkout scm
 
