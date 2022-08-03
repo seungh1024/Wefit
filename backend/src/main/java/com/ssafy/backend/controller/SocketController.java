@@ -13,19 +13,15 @@ public class SocketController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
     private final SocketService socketService;
-    private final MatchingService matchingService;
 
-    public SocketController(SimpMessageSendingOperations simpMessageSendingOperations, SocketService socketService, MatchingService matchingService) {
+    public SocketController(SimpMessageSendingOperations simpMessageSendingOperations, SocketService socketService) {
         this.simpMessageSendingOperations = simpMessageSendingOperations;
         this.socketService = socketService;
-        this.matchingService = matchingService;
     }
 
     @MessageMapping("/sub")
     @SendTo("/pub")
     public void socketHandler(SocketVo socketVo){
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + socketVo.getChannelId(), socketVo);
-
-        matchingService.completeMatchingMessage("qwe");
     }
 }

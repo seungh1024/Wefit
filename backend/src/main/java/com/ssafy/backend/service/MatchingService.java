@@ -14,12 +14,22 @@ public class MatchingService {
     }
 
     // 매칭 리스트에 사람 추가
-    public void appendMatchingList(){
+    public void appendMatchingList(String userEmail, String mbti){
 
     }
 
-    // 메칭 알고리즘 돌리기
+    // 매칭 알고리즘 돌리기
     public void matchingAlgo(){
+
+    }
+
+    // 사용자 비교로 점수 판단
+    public void calMatchingPoint(){
+
+    }
+
+    //매칭 성공시 동작
+    public void matchingSuccess(){
 
     }
 
