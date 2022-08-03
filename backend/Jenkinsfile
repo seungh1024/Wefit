@@ -44,12 +44,13 @@ pipeline {
         stage('Bulid Docker') {
             steps {
                 sh 'echo " Image Bulid Start"'
-//                 script {
+                script {
 //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
-//                 }
-                agent {
-                    docker { image DOCKER_IMAGE_NAME }
+                    sh 'docker build -t seungh1024/wefit .'
                 }
+//                 agent {
+//                     docker { image DOCKER_IMAGE_NAME }
+//                 }
 //                 script{
 //                     DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
 //                 }
