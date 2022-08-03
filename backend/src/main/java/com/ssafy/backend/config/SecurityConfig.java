@@ -101,9 +101,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/login").permitAll()
                 .antMatchers("/api/v1/user").permitAll()
                 .antMatchers("/api/v1/re-issue").permitAll()
-
-                .anyRequest().authenticated() // 권한이 필요 없는 부분
-
+                .antMatchers("/api/v1/user-info").permitAll()
+                //.anyRequest().authenticated() // 권한이 필요 없는 부분
+                .anyRequest().permitAll()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
