@@ -44,8 +44,11 @@ pipeline {
         stage('Bulid Docker') {
             steps {
                 sh 'echo " Image Bulid Start"'
-                script {
-                    DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
+//                 script {
+//                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME
+//                 }
+                agent {
+                    docker { image DOCKER_IMAGE_NAME }
                 }
             }
 
