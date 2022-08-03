@@ -43,13 +43,16 @@ pipeline {
 
         stage('Bulid Docker') {
             steps {
-                sh 'echo " Image Bulid Start"'
-                script {
-//                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
-//                     sh 'docker build -t seungh1024/wefit .'
-                    sh "chmod +x gradlew"
-                    sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
+                dir('backend'){
+                    sh 'echo " Image Bulid Start"'
+                    script {
+    //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
+    //                     sh 'docker build -t seungh1024/wefit .'
+                        sh "chmod +x gradlew"
+                        sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
+                    }
                 }
+
 
 //                 agent {
 //                     docker { image DOCKER_IMAGE_NAME }
