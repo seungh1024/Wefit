@@ -47,6 +47,7 @@ pipeline {
                 script {
 //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
 //                     sh 'docker build -t seungh1024/wefit .'
+                    sh "chmod +x gradlew"
                     sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
                 }
 
