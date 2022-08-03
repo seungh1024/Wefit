@@ -27,9 +27,9 @@ pipeline {
         stage('Bulid Gradle') {
             steps {
                 sh 'echo "Bulid Gradle Start"'
-                dir('.') {
+                dir('backend') {
                     sh """
-                    ./backend/gradlew clean build --exclude-task test
+                    ./gradlew clean build --exclude-task test
                     """
                 }
             }
