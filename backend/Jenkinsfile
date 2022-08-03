@@ -73,13 +73,12 @@ pipeline {
             steps {
                 sh 'echo "Docker Image Push Start"'
                 script {
-                    dir("backend"){
-                        docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
+                    docker.withRegistry('https://registry.hub.docker.com', "DockerIdPw") {
 //                         DOCKER_IMAGE.push("latest")
 //                         sh 'docker tag seungh1024/wefit:latest seungh1024/wefit:latest'
-                            sh 'docker push seungh1024/wefit:latest'
-                        }
+                        sh 'docker push seungh1024/wefit'
                     }
+
 
 
                 }
