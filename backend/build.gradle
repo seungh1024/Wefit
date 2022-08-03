@@ -35,9 +35,12 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-    // reids
+    // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+//    // Querydsl 추가 시작
+//    implementation 'com.querydsl:querydsl-jpa'
+//    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 }
 
 tasks.named('test') {
