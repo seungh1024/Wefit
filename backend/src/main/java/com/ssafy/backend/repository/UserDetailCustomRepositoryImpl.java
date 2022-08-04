@@ -1,22 +1,28 @@
 package com.ssafy.backend.repository;
 
-import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.ssafy.backend.entity.QUserDetail;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.entity.UserDetail;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-@RequiredArgsConstructor
+@Repository
 public class UserDetailCustomRepositoryImpl implements UserDetailCustomRepository{
 
-    private final JPAQueryFactory jpaQueryFactory;
     private final UserRepository userRepository;
     private final EntityManager em;
+
+    private final JPAQueryFactory jpaQueryFactory; // 이놈이 문제
+
+    public UserDetailCustomRepositoryImpl(UserRepository userRepository, EntityManager em) {
+        this.userRepository = userRepository;
+        this.em = em;
+        jpaQueryFactory = new JPAQueryFactory(em);
+    }
 
     // 유저 테이블의 유저 아이디로 유저 디테일 정보 조회
     public UserDetail findUserDetailByUserId(long userId){
@@ -34,7 +40,7 @@ public class UserDetailCustomRepositoryImpl implements UserDetailCustomRepositor
         return destUserDetail;
     }
 
-    // 유저 디테일 업데이트
+    //
     @Transactional
     public Long updateUserDetail(String userEmail, UserDetail update){
         User user = userRepository.findUserByUserEmail(userEmail);
