@@ -181,8 +181,6 @@ public class TokenProvider implements InitializingBean {
         }catch(JsonProcessingException e){
             return null;
         }
-
-
     }
 
     //만료기간이 지났는지만 확인인
