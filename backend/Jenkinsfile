@@ -41,25 +41,21 @@ pipeline {
             }
         }
 
-        stage('Bulid Docker') {
+        stage('Bulid & Run') {
             steps {
                 dir('backend'){
                     sh 'echo " Image Bulid Start"'
                     script {
     //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
-                        sh 'docker build -t seungh1024/wefit .'
+//                         sh 'docker build -t seungh1024/wefit .'
 //                         sh "chmod +x gradlew"
 //                         sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
+                        sh 'docker-compose stop'
+                        sh 'docker-compose up -d'
                     }
                 }
 
 
-//                 agent {
-//                     docker { image DOCKER_IMAGE_NAME }
-//                 }
-//                 script{
-//                     DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
-//                 }
             }
 
             post {
@@ -69,59 +65,59 @@ pipeline {
               }
         }
 
-        stage('Push Docker') {
-            steps {
-                sh 'echo "Docker Image Push Start"'
-                script {
-                    docker.withRegistry('', "DockerIdPw") {
-//                         DOCKER_IMAGE.push("latest")
-//                         sh 'docker tag seungh1024/wefit:latest seungh1024/wefit:latest'
-                        sh 'docker push seungh1024/wefit'
-                    }
-                }
-
-
-
-
-            }
-            post {
-                success {
-                    sh 'docker rmi $(docker images -q -f dangling=true)'
-                }
-                failure {
-                    error 'Docker Image Push Fail'
-                }
-            }
-        }
-
-
-       stage('Remote Server Docker Pull') {
-            steps([$class: 'BapSshPromotionPublisherPlugin']) {
-                sh 'echo "Remote Server Docker Pull Start"'
-                 sshPublisher(
-                    continueOnError: false, failOnError: true,
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: "wefit-server",
-                            verbose: true,
-                            transfers: [
-                                sshTransfer(
-                                    execCommand: "sh /home/ubuntu/spring-container.sh"
-                                )
-                            ]
-                        )
-                    ]
-                )
-            }
-
-            post {
-                 success {
-                    sh 'echo "Completed Remote Server Docker Pull"'
-                }
-                failure {
-                    sh 'echo "Fail Remote Server Docker Pull"'
-                }
-            }
-        }
+//         stage('Push Docker') {
+//             steps {
+//                 sh 'echo "Docker Image Push Start"'
+//                 script {
+//                     docker.withRegistry('', "DockerIdPw") {
+// //                         DOCKER_IMAGE.push("latest")
+// //                         sh 'docker tag seungh1024/wefit:latest seungh1024/wefit:latest'
+//                         sh 'docker push seungh1024/wefit'
+//                     }
+//                 }
+//
+//
+//
+//
+//             }
+//             post {
+//                 success {
+//                     sh 'docker rmi $(docker images -q -f dangling=true)'
+//                 }
+//                 failure {
+//                     error 'Docker Image Push Fail'
+//                 }
+//             }
+//         }
+//
+//
+//        stage('Remote Server Docker Pull') {
+//             steps([$class: 'BapSshPromotionPublisherPlugin']) {
+//                 sh 'echo "Remote Server Docker Pull Start"'
+//                  sshPublisher(
+//                     continueOnError: false, failOnError: true,
+//                     publishers: [
+//                         sshPublisherDesc(
+//                             configName: "wefit-server",
+//                             verbose: true,
+//                             transfers: [
+//                                 sshTransfer(
+//                                     execCommand: "sh /home/ubuntu/spring-container.sh"
+//                                 )
+//                             ]
+//                         )
+//                     ]
+//                 )
+//             }
+//
+//             post {
+//                  success {
+//                     sh 'echo "Completed Remote Server Docker Pull"'
+//                 }
+//                 failure {
+//                     sh 'echo "Fail Remote Server Docker Pull"'
+//                 }
+//             }
+//         }
     }
 }
