@@ -12,6 +12,4 @@ import java.util.Optional;
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     UserDetail findUserDetailByUser(User user);
 
-
-
 }
