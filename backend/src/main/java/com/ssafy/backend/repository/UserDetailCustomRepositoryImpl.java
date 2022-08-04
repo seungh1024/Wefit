@@ -34,17 +34,22 @@ public class UserDetailCustomRepositoryImpl implements UserDetailCustomRepositor
         return destUserDetail;
     }
 
-    //
+    // 유저 디테일 업데이트
     @Transactional
-    public Long updateUserDetail(String userEmail, UserDetail userDetail){
+    public Long updateUserDetail(String userEmail, UserDetail update){
         User user = userRepository.findUserByUserEmail(userEmail);
         UserDetail destUserDetail = findUserDetailByUserId(user.getUserId());
 
         QUserDetail userDetailItem = QUserDetail.userDetail;
         JPAUpdateClause updateClause = new JPAUpdateClause(em, userDetailItem);
 
-        long result = updateClause.where(userDetailItem.userDetailId.eq(userDetail.getUserDetailId()))
-                .set(userDetailItem.userNickname, userDetail.getUserNickname())
+        long result = updateClause.where(userDetailItem.userDetailId.eq(destUserDetail.getUserDetailId()))
+                .set(userDetailItem.userGender, update.getUserGender())
+                .set(userDetailItem.userName, update.getUserName())
+                .set(userDetailItem.userNickname, update.getUserNickname())
+                .set(userDetailItem.userField, update.getUserField())
+                .set(userDetailItem.userPhone, update.getUserPhone())
+                .set(userDetailItem.userSingoCount, update.getUserSingoCount())
                 .execute();
 
         System.out.println("updateUserDetail" + result);
