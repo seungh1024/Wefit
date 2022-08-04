@@ -15,7 +15,6 @@ public class UserDetailCustomRepositoryImpl implements UserDetailCustomRepositor
 
     private final UserRepository userRepository;
     private final EntityManager em;
-
     private final JPAQueryFactory jpaQueryFactory; // 이놈이 문제
 
     public UserDetailCustomRepositoryImpl(UserRepository userRepository, EntityManager em) {
