@@ -52,7 +52,7 @@ pipeline {
 //                         sh 'docker build -t seungh1024/wefit .'
 //                         sh "chmod +x gradlew"
 //                         sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
-                        sh 'sudo chmod -R 777 /usr/local/bin'
+                        sh 'chmod -R 777 /usr/local/bin'
                         sh 'chmod +x /usr/local/bin/docker-compose'
                         sh 'docker-compose --version'
                         sh 'docker-compose stop'
