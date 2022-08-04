@@ -45,13 +45,15 @@ pipeline {
             steps {
                 dir('backend'){
                     sh 'echo " Image Bulid Start"'
+                    sh 'echo " ls"'
+                    sh 'echo " cat docker-compose.yml"'
                     script {
     //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
 //                         sh 'docker build -t seungh1024/wefit .'
 //                         sh "chmod +x gradlew"
 //                         sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
-                        sh '/usr/local/bin/docker-compose stop'
-                        sh '/usr/local/bin/docker-compose up -d'
+                        sh 'docker-compose stop'
+                        sh 'docker-compose up -d'
                     }
                 }
 
