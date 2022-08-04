@@ -13,4 +13,5 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     UserDetail findUserDetailByUser(User user);
 
     void deleteUserDetailByUserUserEmail(String userEmail);
+    boolean existsByUserNickname(String nickname);
 }

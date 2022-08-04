@@ -42,8 +42,8 @@ public class UserDetailService {
         return result;
     }
 
-    public void deleteUserDetail(String userEamil){
-        userDetailRepository.deleteUserDetailByUserUserEmail(userEamil);
+    public void deleteUserDetail(String userEmail){
+        userDetailRepository.deleteUserDetailByUserUserEmail(userEmail);
     }
 
 //    public UserDetail updateUserDetail(String userEmail, UserDetailDto userDetailDto){

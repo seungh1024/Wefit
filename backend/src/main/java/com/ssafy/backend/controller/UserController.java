@@ -38,4 +38,18 @@ public class UserController {
     public ResponseEntity<User> getUserInfo(@PathVariable String username){
         return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
     }
+
+    // 이메일 중복 확인
+    @GetMapping("/email/{email}/exists")
+    public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String email) {
+        return ResponseEntity.ok(userService.checkEmailDuplicate(email));
+
+    }
+
+    // 닉네임 중복 확인
+    @GetMapping("/user-nickname/{nickname}/exists")
+    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
+        return ResponseEntity.ok(userService.checkNicknameDuplicate(nickname));
+
+    }
 }
