@@ -45,8 +45,8 @@ pipeline {
             steps {
                 dir('backend'){
                     sh 'echo " Image Bulid Start"'
-                    sh 'echo " ls"'
-                    sh 'echo " cat docker-compose.yml"'
+                    sh 'ls'
+                    sh 'cat docker-compose.yml'
                     script {
     //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
 //                         sh 'docker build -t seungh1024/wefit .'
