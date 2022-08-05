@@ -18,7 +18,6 @@ public class RequestUtil {
         // Get token
         return parts[1];
     }
-
     public static String getAuthorizationToken(HttpServletRequest request) {
         return getAuthorizationToken(request.getHeader("Authorization"));
     }

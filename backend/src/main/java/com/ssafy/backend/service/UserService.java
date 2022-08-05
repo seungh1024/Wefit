@@ -16,12 +16,9 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     @Transactional
@@ -29,7 +26,6 @@ public class UserService {
         if(userRepository.findOneWithAuthoritiesByUserEmail(userDto.getUserEmail()).orElse(null)!=null){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
-
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();
@@ -52,5 +48,4 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities(){
         return SecurityUtil.getCurrentUseremail().flatMap(userRepository::findOneWithAuthoritiesByUserEmail);
     }
-
 }

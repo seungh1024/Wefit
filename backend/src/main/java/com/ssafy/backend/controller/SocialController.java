@@ -38,7 +38,6 @@ public class SocialController {
 
     @PostMapping("/api/v1/social/googleLogin")
     public ResponseEntity<TokenDto> authorize(@RequestHeader("Authorization") String authorization) {
-        System.out.println(" --- googleLogin --- ");
         // TOKEN을 가져온다.
         FirebaseToken decodedToken;
         try {
@@ -67,7 +66,6 @@ public class SocialController {
 
     @PostMapping("/api/v1/social/googleSignup")
     public ResponseEntity<User> googleSignUp(@RequestHeader("Authorization") String authorization){
-        System.out.println(" ----------- googleSignup ------------ ");
         // TOKEN을 가져온다.
         FirebaseToken decodedToken;
         try {
