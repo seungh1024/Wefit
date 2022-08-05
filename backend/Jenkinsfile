@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE_NAME = 'seungh1024/wefit'
-        DOCKER_IMAGE = ''
-    }
+//     environment {
+//         DOCKER_IMAGE_NAME = 'seungh1024/wefit'
+//         DOCKER_IMAGE = ''
+//     }
 
     stages {
         stage('Prepare') {
@@ -48,15 +48,15 @@ pipeline {
 //                     sh 'ls'
 //                     sh 'cat docker-compose.yml'
                     script {
-    //                     DOCKER_IMAGE = docker.build DOCKER_IMAGE_NAME + ":latest"
-//                         sh 'docker build -t seungh1024/wefit .'
-//                         sh "chmod +x gradlew"
-//                         sh './gradlew bootBuildImage --imageName=seungh1024/wefit'
+//                         도커 컴포즈 다운
                         sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+//                         해당 도커 컴포즈 다운한 경로로 권한 설정
                         sh 'chmod -R 777 /usr/local/bin'
                         sh 'chmod +x /usr/local/bin/docker-compose'
-                        sh 'docker-compose --version'
+//                         sh 'docker-compose --version'
+//                         기존 백그라운드에 돌아가던 컨테이너 중지
                         sh 'docker-compose stop'
+//                         업데이트된 코드로 빌드 및 실행
                         sh 'docker-compose up -d'
                     }
                 }
