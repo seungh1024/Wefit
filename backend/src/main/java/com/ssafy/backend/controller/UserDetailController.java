@@ -25,5 +25,10 @@ public class UserDetailController {
         return new ResponseEntity<>(userDetailService.createUserDetail(username,userDetail), HttpStatus.OK);
     }
 
+    @PutMapping("/user-info/{username}")
+    public ResponseEntity<Long> updateUserDetailInfo(@PathVariable("username") String username, @RequestBody UserDetail userDetail){
+        return new ResponseEntity<>(userDetailService.updateUserDetail(username, userDetail), HttpStatus.OK);
+    }
+
 
 }

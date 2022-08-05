@@ -1,6 +1,16 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+
+    // querydsl
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+
     id 'java'
 }
 
@@ -49,8 +59,14 @@ dependencies {
     //stomp & socket
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
 
+<<<<<<< HEAD
+    //querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+=======
     // firebase auth
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'
+>>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
 }
 
 tasks.named('test') {
@@ -63,4 +79,20 @@ jar{
 
 bootJar {
     mainClass = 'com.ssafy.backend.BackendApplication'
+}
+
+// querydsl
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
