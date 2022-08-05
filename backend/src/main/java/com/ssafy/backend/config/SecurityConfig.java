@@ -71,7 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
-
                         "/favicon.ico"
                 );
     }
@@ -104,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/user").permitAll()
                 .antMatchers("/api/v1/re-issue").permitAll()
                 .antMatchers("/api/v1/user-info").permitAll()
+                .antMatchers("/api/v1/googleSignup").permitAll()
                 .antMatchers("/ws").permitAll()
                 .anyRequest().authenticated()
 

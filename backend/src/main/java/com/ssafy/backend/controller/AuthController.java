@@ -33,14 +33,11 @@ public class AuthController {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
-
     private final RedisService redisService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
     private final RedisTemplate<String, String> redisTemplate;
     private final FirebaseAuth firebaseAuth;
     private final CustomUserDetailsService customUserDetailsService;
-
 
     public AuthController(TokenProvider tokenProvider, TokenService tokenService, RedisService redisService, AuthenticationManagerBuilder authenticationManagerBuilder, RedisTemplate redisTemplate, FirebaseAuth firebaseAuth, CustomUserDetailsService customUserDetailsService) {
         this.tokenProvider = tokenProvider;
@@ -54,13 +51,6 @@ public class AuthController {
 
     @PostMapping("/api/v1/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-
-        // 0726 refactoring
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getUserPassword());
-//
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // authentication 얻기
         Authentication authentication = tokenProvider.createAuthenticate(loginDto.getUserEmail(), loginDto.getUserPassword());
@@ -127,25 +117,6 @@ public class AuthController {
         tokenService.setBlackList(request);
 
         return new ResponseEntity<String>("로그아웃 되었습니다",HttpStatus.OK);
-    }
-
-    @PostMapping("/api/v1/googleSignup")
-    public String register(@RequestHeader("Authorization") String authorization) {
-
-        // TOKEN을 가져온다.
-        FirebaseToken decodedToken;
-        try {
-            String token = RequestUtil.getAuthorizationToken(authorization);
-            decodedToken = firebaseAuth.verifyIdToken(token);
-        } catch (IllegalArgumentException | FirebaseAuthException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
-        }
-        // 사용자를 등록한다.
-
-        System.out.println(decodedToken.getUid() + decodedToken.getEmail());
-
-        return "ssssss";
     }
 
 }
