@@ -10,7 +10,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 sh 'echo "Clonning Repository"'
-                git branch: 'feature-back/jenkins',
+                git branch: 'develop-back',
                     url: 'https://lab.ssafy.com/s07-webmobile1-sub2/S07P12B206.git',
                     credentialsId: 'IDPW'
             }
