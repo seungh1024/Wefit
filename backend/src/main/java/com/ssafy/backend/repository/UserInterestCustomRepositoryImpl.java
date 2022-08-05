@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-public class UserInterestCustomRepositoryImpl implements  UserInterestCustomRepository{
+public class UserInterestCustomRepositoryImpl implements UserInterestCustomRepository{
 
     private final UserRepository userRepository;
     private final EntityManager em;

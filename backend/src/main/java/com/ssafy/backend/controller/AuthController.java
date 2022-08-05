@@ -1,29 +1,30 @@
 package com.ssafy.backend.controller;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.auth.UserInfo;
 import com.ssafy.backend.dto.LoginDto;
 import com.ssafy.backend.dto.TokenDto;
 import com.ssafy.backend.jwt.JwtFilter;
 import com.ssafy.backend.jwt.TokenProvider;
 import com.ssafy.backend.radis.RedisService;
+import com.ssafy.backend.service.CustomUserDetailsService;
 import com.ssafy.backend.service.TokenService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import jdk.nashorn.internal.parser.Token;
+import com.ssafy.backend.util.RequestUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -32,30 +33,24 @@ public class AuthController {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private final TokenProvider tokenProvider;
     private final TokenService tokenService;
-
     private final RedisService redisService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
     private final RedisTemplate<String, String> redisTemplate;
+    private final FirebaseAuth firebaseAuth;
+    private final CustomUserDetailsService customUserDetailsService;
 
-
-    public AuthController(TokenProvider tokenProvider, TokenService tokenService, RedisService redisService, AuthenticationManagerBuilder authenticationManagerBuilder, RedisTemplate redisTemplate) {
+    public AuthController(TokenProvider tokenProvider, TokenService tokenService, RedisService redisService, AuthenticationManagerBuilder authenticationManagerBuilder, RedisTemplate redisTemplate, FirebaseAuth firebaseAuth, CustomUserDetailsService customUserDetailsService) {
         this.tokenProvider = tokenProvider;
         this.tokenService = tokenService;
         this.redisService = redisService;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.redisTemplate = redisTemplate;
+        this.firebaseAuth = firebaseAuth;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @PostMapping("/api/v1/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-
-        // 0726 refactoring
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getUserPassword());
-//
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // authentication 얻기
         Authentication authentication = tokenProvider.createAuthenticate(loginDto.getUserEmail(), loginDto.getUserPassword());

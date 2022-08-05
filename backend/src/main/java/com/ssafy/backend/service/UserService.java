@@ -19,13 +19,16 @@ public class UserService {
 
     private final UserDetailRepository userDetailRepository;
     private final PasswordEncoder passwordEncoder;
+<<<<<<< HEAD
 
 
     public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, PasswordEncoder passwordEncoder){
+=======
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+>>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
         this.userRepository = userRepository;
         this.userDetailRepository = userDetailRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     @Transactional
@@ -33,7 +36,6 @@ public class UserService {
         if(userRepository.findOneWithAuthoritiesByUserEmail(userDto.getUserEmail()).orElse(null)!=null){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
-
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();
@@ -56,6 +58,7 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities(){
         return SecurityUtil.getCurrentUseremail().flatMap(userRepository::findOneWithAuthoritiesByUserEmail);
     }
+<<<<<<< HEAD
 
     public boolean checkEmailDuplicate(String email){
         return userRepository.existsByUserEmail(email);
@@ -65,4 +68,6 @@ public class UserService {
         return userDetailRepository.existsByUserNickname(nickname);
     }
 
+=======
+>>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
 }

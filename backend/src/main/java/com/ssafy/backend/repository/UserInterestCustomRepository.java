@@ -1,4 +1,6 @@
 package com.ssafy.backend.repository;
 
-public interface UserInterestCustomRepository {
+public interface UserInterestCustomRepository{
+
+
 }

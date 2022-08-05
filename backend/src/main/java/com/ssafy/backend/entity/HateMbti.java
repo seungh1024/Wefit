@@ -18,7 +18,7 @@ public class HateMbti {
     @Column(name = "hate_mbti_id")
     private int hateMbtiId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name= "mbti_name")
     private Mbti mbtiName;
 

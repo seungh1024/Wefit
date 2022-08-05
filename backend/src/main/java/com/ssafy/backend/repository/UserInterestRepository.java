@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Repository
-public interface UserInterestRepository extends JpaRepository<UserInterest, Integer> {
+public interface UserInterestRepository extends CustomRepository<UserInterest, Integer> {
 
     List<UserInterest> findUserInterestByUserDetail(UserDetail userDetail);
 

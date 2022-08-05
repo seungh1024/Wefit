@@ -19,9 +19,11 @@ public class UserInterest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userInterestId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name= "interest_name")
     private Interest interest;
+
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_detail_id")

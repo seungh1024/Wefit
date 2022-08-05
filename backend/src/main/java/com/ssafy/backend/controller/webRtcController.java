@@ -27,9 +27,7 @@ public class webRtcController {
     @PostMapping("/api/v1/createSession")
     public ResponseEntity<JSONObject> createSession(HttpSession httpSession) throws ParseException {
         //세션에서 세션 정보 받아서 파싱 - 세션 정보 (방의 기준이 됨)
-
         JSONObject responseJson = openviduService.createSession(httpSession);
-
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
@@ -38,9 +36,7 @@ public class webRtcController {
         //세션에서 세션 정보 받아서 파싱 - 세션 정보 (방의 기준이 됨)
         JSONObject sessionJSON = (JSONObject) new JSONParser().parse(sessionNameParam);
         String sessionName = (String) sessionJSON.get("sessionNameParam");
-
         JSONObject responseJson = openviduService.joinSession(sessionName, httpSession);
-
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
@@ -48,7 +44,6 @@ public class webRtcController {
     @RequestMapping(value = "/api/v1/exitRoom", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
             throws Exception {
-
         // Retrieve the params from BODY
         // 받은 데이터 파싱 작업
         JSONObject sessionNameTokenJSON = (JSONObject) new JSONParser().parse(sessionNameToken);
@@ -61,13 +56,10 @@ public class webRtcController {
     // 방 매칭 요청
     @PostMapping("/api/v1/matching/{userEmail}")
     public String matching(@PathVariable("userEmail") String userEmail) {
-
         // 해당 이메일을 가지는 사용자의 MBTI 가져오기
 //        String mbti =
-
         // 매칭 테이블에 해당 이메일, mbti 저장 (매칭 대기 map =>  유저이메일 : mbti)
 //        matchingService.appendMatchingList(userEmail, mbti);
-
         return "매칭을 시작합니다.";
     }
 
