@@ -102,9 +102,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/login").permitAll() //로컬 로그인
                 .antMatchers("/api/v1/user").permitAll() // 로컬 회원가입
                 .antMatchers("/api/v1/re-issue").permitAll() // 토큰 재발급
-                .antMatchers("/api/v1/user-info").permitAll()
+                .antMatchers("/api/v1/user-info/**").permitAll()
                 .antMatchers("/api/v1/social/googleSignup").permitAll() // 구글 회원가입
                 .antMatchers("/api/v1/social/googleLogin").permitAll() // 구글 로그인인                .antMatchers("/ws").permitAll()
+                .antMatchers("/api/v1/mbti/**").permitAll() // mbti
+                .antMatchers("/api/v1/like/**").permitAll() // 사용자 관심사
                 .anyRequest().authenticated()
 
                 .and()

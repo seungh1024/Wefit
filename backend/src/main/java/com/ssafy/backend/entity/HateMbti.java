@@ -16,14 +16,15 @@ public class HateMbti {
 
     @Id
     @Column(name = "hate_mbti_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hateMbtiId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name= "mbti_name")
     private Mbti mbtiName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_detail_id")
+    private UserDetail userDetail;
 
 }

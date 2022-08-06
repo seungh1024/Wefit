@@ -52,17 +52,16 @@ public class UserInterestService {
     public Long updateUserInterest(String userEmail, List<Interest> interestList){
         User user = userRepository.findUserByUserEmail(userEmail);
         UserDetail userDetail = userDetailRepository.findUserDetailByUser(user);
-        //System.out.println( "hererererere!!!!!!!!!!!!!!!!!!!!!!!");
+
         Long result = userInterestCustomRepositoryimpl.deleteUserInterest(userDetail.getUserDetailId());
 
-        List<UserInterest> userInterestList = new ArrayList<>();
+       // List<UserInterest> userInterestList = new ArrayList<>();
 
         for(Interest i : interestList){
             UserInterest temp =new UserInterest();
             temp.setUserDetail(userDetail);
             temp.setInterest(i);
-            userInterestList.add(temp);
-            System.out.println( userInterestList);
+           // userInterestList.add(temp);
             userInterestRepository.save(temp);
             userInterestRepository.refresh(temp);
         }

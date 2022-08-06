@@ -19,13 +19,11 @@ public class UserService {
 
     private final UserDetailRepository userDetailRepository;
     private final PasswordEncoder passwordEncoder;
-<<<<<<< HEAD
+
 
 
     public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, PasswordEncoder passwordEncoder){
-=======
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
->>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
+
         this.userRepository = userRepository;
         this.userDetailRepository = userDetailRepository;
         this.passwordEncoder = passwordEncoder;
@@ -58,7 +56,7 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities(){
         return SecurityUtil.getCurrentUseremail().flatMap(userRepository::findOneWithAuthoritiesByUserEmail);
     }
-<<<<<<< HEAD
+
 
     public boolean checkEmailDuplicate(String email){
         return userRepository.existsByUserEmail(email);
@@ -68,6 +66,5 @@ public class UserService {
         return userDetailRepository.existsByUserNickname(nickname);
     }
 
-=======
->>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
+
 }
