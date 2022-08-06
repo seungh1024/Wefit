@@ -59,14 +59,18 @@ dependencies {
     //stomp & socket
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
 
-<<<<<<< HEAD
+
     //querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
-=======
+
     // firebase auth
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'
->>>>>>> e728d88d2228bbb6f383e00bc8f22d01839220a3
+
+    //firebase error
+   // implementation 'com.google.firebase:firebase-auth:18.0.0'
+
+
 }
 
 tasks.named('test') {
