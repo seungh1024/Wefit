@@ -1,5 +1,6 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.dto.PasswordDto;
 import com.ssafy.backend.dto.UserDto;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.service.UserService;
@@ -52,4 +53,12 @@ public class UserController {
         return ResponseEntity.ok(userService.checkNicknameDuplicate(nickname));
 
     }
+
+    // 비밀번호 확인
+    @PostMapping("/password")
+    public ResponseEntity<Boolean> checkPassword(@RequestBody PasswordDto passwordDto) {
+
+        return ResponseEntity.ok(passwordDto.getPassword().equals(passwordDto.getPasswordCheck()));
+    }
+
 }
