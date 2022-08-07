@@ -57,8 +57,22 @@ public class UserDetailCustomRepositoryImpl implements UserDetailCustomRepositor
                 .set(userDetailItem.userSingoCount, update.getUserSingoCount())
                 .execute();
 
-        System.out.println("updateUserDetail" + result);
 
+        return result;
+    }
+
+    // 유저 신고
+    @Override
+    @Transactional
+    public Long updateUserSingoCount(String username) {
+        User user = userRepository.findUserByUserEmail(username);
+        UserDetail userDetail = findUserDetailByUserId(user.getUserId());
+        QUserDetail userDetailItem = QUserDetail.userDetail;
+        JPAUpdateClause updateClause = new JPAUpdateClause(em, userDetailItem);
+        System.out.println( userDetail.getUserSingoCount());
+        Long result = updateClause.where(userDetailItem.userDetailId.eq(userDetail.getUserDetailId()))
+                .set(userDetailItem.userSingoCount, userDetail.getUserSingoCount()+1)
+                .execute();
         return result;
     }
 

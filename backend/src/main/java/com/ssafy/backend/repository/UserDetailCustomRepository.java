@@ -8,4 +8,5 @@ public interface UserDetailCustomRepository {
 
     Long updateUserDetail(String userEmail, UserDetail update);
 
+    Long updateUserSingoCount(String username);
 }
