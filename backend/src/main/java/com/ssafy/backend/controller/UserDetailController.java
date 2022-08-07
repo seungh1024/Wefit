@@ -30,5 +30,10 @@ public class UserDetailController {
         return new ResponseEntity<>(userDetailService.updateUserDetail(username, userDetail), HttpStatus.OK);
     }
 
+    @PutMapping("/user-singo/{username}")
+    public ResponseEntity<Long> updateUserSingoCount(@PathVariable("username") String username){
+        return new ResponseEntity<>(userDetailService.UserSingoCount(username), HttpStatus.OK);
+    }
+
 
 }

@@ -107,6 +107,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/social/googleLogin").permitAll() // 구글 로그인인                .antMatchers("/ws").permitAll()
                 .antMatchers("/api/v1/mbti/**").permitAll() // mbti
                 .antMatchers("/api/v1/like/**").permitAll() // 사용자 관심사
+                .antMatchers("/api/v1/password").permitAll()
+                .antMatchers("/api/v1/user-singo/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -46,6 +46,11 @@ public class UserDetailService {
         userDetailRepository.deleteUserDetailByUserUserEmail(userEmail);
     }
 
+    public Long UserSingoCount(String username) {
+        Long result = userDetailCustomRepository.updateUserSingoCount(username);
+        return result;
+    }
+
 //    public UserDetail updateUserDetail(String userEmail, UserDetailDto userDetailDto){
 //        User user = userRepository.findUserByUserEmail(userEmail);
 //        if(userRepository.findOneWithAuthoritiesByUserEmail(userDto.getUserEmail()).orElse(null)!=null){
