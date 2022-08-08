@@ -41,7 +41,11 @@ public class JwtFilter extends GenericFilterBean {
         try {
             FirebaseToken decodedToken;
             String header = RequestUtil.getAuthorizationToken(httpServletRequest.getHeader("Authorization"));
+            if (header == null){
+                throw new Exception();
+            }
             decodedToken = firebaseAuth.verifyIdToken(header); // 토큰 decode
+            System.out.println(decodedToken);
             // TODO: 2022-08-05 이거 문제 해결하기.. 
 //            Authentication authentication = tokenProvider.getAuthentication(decodedToken.toString()); // 토큰의 인증 정보 가져오기
 //            SecurityContextHolder.getContext().setAuthentication(authentication); // 토큰 인증 정보를 security context에 저장
@@ -51,6 +55,8 @@ public class JwtFilter extends GenericFilterBean {
         } catch (FirebaseAuthException e) {
             System.out.println("httpstatus " + HttpStatus.SC_UNAUTHORIZED);
             System.out.println("error " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("no header");
         }
 
         //local jwt 인증
