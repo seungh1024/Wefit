@@ -23,6 +23,38 @@ pipeline {
                  }
             }
         }
+        stage('Docker stop'){
+            steps {
+                sh 'echo "Docker Container Stop"'
+//              도커 컴포즈 다운
+                sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+//              해당 도커 컴포즈 다운한 경로로 권한 설정
+                sh 'chmod -R 777 /usr/local/bin'
+                sh 'chmod +x /usr/local/bin/docker-compose'
+//              기존 백그라운드에 돌아가던 컨테이너 중지
+                sh 'docker-compose stop'
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Docker Fail"'
+                }
+            }
+        }
+
+        stage('Remove Docker Image'){
+            steps {
+                sh 'echo "Remove Docker Image"'
+                sh 'docker rm spring'
+                sh 'docker rmi backend_spring'
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Docker Fail"'
+                }
+            }
+        }
 
         stage('Bulid Gradle') {
             steps {
@@ -45,17 +77,8 @@ pipeline {
             steps {
                 dir('backend'){
                     sh 'echo " Image Bulid Start"'
-//                     sh 'ls'
-//                     sh 'cat docker-compose.yml'
                     script {
-//                         도커 컴포즈 다운
-                        sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
-//                         해당 도커 컴포즈 다운한 경로로 권한 설정
-                        sh 'chmod -R 777 /usr/local/bin'
-                        sh 'chmod +x /usr/local/bin/docker-compose'
-//                         sh 'docker-compose --version'
-//                         기존 백그라운드에 돌아가던 컨테이너 중지
-                        sh 'docker-compose stop'
+
 //                         업데이트된 코드로 빌드 및 실행
                         sh 'docker-compose up -d'
                     }
