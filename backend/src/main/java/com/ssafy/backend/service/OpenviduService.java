@@ -210,11 +210,6 @@ public class OpenviduService {
 
     // 매칭 알고리즘 돌리기
     public int matchingAlgo(){
-        if (matchingQueue.size() == 1){
-            String roomCreator = matchingQueue.poll();
-            JSONObject objCreator = createSession(roomCreator);
-            completeMatchingMessage(roomCreator, objCreator);
-        }
         if (matchingQueue.size()>=2){
             String roomCreator = matchingQueue.poll();
             String roomAttendant = matchingQueue.poll();
