@@ -44,7 +44,7 @@ public class UserService {
 
         User user = User.builder()
                 .userEmail(userDto.getUserEmail())
-                .userPassword(passwordEncoder.encode(userDto.getUserEmail()))
+                .userPassword(passwordEncoder.encode(userDto.getUserPassword()))
                 .authorities(Collections.singleton(authority))
                 .build();
 
