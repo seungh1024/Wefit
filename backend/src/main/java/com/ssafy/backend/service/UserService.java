@@ -1,11 +1,14 @@
 package com.ssafy.backend.service;
 
+import com.ssafy.backend.dto.ErrorDto;
 import com.ssafy.backend.dto.UserDto;
 import com.ssafy.backend.entity.Authority;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.repository.UserDetailRepository;
 import com.ssafy.backend.repository.UserRepository;
 import com.ssafy.backend.util.SecurityUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +35,8 @@ public class UserService {
     @Transactional
     public User signup(UserDto userDto){
         if(userRepository.findOneWithAuthoritiesByUserEmail(userDto.getUserEmail()).orElse(null)!=null){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+//            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            return null;
         }
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
