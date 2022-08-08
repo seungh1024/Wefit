@@ -11,6 +11,9 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 public class FirebaseInitializer {
@@ -18,8 +21,12 @@ public class FirebaseInitializer {
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException{
-        File file = ResourceUtils.getFile("classpath:firebase.json");
-        FileInputStream serviceAccount = new FileInputStream(file); // 비밀키 가져오기
+//        File file = ResourceUtils.getFile("classpath:firebase.json");
+//        FileInputStream serviceAccount = new FileInputStream(file); // 비밀키 가져오기
+
+        String fileName = "firebase.json";
+        Path filePath = Paths.get(File.separatorChar + "file", File.separatorChar + fileName);
+        InputStream serviceAccount = getClass().getResourceAsStream(filePath.toString());
 
         FirebaseOptions options = new FirebaseOptions.Builder() //생성 옵션
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
