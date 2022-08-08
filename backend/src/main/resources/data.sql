@@ -1,5 +1,5 @@
-INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_USER');
-INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_ADMIN');
+INSERT INTO authority (authority_name) values ('ROLE_USER');
+INSERT INTO authority (authority_name) values ('ROLE_ADMIN');
 
 INSERT INTO interest (interest_name) values ('술');
 INSERT INTO interest (interest_name) values ('게임');
