@@ -48,6 +48,7 @@ public class webRtcController {
     @PostMapping("/api/v1/createSession")
     public ResponseEntity<JSONObject> createSession(@RequestBody Map<String, String> user) throws ParseException {
         //세션에서 세션 정보 받아서 파싱 - 세션 정보 (방의 기준이 됨)
+
         String userEmail = user.get("userEmail");
         JSONObject responseJson = openviduService.createSession(userEmail);
 

@@ -2,10 +2,7 @@ package com.ssafy.backend.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Mbti")
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @ToString
 public class Mbti {
+
     @Id
     @Column(name = "mbti_name")
     private String mbtiName;
