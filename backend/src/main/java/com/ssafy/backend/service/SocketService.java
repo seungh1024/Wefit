@@ -2,6 +2,7 @@ package com.ssafy.backend.service;
 
 import com.ssafy.backend.vo.SocketVo;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,8 @@ public class SocketService {
 
     private final SimpMessageSendingOperations messagingTemplate;
 
-    public void serverToClientMessage(SocketVo socketVo) {
+    public void serverToClientMessage(String userEmail, JSONObject obj) {
         System.out.println("serverToClientMessage");
-        messagingTemplate.convertAndSend("/sub/" + socketVo.getChannelId(), socketVo);
+        messagingTemplate.convertAndSend("/sub/" + userEmail, obj);
     }
 }
