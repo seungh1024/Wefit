@@ -93,8 +93,7 @@ public class UserController {
 
      // 임시비밀번호 메일 보내기
     @PostMapping("/check/findPw/sendEmail")
-    public @ResponseBody void sendPasswordEmail(@RequestBody String email){
-
+    public @ResponseBody void sendPasswordEmail(@RequestParam("userEmail") String email){
         MailVo mailVo = mailService.createMail(email);
         mailService.sendMail(mailVo);
     }
