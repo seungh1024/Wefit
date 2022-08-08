@@ -20,8 +20,10 @@ public class OpenviduService {
     private OpenVidu openVidu;
     // 사용중인 세션 관리 객체 (세션 이름, 세션 토큰 쌍)
     private Map<String, Session> mapSessions = new HashMap<>();
-    // 사용자와 세션 관리 객체
-    private Map<String, Map<String, OpenViduRole>> mapSessionNamesTokens = new HashMap<>();
+    // 세션이름 세션 토큰 유저 이메일
+    private Map<String, Map<String, String>> mapSessionNamesTokens = new HashMap<>();
+    // 유저 이름, <세션이름, 세션토큰>
+    private Map<String, Map<String, String>> mapUserSession = new HashMap<>();
     // openvidu url
     private String OPENVIDU_URL;
     // openvidu secret
@@ -75,19 +77,17 @@ public class OpenviduService {
             while (mapSessions.get(sessionName) != null){ // 중복 방지
                 sessionName = createRandName(15);
             }
-            System.out.println("Random Session Name: " + sessionName);
 
             // Store the session and the token in our collections
             // 세션 정보 입력
             this.mapSessions.put(sessionName, session);
             this.mapSessionNamesTokens.put(sessionName, new ConcurrentHashMap<>());
-            this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER);
-
+            this.mapSessionNamesTokens.get(sessionName).put(token, userEmail);
+//            this.mapUserSession.put(userEmail, new HashMap<>());
+//            this.mapUserSession.get(userEmail).put(sessionName, token);
             // Prepare the response with the token
             responseJson.put("token", token);
             responseJson.put("sessionName", sessionName);
-
-            System.out.println(responseJson.get("sessionName"));
 
             // Return the response to the client
             // 토큰정보와 상태 정보 리턴
@@ -109,7 +109,9 @@ public class OpenviduService {
 
             // Update our collection storing the new token
             // 새로운 토큰 정보 저장
-            this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER); // 우선 역할은 publisher로 통일
+            this.mapSessionNamesTokens.get(sessionName).put(token, userEmail); // 우선 역할은 publisher로 통일
+//            this.mapUserSession.put(userEmail, new HashMap<>());
+//            this.mapUserSession.get(userEmail).put(sessionName, token);
 
             JSONObject responseJson = new JSONObject();
             // Prepare the response with the token
@@ -231,5 +233,20 @@ public class OpenviduService {
     public void completeMatchingMessage(String userEmail, JSONObject obj){
         System.out.println(messagingTemplate);
         messagingTemplate.convertAndSend("/sub/matching/" + userEmail, obj);
+    }
+
+    public JSONObject getRoomInfo(){
+
+        List<Map<String, Integer>> roomInfo = new ArrayList<>();
+        JSONObject responseJson = new JSONObject();
+        int idx = 0;
+        for (String key : mapSessionNamesTokens.keySet()){
+            JSONObject tmp = new JSONObject();
+            tmp.put("sessionName", key);
+            tmp.put("userNum", mapSessionNamesTokens.get(key).size());
+            responseJson.put(idx++, tmp);
+        }
+
+        return responseJson;
     }
 }

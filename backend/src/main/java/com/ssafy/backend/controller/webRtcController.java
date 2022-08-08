@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +25,24 @@ public class webRtcController {
     public webRtcController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl, SimpMessagingTemplate  messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
         openviduService = new OpenviduService(secret, openviduUrl, messagingTemplate);
+    }
+
+    @PostMapping("/api/v1/getToken")
+    public ResponseEntity<JSONObject> getToken(@RequestBody Map<String, String> data) throws ParseException {
+        String sessionName = data.get("sessionName");
+        String userEmail = data.get("userEmail");
+
+        JSONObject responseJson = openviduService.joinSession(sessionName, userEmail);
+
+        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/getRoomInfo")
+    public ResponseEntity<JSONObject> getRoomInfo(){
+
+        JSONObject responseJson = openviduService.getRoomInfo();
+
+        return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
     @PostMapping("/api/v1/createSession")
@@ -75,6 +92,12 @@ public class webRtcController {
         openviduService.appendMatchingList(userEmail);
 
         return "매칭을 시작합니다.";
+    }
+
+    @GetMapping("/api/v1/roomInfo")
+    public String roomInfo(){
+
+        return "ddd";
     }
 
     private ResponseEntity<JSONObject> getErrorResponse(Exception e) {
