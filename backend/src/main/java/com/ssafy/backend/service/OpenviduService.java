@@ -1,20 +1,21 @@
 package com.ssafy.backend.service;
 
 import io.openvidu.java.client.*;
+import lombok.AllArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@AllArgsConstructor
 public class OpenviduService {
     private OpenVidu openVidu;
     // 사용중인 세션 관리 객체 (세션 이름, 세션 토큰 쌍)
@@ -25,17 +26,25 @@ public class OpenviduService {
     private String OPENVIDU_URL;
     // openvidu secret
     private String SECRET;
-    public OpenviduService(){};
+
+    private Queue<String> matchingQueue;
+
+    private SimpMessagingTemplate messagingTemplate;
+    public OpenviduService(){
+    };
+
     //생성자
-    public OpenviduService(String secret, String openviduUrl) {
+    public OpenviduService(String secret, String openviduUrl, SimpMessagingTemplate messagingTemplate) {
         this.SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
+        this.matchingQueue = new LinkedList<>();
+        this.messagingTemplate = messagingTemplate;
     }
 
     //Openvidu connection Properties 생성
-    public ConnectionProperties createConnectionProperties(HttpSession httpSession) {
-        String serverData = "{\"serverData\": \"" + httpSession.getAttribute("loggedUser") + "\"}";
+    public ConnectionProperties createConnectionProperties(String userEmail) {
+        String serverData = "{\"serverData\": \"" + userEmail + "\"}";
         ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
                 .type(ConnectionType.WEBRTC)
                 .data(serverData)
@@ -49,12 +58,15 @@ public class OpenviduService {
     }
 
     //Openvidu 새로운 세션 생성
-    public JSONObject createSession(HttpSession httpSession) {
-        ConnectionProperties connectionProperties = createConnectionProperties(httpSession);
+    public JSONObject createSession(String userEmail) {
+        ConnectionProperties connectionProperties = createConnectionProperties(userEmail);
         try {
             // Create a new OpenVidu Session
             Session session = this.openVidu.createSession();
             // Generate a new Connection with the recently created connectionProperties
+
+            System.out.println(3);
+
             // 커넥션 생성
             String token = session.createConnection(connectionProperties).getToken();
             JSONObject responseJson = new JSONObject();
@@ -75,6 +87,8 @@ public class OpenviduService {
             responseJson.put("token", token);
             responseJson.put("sessionName", sessionName);
 
+            System.out.println(responseJson.get("sessionName"));
+
             // Return the response to the client
             // 토큰정보와 상태 정보 리턴
             return responseJson;
@@ -86,8 +100,8 @@ public class OpenviduService {
     }
 
     // 해당 세션에 참여
-    public JSONObject joinSession(String sessionName, HttpSession httpSession) {
-        ConnectionProperties connectionProperties = createConnectionProperties(httpSession);
+    public JSONObject joinSession(String sessionName, String userEmail) {
+        ConnectionProperties connectionProperties = createConnectionProperties(userEmail);
         try {
             // Generate a new Connection with the recently created connectionProperties
             // 커넥션 생성
@@ -186,5 +200,41 @@ public class OpenviduService {
 
         // the resulting string
         return thebuffer.toString();
+    }
+
+    // 매칭 리스트에 사람 추가
+    public void appendMatchingList(String userEmail){
+        matchingQueue.offer(userEmail);
+        matchingAlgo();
+    }
+
+    // 매칭 알고리즘 돌리기
+    public int matchingAlgo(){
+        if (matchingQueue.size() == 1){
+            String roomCreator = matchingQueue.poll();
+            JSONObject objCreator = createSession(roomCreator);
+            completeMatchingMessage(roomCreator, objCreator);
+        }
+        if (matchingQueue.size()>=2){
+            String roomCreator = matchingQueue.poll();
+            String roomAttendant = matchingQueue.poll();
+
+            System.out.println(roomCreator + " " + roomAttendant);
+
+            JSONObject objCreator = createSession(roomCreator);
+
+            JSONObject objAttendant = joinSession((String) objCreator.get("sessionName"), roomAttendant);
+
+            completeMatchingMessage(roomCreator, objCreator);
+            completeMatchingMessage(roomAttendant, objAttendant);
+            return 1;
+        }
+        return 0;
+    }
+
+    // 매칭된 대상에게 메시지 날리기 (/sub/유저이메일 로 연결된 소켓에 메시지 보냄)
+    public void completeMatchingMessage(String userEmail, JSONObject obj){
+        System.out.println(messagingTemplate);
+        messagingTemplate.convertAndSend("/sub/matching/" + userEmail, obj);
     }
 }
