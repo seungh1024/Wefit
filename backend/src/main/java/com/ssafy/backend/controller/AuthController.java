@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserInfo;
+import com.ssafy.backend.dto.ErrorDto;
 import com.ssafy.backend.dto.LoginDto;
 import com.ssafy.backend.dto.TokenDto;
 import com.ssafy.backend.jwt.JwtFilter;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,10 +52,15 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/login")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto loginDto) {
 
+        Authentication authentication;
         // authentication 얻기
-        Authentication authentication = tokenProvider.createAuthenticate(loginDto.getUserEmail(), loginDto.getUserPassword());
+        try{
+            authentication = tokenProvider.createAuthenticate(loginDto.getUserEmail(), loginDto.getUserPassword());
+        }catch(BadCredentialsException e){
+            return new ResponseEntity<ErrorDto>(new ErrorDto(401,"아이디 또는 비밀번호가 일치하지 않습니다"),HttpStatus.UNAUTHORIZED);
+        }
 
         // access token, refresh token 만들기 0726
         String accessToken = tokenService.createAccessToken(authentication);
@@ -65,7 +72,7 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken + " " + refreshToken);
 
-        return new ResponseEntity<>(new TokenDto(accessToken, refreshToken), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<TokenDto>(new TokenDto(accessToken, refreshToken), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/re-issue")

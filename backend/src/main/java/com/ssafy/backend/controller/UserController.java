@@ -1,5 +1,6 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.dto.ErrorDto;
 import com.ssafy.backend.dto.MailDto;
 import com.ssafy.backend.dto.PasswordDto;
 import com.ssafy.backend.dto.UserDto;
@@ -26,10 +27,15 @@ public class UserController {
 
     //회원가입 controller
     @PostMapping("/user")
-    public ResponseEntity<User> signup(
+    public ResponseEntity<?> signup(
             @Valid @RequestBody UserDto userDto
     ){
-        return ResponseEntity.ok(userService.signup(userDto));
+        User user = userService.signup(userDto);
+        if(user != null){
+            return ResponseEntity.ok(user);
+        }else{
+            return ResponseEntity.ok(new ErrorDto(200,"이미 가입된 이메일입니다."));
+        }
     }
 
     // 모든 사용자 조회 controller
