@@ -21,13 +21,15 @@ public class FirebaseInitializer {
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException{
-        File file = ResourceUtils.getFile("classpath:firebase.json");
-        FileInputStream serviceAccount = new FileInputStream(file); // 비밀키 가져오기
-
-//        String fileName = "firebase.json";
-//        Path filePath = Paths.get( File.separatorChar + fileName);
-//        InputStream serviceAccount = getClass().getResourceAsStream(filePath.toString());
-
+        InputStream serviceAccount;
+        try{
+            File file = ResourceUtils.getFile("classpath:firebase.json");
+            serviceAccount = new FileInputStream(file); // 비밀키 가져오기
+        }catch(Exception e){
+            String fileName = "firebase.json";
+            Path filePath = Paths.get( File.separatorChar + fileName);
+            serviceAccount = getClass().getResourceAsStream(filePath.toString());
+        }
         FirebaseOptions options = new FirebaseOptions.Builder() //생성 옵션
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
