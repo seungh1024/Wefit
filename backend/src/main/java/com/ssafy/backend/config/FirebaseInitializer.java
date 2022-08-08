@@ -25,7 +25,7 @@ public class FirebaseInitializer {
 //        FileInputStream serviceAccount = new FileInputStream(file); // 비밀키 가져오기
 
         String fileName = "firebase.json";
-        Path filePath = Paths.get(File.separatorChar + "file", File.separatorChar + fileName);
+        Path filePath = Paths.get( File.separatorChar + fileName);
         InputStream serviceAccount = getClass().getResourceAsStream(filePath.toString());
 
         FirebaseOptions options = new FirebaseOptions.Builder() //생성 옵션
