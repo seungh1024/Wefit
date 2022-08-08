@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/login").permitAll() //로컬 로그인
-                .antMatchers("/api/v1/user").permitAll() // 로컬 회원가입
+                .antMatchers("/api/v1/user/**").permitAll() // 로컬 회원가입
                 .antMatchers("/api/v1/re-issue").permitAll() // 토큰 재발급
                 .antMatchers("/api/v1/user-info/**").permitAll()
                 .antMatchers("/api/v1/social/googleSignup").permitAll() // 구글 회원가입
@@ -109,6 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/like/**").permitAll() // 사용자 관심사
                 .antMatchers("/api/v1/password").permitAll()
                 .antMatchers("/api/v1/user-singo/**").permitAll()
+                .antMatchers("/api/v1/check/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

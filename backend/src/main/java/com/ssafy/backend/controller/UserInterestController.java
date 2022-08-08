@@ -29,7 +29,7 @@ public class UserInterestController {
     //사용자 관심사 정보 생성/업데이트
     @PostMapping("/like/{username}")
     public ResponseEntity<?> updateUserInterestInfo(@PathVariable("username") String username, @RequestBody List<Interest> interestList){
-
+        System.out.println(interestList);
         return new ResponseEntity<>(userInterestService.updateUserInterest(username,interestList), HttpStatus.OK);
 
     }

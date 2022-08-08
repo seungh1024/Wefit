@@ -66,5 +66,15 @@ public class UserService {
         return userDetailRepository.existsByUserNickname(nickname);
     }
 
+    public boolean userEmailCheck(String userEmail){
+
+        User user = userRepository.findUserByUserEmail(userEmail);
+        if(user!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 }

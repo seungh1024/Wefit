@@ -55,20 +55,20 @@ public class UserInterestService {
 
         Long result = userInterestCustomRepositoryimpl.deleteUserInterest(userDetail.getUserDetailId());
 
-       // List<UserInterest> userInterestList = new ArrayList<>();
+   //     List<UserInterest> userInterestList = new ArrayList<>();
 
         for(Interest i : interestList){
             UserInterest temp =new UserInterest();
             temp.setUserDetail(userDetail);
             temp.setInterest(i);
-           // userInterestList.add(temp);
+  //          userInterestList.add(temp);
             userInterestRepository.save(temp);
             userInterestRepository.refresh(temp);
         }
 //        System.out.println( "뿡뿡뿡");
-//        System.out.println( userInterestList);
-        //System.out.println( userInterestRepository.saveAll(userInterestList));
-        //userInterestRepository.saveAll(userInterestList);
+   //     System.out.println( userInterestList);
+  //      System.out.println( userInterestRepository.saveAll(userInterestList));
+  //      userInterestRepository.saveAll(userInterestList);
         return result;
     }
 
