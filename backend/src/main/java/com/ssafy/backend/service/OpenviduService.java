@@ -21,6 +21,7 @@ public class OpenviduService {
     // 사용중인 세션 관리 객체 (세션 이름, 세션 토큰 쌍)
     private Map<String, Session> mapSessions = new HashMap<>();
     // 세션이름 세션 토큰 유저 이메일
+    private Map<String, Map<String, String>> mapSessionNamesTokensRand = new HashMap<>();
     private Map<String, Map<String, String>> mapSessionNamesTokens = new HashMap<>();
     // 유저 이름, <세션이름, 세션토큰>
     private Map<String, Map<String, String>> mapUserSession = new HashMap<>();

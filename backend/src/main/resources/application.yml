@@ -30,5 +30,5 @@ jwt:
 
 # openvidu
 openvidu:
-  url: https://localhost:4443/
+  url: https://i7b206.p.ssafy.io:4443/
   secret: MY_SECRET
