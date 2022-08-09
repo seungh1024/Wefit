@@ -1,13 +1,14 @@
 package com.ssafy.backend.controller;
 
 import com.ssafy.backend.dto.ErrorDto;
-import com.ssafy.backend.dto.MailDto;
 import com.ssafy.backend.dto.PasswordDto;
 import com.ssafy.backend.dto.UserDto;
 import com.ssafy.backend.entity.User;
+import com.ssafy.backend.repository.UserRepository;
 import com.ssafy.backend.service.MailService;
 import com.ssafy.backend.service.UserService;
 import com.ssafy.backend.vo.MailVo;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,11 +24,14 @@ public class UserController {
 
     private final MailService mailService;
 
+    private final UserRepository userRepository;
+
     private JavaMailSender mailSender;
 
-    public UserController(UserService userService, MailService mailService){
+    public UserController(UserService userService, MailService mailService, UserRepository userRepository){
         this.userService=userService;
         this.mailService = mailService;
+        this.userRepository = userRepository;
     }
 
     //회원가입 controller
@@ -47,16 +51,20 @@ public class UserController {
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<User> getMyUserInfo(){
-        System.out.println("aaa");
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
     }
 
     // 해당 사용자 정보 조회
     @GetMapping("/user/{username}")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable String username){
+    public ResponseEntity<?> getUserInfo(@PathVariable String username){
+        User user = userRepository.findUserByUserEmail(username);
+        if(user==null){
+            return ResponseEntity.ok(new ErrorDto(401,"존재하지 않는 회원입니다"));
+        }else{
+            return new ResponseEntity<User>(userService.getUserWithAuthorities(username).get(), HttpStatus.OK);
+        }
 
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
     }
 
     // 해당 사용자 삭제
@@ -89,6 +97,8 @@ public class UserController {
     }
 
 //    비밀번호 찾을 때
+//    todo : 수정필요
+
     @GetMapping("/check/findPw/{email}")
     public @ResponseBody Map<String, Boolean> findPassword(@PathVariable String email){
         Map<String, Boolean> json = new HashMap<>();
@@ -99,9 +109,15 @@ public class UserController {
 
      // 임시비밀번호 메일 보내기
     @PostMapping("/check/findPw/sendEmail")
-    public @ResponseBody void sendPasswordEmail(@RequestParam("userEmail") String email){
-        MailVo mailVo = mailService.createMail(email);
-        mailService.sendMail(mailVo);
+    public ResponseEntity<?> sendPasswordEmail(@RequestParam("userEmail") String email){
+        try{
+            MailVo mailVo = mailService.createMail(email);
+            mailService.sendMail(mailVo);
+            return new ResponseEntity<String>("이메일이 전송되었습니다",HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<String>("이메일 전송 실패",HttpStatus.OK);
+        }
+
     }
 
 }

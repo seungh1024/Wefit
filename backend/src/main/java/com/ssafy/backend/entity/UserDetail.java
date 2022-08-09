@@ -51,6 +51,8 @@ public class UserDetail {
     @Column(name = "user_temp_pwd")
     private String userTempPwd;
 
+
+
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;
