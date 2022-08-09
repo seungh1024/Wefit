@@ -57,7 +57,6 @@ export default {
       }
       // dispatch
       this.$store.dispatch('login', userData);
-      //
     },
 	google(){
 		const provider = new GoogleAuthProvider();

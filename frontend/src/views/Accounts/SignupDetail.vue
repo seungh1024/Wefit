@@ -6,26 +6,28 @@
     <hr>
     <tr>
     <td>이름</td> 
-    <td><span @click = "nameopen =true" v-if ="nameopen ===false">입력</span></td>
-    <td><input v-if ="nameopen ===true"></td>
+    <td> <span @click ="nameOpen =true" v-if ="nameOpen ===false"> 입력</span></td>
+    <td><input v-if ="nameOpen ===true" v-model ="userName"></td>
     </tr>
     <hr>
     <tr> <td> 이메일 </td> 
-    <td><span>입력</span> </td>  </tr>
+    <td><span > {{ this.$store.getters.getUserEmail}}</span> </td>  </tr>
     <hr> 
     <tr> 
     <td> 성별 </td>  
-    <td> <input type = "radio" name="gender" value = "man">남자 <input type = "radio" name="gender" value ="woman">여자 </td>
+    <td> <input type = "radio" name="gender" value = "man" v-model = "userGender">남자 <input type = "radio" name="gender" value ="woman" v-model = "userGender">여자 </td>
     </tr>
     <hr>   
     <tr>
     <td> 닉네임</td>  
-    <td><span>입력</span></td>
+    <td><span @click = "nicknameOpen =true" v-if ="nicknameOpen ===false">입력</span></td>
+    <td><input v-if ="nicknameOpen ===true" v-model ="userNickName"></td>
     </tr>
     <hr>
     <tr>   
     <td>지역</td> 
-    <td> <span> 입력</span> </td>
+    <td> <span @click = "userFieldOpen =true" v-if ="userFieldOpen ===false"> 입력</span> </td>
+    <td><input v-if ="userFieldOpen ===true" v-model ="userField"></td>
     </tr>
     <hr>
     <tr>   
@@ -61,6 +63,7 @@ import { mapGetters } from 'vuex'
 import SelectMbtiModal from '@/components/SelectMbtiModal.vue';
 import SelectInterestModal from '@/components/SelectInterestModal.vue';
 import vClickOutside from 'v-click-outside';
+import store from '@/store';
 export default {
     directives: {
     clickOutside: vClickOutside.directive
@@ -69,11 +72,11 @@ export default {
     components: {
     SelectMbtiModal,
     SelectInterestModal
-},
+    },
     data() {
       return {
-        userEmail : '',
-        userMbti   : '',
+        userEmail : store.state.userEmail,
+        userMBTI   : '',
         userGender : '', 
         userName   : '',
         userField  : '',
@@ -82,7 +85,9 @@ export default {
         userInterestList : [],
         mbtiModalOpen : false,
         interestModalOpen: false,
-        nameopen:false,
+        nameOpen: false,
+        nicknameOpen: false,
+        userFieldOpen: false,
     }
     },
     computed: {
@@ -91,16 +96,17 @@ export default {
     methods: {
      submit(){
         const userDetailData = {
-        "userEmail" : this.userEmail,
-        "userMbti": this.userMbti,
+        "userEmail" : this.$store.getters.getUserEmail,
+        "userMBTI": this.userMbti,
         "userGender": this.userGender,
-        "userNickName" : this.userNickName,
+        "userNickname" : this.userNickName,
         "userName": this.userName,
         "userField" : this.userField,
         "userPhone": this.userPhone,   
       }
+       console.log(userDetailData);
        this.$store.dispatch('signupdetail', userDetailData);
-       //아직 안돌려봄
+       //잘되는듯?
      },
     mbtimodalclose(event){
         this.mbtiModalOpen = false;
@@ -115,13 +121,16 @@ export default {
         this.userMbti =value;
         console.log(this.userMbti);
         //일단 이건 잘돌아감 mbti 모달에서 데이터 잘 받음
-    }
     },
     SelectInterest(value){
         this.interestModalOpen = false;
         this.userInterestList = value; 
-        //이부분은 mbti 모달에서 쓴 그대로 쓰면됨 아직 페이지네이션 구현 덜함     
-    }
+        //이부분은 mbti 모달에서 쓴 그대로 쓰면되는데 아직 페이지네이션 구현 덜함...
+        //interest모달만 조금 건드리면될듯  
+    },
+    },
+
+
 }
 </script>
 

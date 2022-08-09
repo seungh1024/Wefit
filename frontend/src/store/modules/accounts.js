@@ -4,10 +4,11 @@ import drf from '@/api/drf'
 
 export default {
   state: {
-    token: localStorage.getItem('token') || '',
+    accessToken: '',
+    refreshToken: '',
     currentUser: {},
+    userEmail : '',
     user :{
-      userEmail : '',
       userMbti   : '',
       userGender : '', 
       userName   : '',
@@ -21,19 +22,26 @@ export default {
     isLoggedIn: state => !!state.token,
     currentUser: state => state.currentUser,
     authError: state => state.authError,
+    getUserEmail: state => state.userEmail,
   },
   mutations: {
-    Login(state) {
+  Login(state) {
       state.isLogin = true
     },
-    SET_TOKEN: (state, token) => state.token = token,
+    SET_TOKEN: (state, token) => state.accessToken = token,
+    SET_REFRESHTOKEN: (state, refreshToken) => state.refreshToken = refreshToken,
     SET_CURRENT_USER: (state, user) => state.currentUser = user,
-    SET_AUTH_ERROR: (state, error) => state.authError = error
+    SET_AUTH_ERROR: (state, error) => state.authError = error,
+    SET_USEREMAIL: (state, userEmail) => state.userEmail = userEmail
   },
   actions: {
     saveToken({ commit }, token) {
       commit('SET_TOKEN', token)
       localStorage.setItem('token', token)
+    },
+    saveRefreshToken({ commit }, refreshToken){
+      commit('SET_REFRESHTOKEN', refreshToken)
+      localStorage.setItem('token', refreshToken)
     },
     removeToken({ commit }) {
       console.log('good')
@@ -47,10 +55,10 @@ export default {
             data: userData
           })
             .then(res => {
-              const token = res.data.token        
-              dispatch('saveToken', token)
-              dispatch('fetchCurrentUser')
-              router.push({ name: 'HomeView' })
+              dispatch('saveToken', res.data.token)
+              dispatch('saveToken', res.data.refreshToken)
+              //dispatch('fetchCurrentUser')
+              router.push({ name: 'LoginHome' })
             })
             .catch(err => {
               console.log(err)
@@ -84,7 +92,8 @@ export default {
       })
         .then(  res =>
           console.log(res),
-          router.push({ name: 'signupdetail' ,params:{user_id:user_id}})
+          commit('SET_USEREMAIL',userData.userEmail),
+          router.push({name : 'signupdetail', params:{userEmail: userData.userEmail}})
         )
         .catch(err => {
           console.error(err.response.data)
@@ -93,16 +102,17 @@ export default {
     },
     signupdetail({ commit }, userDetailData) {
       axios({
-        url: drf.accounts.signup()+user_id,
+        url: drf.accounts.userInfo()+userDetailData.userEmail,
         method: 'post',
         data: userDetailData,
       })
-        .then(
-          router.push({ name: 'HomeView' ,params:{username:userData.username}})
-        )
+        .then( res=> {
+          console.log(res)
+          router.push({ name: 'LoginView'})
+          })
         .catch(err => {
-          console.error(err.response.data)
-          commit('SET_AUTH_ERROR', err.response.data)
+          //console.error(err.response.data)
+          //commit('SET_AUTH_ERROR')
         })
     },
     logout({ dispatch }) {
@@ -120,6 +130,24 @@ export default {
         //   console.error(err.response)
         // })
     },
+    getUserInfo() {
+      //잘됨
+      axios({
+        url: drf.accounts.userInfo()+`${state.user.userEmail}`,
+        method: 'GET',
+      }).then(  res =>
+          console.log(res),
+          // 보낼 곳은 프로파일 뷰?
+        )
+        .catch(err => {
+          console.error(err.response.data)
+          commit('SET_AUTH_ERROR', err.response.data)
+        })
+    },
+    getUserToken(){
+      //정확히 어떤 함수? 
+
+    }
 
     // fetchCurrentUser({ commit, getters, dispatch }) {
     //   if (getters.isLoggedIn) {

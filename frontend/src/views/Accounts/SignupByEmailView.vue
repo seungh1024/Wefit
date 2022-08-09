@@ -54,18 +54,16 @@ export default {
     methods: {
       emailSignup(event) {
       event.preventDefault();
-      console.log(this.userEmail);
       if(this.userEmail != '')
       {
       const userData = {
         "userEmail": this.userEmail,
         "userPassword": this.userPassword,
-        "userPasswordCheck": this.userPasswordCheck
       }
-	    if(this.userPassword !='' &&this.userPassword == this.userPasswordCheck )
+	    if(this.userPassword !='' &&this.userPassword == this.userPasswordCheck)
 	    {
-	   	this.$router.push('signupdetail');
-      this.$store.dispatch('signup', userData);
+         this.$store.dispatch('signup', userData);
+	   	 //this.$router.push('signupdetail');
 	    }
 	    else{
 	  	alert('비밀번호를 확인하세요');

@@ -1,4 +1,4 @@
-const HOST = 'http://localhost:8080/api/v1/'
+const HOST = 'http://3.36.88.140:8080/api/v1/'
 // const HOST = '3.34.252.133'
 
 // const ACCOUNTS = 'accounts/'
@@ -7,9 +7,10 @@ const HOST = 'http://localhost:8080/api/v1/'
 
 export default {
   accounts: {
-    login: () => HOST  + 'authenticate',
+    login: () => HOST  + 'login',
     // logout: () => HOST + 'logout/',
-    signup: () => HOST  + 'signup',
+    signup: () => HOST  + 'user',
+    userInfo: () => HOST + 'user-info/',
     // Token 으로 현재 user 판단
     // currentUserInfo: () => HOST + ACCOUNTS + 'user/',
     // // username으로 프로필 제공
