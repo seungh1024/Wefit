@@ -11,4 +11,5 @@ public interface MbtiRepository extends JpaRepository<Mbti,String> {
 
     @Override
     List<Mbti> findAll();
+
 }
