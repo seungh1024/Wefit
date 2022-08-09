@@ -1,51 +1,53 @@
 <template>
-    <div class = "signupdetail" >
-    <div id = "inputdetail">
-    <h2>We Fit</h2>
-    <table>
-    <hr>
-    <tr>
-    <td>이름</td> 
-    <td> <span @click ="nameOpen =true" v-if ="nameOpen ===false"> 입력</span></td>
-    <td><input v-if ="nameOpen ===true" v-model ="userName"></td>
-    </tr>
-    <hr>
-    <tr> <td> 이메일 </td> 
-    <td><span > {{ this.$store.getters.getUserEmail}}</span> </td>  </tr>
-    <hr> 
-    <tr> 
-    <td> 성별 </td>  
-    <td> <input type = "radio" name="gender" value = "man" v-model = "userGender">남자 <input type = "radio" name="gender" value ="woman" v-model = "userGender">여자 </td>
-    </tr>
-    <hr>   
-    <tr>
-    <td> 닉네임</td>  
-    <td><span @click = "nicknameOpen =true" v-if ="nicknameOpen ===false">입력</span></td>
-    <td><input v-if ="nicknameOpen ===true" v-model ="userNickName"></td>
-    </tr>
-    <hr>
-    <tr>   
-    <td>지역</td> 
-    <td> <span @click = "userFieldOpen =true" v-if ="userFieldOpen ===false"> 입력</span> </td>
-    <td><input v-if ="userFieldOpen ===true" v-model ="userField"></td>
-    </tr>
-    <hr>
-    <tr>   
-    <td>MBTI</td>  
-    <td><span @click = "mbtiModalOpen = true"> 입력 </span> </td> 
-     </tr>
-    <hr>
-    <tr>
-    <td> 관심사 </td>  
-    <td><span @click = "interestModalOpen = true">입력 </span> </td> 
-    </tr>
-    <hr>
-    <button id = "submitbtn" @click.prevent = "submit">가입하기</button>
-    </table>
-    </div>  
-    <div>
-        <img src = "@/assets/img.png" id = "img">
-    </div>
+    <div class="signupdetail">
+        <div class="inner_box">  
+            <div class="block-div">
+            <div class="signup_table">
+            <div class="inputdetail">
+                <h2>WEFIT</h2>
+            </div>
+            <table>
+            <tr>
+                <td>이름</td> 
+                <td v-if ="nameOpen ===false"><span @click = "nameOpen =true" >입력</span></td>
+                <td v-if ="nameOpen ===true"><input class="input_long" type="text" v-model ="userName"></td>
+            </tr>
+            <tr> 
+                <td> 이메일 </td> 
+                <td><span > {{ this.$store.getters.getUserEmail}}</span> </td>
+            </tr>
+            <tr> 
+                <td> 성별 </td>  
+                <td class="select"> 
+                    <input type = "radio" name="gender" value = "man" id="select" v-model = "userGender"><label for="select">남자 </label>
+                    <input type = "radio" name="gender" value ="woman" id="select2" v-model = "userGender"><label for="select2">여자 </label>
+                </td>
+            </tr>
+            <tr>
+                <td> 닉네임</td>  
+                <td v-if ="nicknameOpen === false"><span @click= "nicknameOpen = true" >입력</span></td>
+                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickName"></td>
+            </tr>
+            <tr>   
+                <td>지역</td>
+                <td v-if ="userFieldOpen === false"> <span @click = "userFieldOpen = true" > 입력</span> </td>
+                <td v-if ="userFieldOpen === true"><input  class="input_long" type="text" v-model ="userField"></td>
+            </tr>
+            <tr>   
+                <td>MBTI</td>  
+                <td><span @click = "mbtiModalOpen = true"> 입력 </span> </td> 
+            </tr>
+            <tr>
+                <td>관심사</td>  
+                <td><span @click = "interestModalOpen = true">입력 </span> </td> 
+            </tr>
+            </table>
+            <button id = "submitbtn" @click.prevent = "submit">가입하기</button>
+            </div>
+                <div class="img_2">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div>
@@ -53,8 +55,8 @@
      </SelectMbtiModal>
     </div>
     <div>
-     <SelectInterestModal v-if="interestModalOpen == true"  v-click-outside="interestmodalclose">
-     </SelectInterestModal>
+        <SelectInterestModal v-if="interestModalOpen == true"  v-click-outside="interestmodalclose">
+        </SelectInterestModal>
     </div>
 </template>
 
@@ -135,31 +137,41 @@ export default {
 </script>
 
 <style scoped>
+
 .signupdetail{
-    width : 100vw;
-    height : 100vh;
     display: flex;
     background-color: rgba(22, 22, 22, 22);
+    min-height: 100vh;
+    min-width : 1000px;
+    justify-content: center;
 }
 table{
-   padding : 0px;
-   border-spacing: 0px;
-   border-collapse: separate;
+    width: 450px;
 }
-td{
+tr{
+
+    width:100px;
+    height: 70px;
+    border-bottom: #777 solid 1px;
+    border-top:#777 solid 1px ;
     font :bold;
-    color : #FFFA85;
+    color : rgb(211, 222, 120);
 }
-#inputdetail{
-    padding-top : 6%;
-    padding-left : 20%;
+
+.inputdetail{
+    display: flex;
+    justify-content: center;
+    padding-top : 100px;
     font-weight: bold;
     color : white;
 }
-#img{
-  padding-top : 100px;
-  padding-left : 250px; 
+.inner_box{
+    width: 1400px;
+    height: 100vh;
+    border-left: #ffffff solid 1px;
+    border-right: #ffffff solid 1px ;
 }
+
 #submitbtn{
     text-size-adjust: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -170,7 +182,7 @@ td{
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
     display: block;
-    width: 25vw;
+    width: 450px;
     height: 50px;
     padding-bottom: 1px;
     border-radius: 10px;
@@ -185,5 +197,67 @@ td{
 span{
     cursor:pointer;
 }
+.select {
+    padding: 0px;
+    
+}
+.select input[type=radio]{
+    display: none;
+}
+.select input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 90px;
+    border: 1px solid #333;
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
+}
+.select input[type=radio]+label{
+    background-color: #fff;
+    color: #777;
+}
+.select input[type=radio]:checked+label{
+    background-color: #333;
+    color: #fff;
+}
 
+.img_2{
+  height: 586px;
+  width: 439px;
+  overflow: hidden;
+  margin:0;
+  margin-top:100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image:linear-gradient(
+    rgba(0, 0, 0, 0),
+        rgba(255, 255, 255, 0)
+      ), url("@/assets/img.png");
+}
+
+.signup_table{
+    float:left;
+}
+.block-div{
+    display: flex;
+    justify-content: space-around;
+}
+/* .input_long{
+    width:90%;
+} */
+input[type=text] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  height: 8px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid red;
+  background-color: rgba(22, 22, 22, 22);
+  color:white;
+}
 </style>
