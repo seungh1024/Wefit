@@ -1,5 +1,9 @@
 package com.ssafy.backend.service;
 
+import com.ssafy.backend.entity.Mbti;
+import com.ssafy.backend.entity.User;
+import com.ssafy.backend.entity.UserDetail;
+import com.ssafy.backend.util.MatchingUtil;
 import io.openvidu.java.client.*;
 import lombok.AllArgsConstructor;
 import org.json.simple.JSONObject;
@@ -15,7 +19,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-@AllArgsConstructor
 public class OpenviduService {
     private OpenVidu openVidu;
     // 사용중인 세션 관리 객체 (세션 이름, 세션 토큰 쌍)
@@ -30,19 +33,25 @@ public class OpenviduService {
     // openvidu secret
     private String SECRET;
 
-    private Queue<String> matchingQueue;
+//    private Queue<String> matchingQueue;
+
+    public static Map<String, Map<String, List<String>>> matchingQueue = new HashMap<>();
 
     private SimpMessagingTemplate messagingTemplate;
-    public OpenviduService(){
-    };
+    private UserDetailService userDetailService;
 
+    private HateMbtiService hateMbtiService;
+
+    public OpenviduService(){};
     //생성자
-    public OpenviduService(String secret, String openviduUrl, SimpMessagingTemplate messagingTemplate) {
+    public OpenviduService(String secret, String openviduUrl, SimpMessagingTemplate messagingTemplate, UserDetailService userDetailService, HateMbtiService hateMbtiService) {
         this.SECRET = secret;
         this.OPENVIDU_URL = openviduUrl;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
-        this.matchingQueue = new LinkedList<>();
+//        this.matchingQueue = new LinkedList<>();
         this.messagingTemplate = messagingTemplate;
+        this.userDetailService = userDetailService;
+        this.hateMbtiService = hateMbtiService;
     }
 
     //Openvidu connection Properties 생성
@@ -152,7 +161,6 @@ public class OpenviduService {
                 System.out.println("Problems in the app server: the TOKEN wasn't valid");
                 return HttpStatus.INTERNAL_SERVER_ERROR;
             }
-
         } else {
             // The SESSION does not exist
             System.out.println("Problems in the app server: the SESSION does not exist");
@@ -205,39 +213,7 @@ public class OpenviduService {
         return thebuffer.toString();
     }
 
-    // 매칭 리스트에 사람 추가
-    public void appendMatchingList(String userEmail){
-        matchingQueue.offer(userEmail);
-        matchingAlgo();
-    }
-
-    // 매칭 알고리즘 돌리기
-    public int matchingAlgo(){
-        if (matchingQueue.size()>=2){
-            String roomCreator = matchingQueue.poll();
-            String roomAttendant = matchingQueue.poll();
-
-            System.out.println(roomCreator + " " + roomAttendant);
-
-            JSONObject objCreator = createSession(roomCreator);
-
-            JSONObject objAttendant = joinSession((String) objCreator.get("sessionName"), roomAttendant);
-
-            completeMatchingMessage(roomCreator, objCreator);
-            completeMatchingMessage(roomAttendant, objAttendant);
-            return 1;
-        }
-        return 0;
-    }
-
-    // 매칭된 대상에게 메시지 날리기 (/sub/유저이메일 로 연결된 소켓에 메시지 보냄)
-    public void completeMatchingMessage(String userEmail, JSONObject obj){
-        System.out.println(messagingTemplate);
-        messagingTemplate.convertAndSend("/sub/matching/" + userEmail, obj);
-    }
-
     public JSONObject getRoomInfo(){
-
         List<Map<String, Integer>> roomInfo = new ArrayList<>();
         JSONObject responseJson = new JSONObject();
         int idx = 0;
@@ -250,4 +226,94 @@ public class OpenviduService {
 
         return responseJson;
     }
+
+
+
+
+    // 매칭 리스트에 사람 추가
+//    public void appendMatchingList(String userEmail){
+//        matchingQueue.offer(userEmail);
+//        matchingAlgo();
+//    }
+//
+//    // 매칭 알고리즘 돌리기
+//    public int matchingAlgo(){
+//        if (matchingQueue.size()>=2){
+//            String roomCreator = matchingQueue.poll();
+//            String roomAttendant = matchingQueue.poll();
+//
+//            System.out.println(roomCreator + " " + roomAttendant);
+//
+//            JSONObject objCreator = createSession(roomCreator);
+//
+//            JSONObject objAttendant = joinSession((String) objCreator.get("sessionName"), roomAttendant);
+//
+//            completeMatchingMessage(roomCreator, objCreator);
+//            completeMatchingMessage(roomAttendant, objAttendant);
+//            return 1;
+//        }
+//        return 0;
+//    }
+
+    // TODO: 2022-08-09 매칭 알고리즘 수정중
+    public void appendMatchingList(String userEmail){
+        System.out.println("append 1 ------- " + userEmail);
+        // 기본 정보 불러오기
+        List<String> userMBTI = new ArrayList<>();
+        userMBTI.add(userDetailService.getUserDetail(userEmail).getUserMBTI());
+        List<String> userHateMBTI = new ArrayList<>();
+        for (Mbti mbti: hateMbtiService.getUserHateMbtis(userEmail)){
+            userHateMBTI.add(mbti.getMbtiName());
+        }
+        //todo 관심사 정보 사용하기
+//        List<String> userinterest = new ArrayList<>();
+//        for (Mbti mbti: hateMbtiService.getUserHateMbtis(userEmail)){
+//            userHateMBTI.add(mbti.getMbtiName());
+//        }
+        // 기본 정보 map에 저장
+        Map<String, List<String>> userInfo = new ConcurrentHashMap<>();
+        userInfo.put("userMBTI", userMBTI);
+        userInfo.put("userHateMBTI", userHateMBTI);
+//        userInfo.put("userinterest", userMBTI);
+//        //최종 대기열에 추가
+        matchingQueue.put(userEmail, userInfo);
+
+        matchingAlgo(userEmail);
+    }
+
+    public int matchingAlgo(String userEmail){
+        String myMbti = userDetailService.getUserDetail(userEmail).getUserMBTI();
+        List<String> myHateMBTI = new ArrayList<>();
+        for (Mbti mbti: hateMbtiService.getUserHateMbtis(userEmail)){
+            myHateMBTI.add(mbti.getMbtiName());
+        }
+        Runnable r = new MatchingUtil(userEmail, myMbti, myHateMBTI, SECRET, OPENVIDU_URL, hateMbtiService, userDetailService, messagingTemplate);
+        new Thread(r).start();
+
+        return 1;
+    }
+
+    // TODO: 2022-08-09 매칭 완료 후 방 생성 함수
+    public void matchingEnd(String userEmail1, String userEmail2){
+        System.out.println(userEmail1 + " " + userEmail2);
+
+        JSONObject objCreator = createSession(userEmail1);
+        JSONObject objAttendant = joinSession((String) objCreator.get("sessionName"), userEmail2);
+
+        completeMatchingMessage(userEmail1, objCreator);
+        completeMatchingMessage(userEmail2, objAttendant);
+    }
+
+    // -----------
+
+    // 매칭된 대상에게 메시지 날리기 (/sub/유저이메일 로 연결된 소켓에 메시지 보냄)
+    public void completeMatchingMessage(String userEmail, JSONObject obj){
+        System.out.println(messagingTemplate);
+        messagingTemplate.convertAndSend("/sub/matching/" + userEmail, obj);
+    }
+
+
+
+
+
 }

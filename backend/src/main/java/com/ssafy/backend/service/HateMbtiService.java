@@ -43,15 +43,14 @@ public class HateMbtiService {
 
         Long result = hateMbtiCustomRepositoryImpl.deleteUserHateMbti(userDetail.getUserDetailId());
      //   List<HateMbti> userHateMbtiList = new ArrayList<>();
-
         for(Mbti m : hateMbtiList){
+
             HateMbti temp = new HateMbti();
             temp.setUserDetail(userDetail);
             temp.setMbtiName(m);
           //  userHateMbtiList.add(temp);
             hatembtiRepository.save(temp);
             hatembtiRepository.refresh(temp);
-
         }
 
         return result;

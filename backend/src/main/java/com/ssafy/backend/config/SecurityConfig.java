@@ -71,6 +71,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
+                        "/favicon.ico",
+                        "/api/v1/login",
+                        "/api/v1/user/**",
+                        "/api/v1/re-issue",
+                        "/api/v1/user-info/**",
+                        "/api/v1/social/googleSignup",
+                        "/api/v1/social/googleLogin",
+                        "/api/v1/mbti/**",
+                        "/api/v1/like/**",
+                        "/api/v1/password",
+                        "/api/v1/user-singo/**",
+                        "/api/v1/check/**",
+                        "/api/vi/matching"
+
                 );
     }
 
@@ -113,7 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 ).permitAll()
 
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider, firebaseAuth, customUserDetailsService));

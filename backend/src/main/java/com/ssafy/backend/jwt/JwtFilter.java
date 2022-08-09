@@ -40,13 +40,15 @@ public class JwtFilter extends GenericFilterBean {
         System.out.println(" ------ firebase start ------- ");
         try {
             FirebaseToken decodedToken;
-            String header = RequestUtil.getAuthorizationToken(httpServletRequest.getHeader("Authorization"));
-            if (header == null){
+            if (httpServletRequest.getHeader("Authorization") == null){
                 throw new Exception();
             }
+            String header = RequestUtil.getAuthorizationToken(httpServletRequest.getHeader("Authorization"));
+
             decodedToken = firebaseAuth.verifyIdToken(header); // 토큰 decode
             System.out.println(decodedToken);
-            // TODO: 2022-08-05 이거 문제 해결하기.. 
+
+            // TODO: 2022-08-05 이거 문제 해결하기..
 //            Authentication authentication = tokenProvider.getAuthentication(decodedToken.toString()); // 토큰의 인증 정보 가져오기
 //            SecurityContextHolder.getContext().setAuthentication(authentication); // 토큰 인증 정보를 security context에 저장
             

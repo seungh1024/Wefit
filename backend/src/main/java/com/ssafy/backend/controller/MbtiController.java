@@ -49,12 +49,14 @@ public class MbtiController {
     @PostMapping("/mbti/{username}")
     public ResponseEntity<?> updateUserHateMbtiInfo(@PathVariable("username") String username, @RequestBody List<Mbti> hateMbtiList){
 
+
         User user = userRepository.findUserByUserEmail(username);
         if(user == null){
             return ResponseEntity.ok(new ErrorDto(401,"존재하지 않는 회원입니다"));
         }else{
             return new ResponseEntity<>(hateMbtiService.updateUserHateMbti(username,hateMbtiList), HttpStatus.OK);
         }
+
 
     }
 }
