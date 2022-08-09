@@ -71,18 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
-                        "/favicon.ico",
-                        "/api/v1/login",
-                        "/api/v1/user/**",
-                        "/api/v1/re-issue",
-                        "/api/v1/user-info/**",
-                        "/api/v1/social/googleSignup",
-                        "/api/v1/social/googleLogin",
-                        "/api/v1/mbti/**",
-                        "/api/v1/like/**",
-                        "/api/v1/password",
-                        "/api/v1/user-singo/**",
-                        "/api/v1/check/**"
                 );
     }
 
@@ -110,9 +98,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/login").permitAll()
-                .antMatchers("/api/v1/user/**").permitAll()
-                .antMatchers("/api/v1/re-issue").permitAll()
+                .antMatchers(
+                        "/api/v1/login",
+                        "/api/v1/user/**",
+                        "/api/v1/re-issue"
+//                        "/api/v1/user-info/**",
+//                        "/api/v1/social/googleSignup",
+//                        "/api/v1/social/googleLogin",
+//                        "/api/v1/mbti/**",
+//                        "/api/v1/like/**",
+//                        "/api/v1/password",
+//                        "/api/v1/user-singo/**",
+//                        "/api/v1/check/**"
+                ).permitAll()
 
                 .anyRequest().authenticated()
 
