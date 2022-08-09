@@ -32,15 +32,15 @@ public class HateMbtiService {
     public List<Mbti> getUserHateMbtis(String userEmail){
         User user = userRepository.findUserByUserEmail(userEmail);
         UserDetail userDetail = userDetailRepository.findUserDetailByUser(user);
-
-
         return hateMbtiCustomRepositoryImpl.getUserHateMbtisByUserDetailId(userDetail.getUserDetailId());
+
     }
 
     @Transactional
     public Object updateUserHateMbti(String userEmail, List<Mbti> hateMbtiList) {
         User user = userRepository.findUserByUserEmail(userEmail);
         UserDetail userDetail = userDetailRepository.findUserDetailByUser(user);
+
         Long result = hateMbtiCustomRepositoryImpl.deleteUserHateMbti(userDetail.getUserDetailId());
      //   List<HateMbti> userHateMbtiList = new ArrayList<>();
         for(Mbti m : hateMbtiList){

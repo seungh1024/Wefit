@@ -124,6 +124,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/api/v1/password",
 //                        "/api/v1/user-singo/**",
 //                        "/api/v1/check/**"
+
                 ).permitAll()
 
                 .anyRequest().permitAll()
