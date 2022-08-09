@@ -48,10 +48,15 @@ public class UserDetail {
     @Column(name = "user_singo_count")
     private int userSingoCount;
 
+
+    @Column(name = "user_MBTI")
+    private String userMBTI;
+
     @Column(name = "user_temp_pwd")
     private String userTempPwd;
 
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;
+
 }

@@ -21,6 +21,8 @@ public class UserDetailDto {
     private boolean userIsDeleted;
     private Date userCreated;
     private int userSingoCount;
+    private String userMBTI;
     private String userTempPwd;
+
     private long userId;
 }
