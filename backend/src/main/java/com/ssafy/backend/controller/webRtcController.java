@@ -1,6 +1,8 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.service.HateMbtiService;
 import com.ssafy.backend.service.OpenviduService;
+import com.ssafy.backend.service.UserDetailService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -17,14 +19,17 @@ import java.util.Map;
 public class webRtcController {
 
     private final OpenviduService openviduService;
-
+    private final HateMbtiService hateMbtiService;
+    private final UserDetailService userDetailService;
     @Autowired
     private final SimpMessagingTemplate  messagingTemplate;
 
     //생성자
-    public webRtcController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl, SimpMessagingTemplate  messagingTemplate) {
+    public webRtcController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl, HateMbtiService hateMbtiService, UserDetailService userDetailService, SimpMessagingTemplate  messagingTemplate) {
+        this.hateMbtiService = hateMbtiService;
+        this.userDetailService = userDetailService;
         this.messagingTemplate = messagingTemplate;
-        openviduService = new OpenviduService(secret, openviduUrl, messagingTemplate);
+        this.openviduService = new OpenviduService(secret, openviduUrl, messagingTemplate, userDetailService, hateMbtiService);
     }
 
     @PostMapping("/api/v1/getToken")
@@ -85,13 +90,14 @@ public class webRtcController {
     // 방 매칭 요청
     @PostMapping("/api/v1/matching")
     public String matching(@RequestBody Map<String, String> data) {
+        System.out.println("controller 1 ---");
         String userEmail = data.get("userEmail");
         // 해당 이메일을 가지는 사용자의 MBTI 가져오기
         // String mbti =
-
+        System.out.println("controller 2 ---");
         // 매칭 테이블에 해당 이메일, mbti 저장 (매칭 대기 map =>  유저이메일 : mbti)
         openviduService.appendMatchingList(userEmail);
-
+        System.out.println("controller 3 ---");
         return "매칭을 시작합니다.";
     }
 

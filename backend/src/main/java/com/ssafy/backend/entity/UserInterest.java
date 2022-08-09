@@ -23,8 +23,6 @@ public class UserInterest {
     @JoinColumn(name= "interest_name")
     private Interest interest;
 
-
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_detail_id")
     private UserDetail userDetail;

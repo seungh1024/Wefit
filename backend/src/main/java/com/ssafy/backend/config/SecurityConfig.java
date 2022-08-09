@@ -82,7 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/like/**",
                         "/api/v1/password",
                         "/api/v1/user-singo/**",
-                        "/api/v1/check/**"
+                        "/api/v1/check/**",
+                        "/api/vi/matching"
                 );
     }
 
@@ -114,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/user/**").permitAll()
                 .antMatchers("/api/v1/re-issue").permitAll()
 
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider, firebaseAuth, customUserDetailsService));

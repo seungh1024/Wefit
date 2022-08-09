@@ -39,6 +39,5 @@ public class MbtiController {
     public ResponseEntity<?> updateUserHateMbtiInfo(@PathVariable("username") String username, @RequestBody List<Mbti> hateMbtiList){
 
         return new ResponseEntity<>(hateMbtiService.updateUserHateMbti(username,hateMbtiList), HttpStatus.OK);
-
     }
 }
