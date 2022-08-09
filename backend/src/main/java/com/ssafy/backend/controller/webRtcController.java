@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/v1/webrtc")
 public class webRtcController {
-
     private final OpenviduService openviduService;
     private final HateMbtiService hateMbtiService;
     private final UserDetailService userDetailService;
@@ -32,7 +32,7 @@ public class webRtcController {
         this.openviduService = new OpenviduService(secret, openviduUrl, messagingTemplate, userDetailService, hateMbtiService);
     }
 
-    @PostMapping("/api/v1/getToken")
+    @PostMapping("/getToken")
     public ResponseEntity<JSONObject> getToken(@RequestBody Map<String, String> data) throws ParseException {
         String sessionName = data.get("sessionName");
         String userEmail = data.get("userEmail");
@@ -42,7 +42,7 @@ public class webRtcController {
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/getRoomInfo")
+    @GetMapping("/getRoomInfo")
     public ResponseEntity<JSONObject> getRoomInfo(){
 
         JSONObject responseJson = openviduService.getRoomInfo();
@@ -50,7 +50,7 @@ public class webRtcController {
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
-    @PostMapping("/api/v1/createSession")
+    @PostMapping("/createSession")
     public ResponseEntity<JSONObject> createSession(@RequestBody Map<String, String> user) throws ParseException {
         //세션에서 세션 정보 받아서 파싱 - 세션 정보 (방의 기준이 됨)
 
@@ -60,7 +60,7 @@ public class webRtcController {
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
 
-    @PostMapping("/api/v1/joinSession")
+    @PostMapping("/joinSession")
     public ResponseEntity<JSONObject> joinSession(@RequestBody Map<String, String> data) throws ParseException {
         String sessionNameParam = data.get("sessionNameParam");
         String userEmail = data.get("userEmail");
@@ -75,7 +75,7 @@ public class webRtcController {
     }
 
     // 방 나가기
-    @RequestMapping(value = "/api/v1/exitRoom", method = RequestMethod.POST)
+    @RequestMapping(value = "/exitRoom", method = RequestMethod.POST)
     public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken)
             throws Exception {
         // Retrieve the params from BODY
@@ -88,7 +88,7 @@ public class webRtcController {
     }
 
     // 방 매칭 요청
-    @PostMapping("/api/v1/matching")
+    @PostMapping("/matching")
     public String matching(@RequestBody Map<String, String> data) {
         System.out.println("controller 1 ---");
         String userEmail = data.get("userEmail");
@@ -101,7 +101,7 @@ public class webRtcController {
         return "매칭을 시작합니다.";
     }
 
-    @GetMapping("/api/v1/roomInfo")
+    @GetMapping("/roomInfo")
     public String roomInfo(){
 
         return "ddd";
