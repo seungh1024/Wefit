@@ -84,7 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/user-singo/**",
                         "/api/v1/check/**",
                         "/api/vi/matching"
-
                 );
     }
 
