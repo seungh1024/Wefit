@@ -3,6 +3,7 @@ package com.ssafy.backend.controller;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.ssafy.backend.dto.ErrorDto;
 import com.ssafy.backend.dto.TokenDto;
 import com.ssafy.backend.entity.User;
 import com.ssafy.backend.jwt.JwtFilter;
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/v1/social")
 public class SocialController {
 
     private final FirebaseAuth firebaseAuth;
@@ -36,21 +38,19 @@ public class SocialController {
         this.redisService = redisService;
     }
 
-    @PostMapping("/api/v1/social/googleLogin")
-    public ResponseEntity<TokenDto> authorize(@RequestHeader("Authorization") String authorization) {
+    @PostMapping("/googleLogin")
+    public ResponseEntity<?> authorize(@RequestHeader("Authorization") String authorization) {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken;
         try {
             String token = RequestUtil.getAuthorizationToken(authorization);
             decodedToken = firebaseAuth.verifyIdToken(token);
         } catch (IllegalArgumentException | FirebaseAuthException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
+            return new ResponseEntity<ErrorDto>(new ErrorDto(401, e.getMessage()),HttpStatus.UNAUTHORIZED);
         }
 
         // authentication 얻기
         Authentication authentication = tokenProvider.createAuthenticate(decodedToken.getEmail(), decodedToken.getEmail());
-        System.out.println("authorization" + authorization);
         // access token, refresh token 만들기 0726
         String accessToken = tokenService.createAccessToken(authentication);
         String refreshToken = tokenService.createRefreshToken(authentication);
@@ -64,19 +64,17 @@ public class SocialController {
         return new ResponseEntity<>(new TokenDto(accessToken, refreshToken), httpHeaders, HttpStatus.OK);
     }
 
-    @PostMapping("/api/v1/social/googleSignup")
-    public ResponseEntity<User> googleSignUp(@RequestHeader("Authorization") String authorization){
+    @PostMapping("/googleSignup")
+    public ResponseEntity<?> googleSignUp(@RequestHeader("Authorization") String authorization){
         // TOKEN을 가져온다.
         FirebaseToken decodedToken;
         try {
             String token = RequestUtil.getAuthorizationToken(authorization);
             decodedToken = firebaseAuth.verifyIdToken(token);
         } catch (IllegalArgumentException | FirebaseAuthException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
+            return new ResponseEntity<ErrorDto>(new ErrorDto(401, e.getMessage()),HttpStatus.UNAUTHORIZED);
         }
 
         return ResponseEntity.ok(socialService.signup(decodedToken.getEmail()));
     }
-
 }
