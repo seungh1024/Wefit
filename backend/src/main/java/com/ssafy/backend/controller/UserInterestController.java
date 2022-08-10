@@ -44,8 +44,5 @@ public class UserInterestController {
         }else{
             return new ResponseEntity<>(userInterestService.updateUserInterest(username,interestList), HttpStatus.OK);
         }
-
     }
-
-
 }

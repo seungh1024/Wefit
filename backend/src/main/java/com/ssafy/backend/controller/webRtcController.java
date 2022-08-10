@@ -32,36 +32,21 @@ public class webRtcController {
         this.openviduService = new OpenviduService(secret, openviduUrl, messagingTemplate, userDetailService, hateMbtiService);
     }
 
-    @PostMapping("/getToken")
-    public ResponseEntity<JSONObject> getToken(@RequestBody Map<String, String> data) throws ParseException {
-        String sessionName = data.get("sessionName");
-        String userEmail = data.get("userEmail");
-
-        JSONObject responseJson = openviduService.joinSession(sessionName, userEmail);
-
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
-    }
-
+    // TODO: 2022-08-10 아래 주석 컨트롤러 처리하기
     @GetMapping("/getRoomInfo")
-    public ResponseEntity<JSONObject> getRoomInfo(){
-
-        JSONObject responseJson = openviduService.getRoomInfo();
-
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+    public ResponseEntity<?> getRoomInfo(){
+        return openviduService.getRoomInfo();
     }
 
     @PostMapping("/createSession")
-    public ResponseEntity<JSONObject> createSession(@RequestBody Map<String, String> user) throws ParseException {
+    public ResponseEntity<?> createSession(@RequestBody Map<String, String> user) throws ParseException {
         //세션에서 세션 정보 받아서 파싱 - 세션 정보 (방의 기준이 됨)
-
         String userEmail = user.get("userEmail");
-        JSONObject responseJson = openviduService.createSession(userEmail);
-
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        return  openviduService.getcreateSession(userEmail);
     }
 
     @PostMapping("/joinSession")
-    public ResponseEntity<JSONObject> joinSession(@RequestBody Map<String, String> data) throws ParseException {
+    public ResponseEntity<?> joinSession(@RequestBody Map<String, String> data) throws ParseException {
         String sessionNameParam = data.get("sessionNameParam");
         String userEmail = data.get("userEmail");
 
@@ -69,14 +54,12 @@ public class webRtcController {
         JSONObject sessionJSON = (JSONObject) new JSONParser().parse(sessionNameParam);
         String sessionName = (String) sessionJSON.get("sessionNameParam");
 
-        JSONObject responseJson = openviduService.joinSession(sessionName, userEmail);
-
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        return openviduService.getJoinSession(sessionName, userEmail);
     }
 
     // 방 나가기
     @RequestMapping(value = "/exitRoom", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken)
+    public ResponseEntity<?> removeUser(@RequestBody String sessionNameToken)
             throws Exception {
         // Retrieve the params from BODY
         // 받은 데이터 파싱 작업
@@ -84,27 +67,26 @@ public class webRtcController {
         String sessionName = (String) sessionNameTokenJSON.get("sessionName");
         String token = (String) sessionNameTokenJSON.get("token");
 
-        return new ResponseEntity<>(openviduService.exitSession(sessionName, token));
+        return openviduService.exitSession(sessionName, token);
     }
 
     // 방 매칭 요청
     @PostMapping("/matching")
-    public String matching(@RequestBody Map<String, String> data) {
-        System.out.println("controller 1 ---");
+    public ResponseEntity<?> matching(@RequestBody Map<String, String> data) {
         String userEmail = data.get("userEmail");
         // 해당 이메일을 가지는 사용자의 MBTI 가져오기
         // String mbti =
-        System.out.println("controller 2 ---");
         // 매칭 테이블에 해당 이메일, mbti 저장 (매칭 대기 map =>  유저이메일 : mbti)
-        openviduService.appendMatchingList(userEmail);
-        System.out.println("controller 3 ---");
-        return "매칭을 시작합니다.";
+        return openviduService.appendMatchingList(userEmail);
     }
 
-    @GetMapping("/roomInfo")
-    public String roomInfo(){
-
-        return "ddd";
+    @PostMapping("/exitMatching")
+    public ResponseEntity<?> exitMatching(@RequestBody Map<String, String> data) {
+        String userEmail = data.get("userEmail");
+        // 해당 이메일을 가지는 사용자의 MBTI 가져오기
+        // String mbti =
+        // 매칭 테이블에 해당 이메일, mbti 저장 (매칭 대기 map =>  유저이메일 : mbti)
+        return openviduService.exitMatching(userEmail);
     }
 
     private ResponseEntity<JSONObject> getErrorResponse(Exception e) {
