@@ -11,6 +11,11 @@ export default {
     // logout: () => HOST + 'logout/',
     signup: () => HOST  + 'user',
     userInfo: () => HOST + 'user-info/',
+    doubleCheck: () => HOST +'email/',
+    socialSignup:() => HOST + 'social/googleSignup',
+    socialLogin: () => HOST + 'social/googleLogin',
+    logout: () =>HOST + 'logout',
+    like: () => HOST + 'like/',
     // Token 으로 현재 user 판단
     // currentUserInfo: () => HOST + ACCOUNTS + 'user/',
     // // username으로 프로필 제공

@@ -86,7 +86,7 @@ export default{
         },
     selectmbti(){
       let mbti = this.checkedValues[0];
-      this.$emit("selectmbti",mbti);
+      this.$emit("selectmbti", mbti);
     }    
   }
 };

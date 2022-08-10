@@ -35,11 +35,18 @@
             </tr>
             <tr>   
                 <td>MBTI</td>  
-                <td><span @click = "mbtiModalOpen = true"> 입력 </span> </td> 
+                <td><span @click = "mbtiModalOpen = true"> 입력 </span> </td>
+                <td v-if ="userMBTI !== ''">{{userMBTI}}</td> 
+            </tr>
+            <tr>
+                <td>전화번호</td>  
+                <td><span @click = "phoneOpen = true"> 입력 </span> </td>
+                <td v-if ="phoneOpen === true"><input class="input_long" type="text" v-model ="userPhone"></td>
             </tr>
             <tr>
                 <td>관심사</td>  
-                <td><span @click = "interestModalOpen = true">입력 </span> </td> 
+                <td><span @click = "interestModalOpen = true">입력 </span> </td>
+                <td v-if ="userInterestList != []">{{userInterestList}}</td> 
             </tr>
             </table>
             <button id = "submitbtn" @click.prevent = "submit">가입하기</button>
@@ -55,7 +62,7 @@
      </SelectMbtiModal>
     </div>
     <div>
-        <SelectInterestModal v-if="interestModalOpen == true"  v-click-outside="interestmodalclose">
+        <SelectInterestModal v-if="interestModalOpen == true" v-model = "userInterestList"  v-click-outside="interestmodalclose" v-on:SelectInterest = "SelectInterest">
         </SelectInterestModal>
     </div>
 </template>
@@ -90,6 +97,7 @@ export default {
         nameOpen: false,
         nicknameOpen: false,
         userFieldOpen: false,
+        phoneOpen:false,
     }
     },
     computed: {
@@ -99,7 +107,7 @@ export default {
      submit(){
         const userDetailData = {
         "userEmail" : this.$store.getters.getUserEmail,
-        "userMBTI": this.userMbti,
+        "userMBTI": this.userMBTI,
         "userGender": this.userGender,
         "userNickname" : this.userNickName,
         "userName": this.userName,
@@ -107,7 +115,8 @@ export default {
         "userPhone": this.userPhone,   
       }
        console.log(userDetailData);
-       this.$store.dispatch('signupdetail', userDetailData);
+       const userInterestList = this.userInterestList
+       this.$store.dispatch('signupdetail', userDetailData, userInterestList);
        //잘되는듯?
      },
     mbtimodalclose(event){
@@ -120,15 +129,14 @@ export default {
     },
     selectmbti(value){
         this.mbtiModalOpen = false;
-        this.userMbti =value;
-        console.log(this.userMbti);
+        this.userMBTI = value;
+        console.log(this.userMBTI);
         //일단 이건 잘돌아감 mbti 모달에서 데이터 잘 받음
     },
     SelectInterest(value){
         this.interestModalOpen = false;
-        this.userInterestList = value; 
-        //이부분은 mbti 모달에서 쓴 그대로 쓰면되는데 아직 페이지네이션 구현 덜함...
-        //interest모달만 조금 건드리면될듯  
+        this.userInterestList = value;
+        console.log(this.userInterestList) 
     },
     },
 

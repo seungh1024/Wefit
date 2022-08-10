@@ -8,6 +8,7 @@ export default {
     refreshToken: '',
     currentUser: {},
     userEmail : '',
+    userEmailCheck : true,
     user :{
       userMbti   : '',
       userGender : '', 
@@ -23,6 +24,8 @@ export default {
     currentUser: state => state.currentUser,
     authError: state => state.authError,
     getUserEmail: state => state.userEmail,
+    userEmailCheck: state => state.userEmailCheck,
+    getAccessoken: state => state.accessToken
   },
   mutations: {
   Login(state) {
@@ -32,7 +35,8 @@ export default {
     SET_REFRESHTOKEN: (state, refreshToken) => state.refreshToken = refreshToken,
     SET_CURRENT_USER: (state, user) => state.currentUser = user,
     SET_AUTH_ERROR: (state, error) => state.authError = error,
-    SET_USEREMAIL: (state, userEmail) => state.userEmail = userEmail
+    SET_USEREMAIL: (state, userEmail) => state.userEmail = userEmail,
+    SET_DOUBLE_CHECK: (state, userEmailCheck) => state.userEmailCheck = userEmailCheck,
   },
   actions: {
     saveToken({ commit }, token) {
@@ -66,17 +70,25 @@ export default {
               commit('SET_AUTH_ERROR', err)
             })
     },
-    socialLogin({ } , socialLoginData){
+    socialLogin({ commit, dispatch } , user){
       axios({
         url: drf.accounts.socialLogin(),
         method: 'post',
-        data: socialLoginData
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        },
       })
         .then(res => {
-          const token = res.data.token        
-          dispatch('saveToken', token)
-          dispatch('fetchCurrentUser')
-          router.push({ name: 'HomeView' })
+          console.log(res.data)
+          commit('SET_CURRENT_USER',user.userEmail)
+          if( this.$store.actions.getUserInfo().userField ==''){
+            router.push({name : 'signupdetail'})
+          }
+          else{
+            dispatch('saveToken', res.data.token)
+            dispatch('saveToken', res.data.refreshToken)
+            router.push({ name: 'LoginHome' })
+          }
         })
         .catch(err => {
           console.log(err)
@@ -93,51 +105,85 @@ export default {
         .then(  res =>
           console.log(res),
           commit('SET_USEREMAIL',userData.userEmail),
-          router.push({name : 'signupdetail', params:{userEmail: userData.userEmail}})
+          router.push({name : 'signupdetail'})
         )
         .catch(err => {
           console.error(err.response.data)
           commit('SET_AUTH_ERROR', err.response.data)
         })
     },
-    signupdetail({ commit }, userDetailData) {
+    doubleCheck({commit}, userEmail){
+      axios({
+        url: drf.accounts.doubleCheck()+ userEmail+'/exists',
+        method: 'GET',
+      })  
+        .then( res => {
+          commit('SET_DOUBLE_CHECK',res.data)
+          console.log(res.data)
+         })
+        .catch(err => {
+          console.error(err.response.data)
+          commit('SET_AUTH_ERROR', err.response.data)
+        })
+    },
+    socialSignup({ commit }, user) {
+      console.log(user)
+      axios({
+        url: drf.accounts.socialSignup(),
+        method: 'post',
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        },
+      })
+        .then(  res => {
+          console.log(res),
+          commit('SET_USEREMAIL',user.email),
+          router.push({name : 'signupdetail'})
+        }
+        )
+        .catch(err => {
+          console.error(err.response.data)
+          commit('SET_AUTH_ERROR', err.response.data)
+        })
+    },
+    signupdetail({ commit }, userDetailData, userInterestList) {
       axios({
         url: drf.accounts.userInfo()+userDetailData.userEmail,
         method: 'post',
         data: userDetailData,
-      })
-        .then( res=> {
+      }).then( res=> {
           console.log(res)
           router.push({ name: 'LoginView'})
           })
         .catch(err => {
-          //console.error(err.response.data)
-          //commit('SET_AUTH_ERROR')
+          console.error(err.res.data)
+          commit('SET_AUTH_ERROR')
         })
     },
-    logout({ dispatch }) {
-      // axios({
-      //   url: drf.accounts.logout(),
-      //   method: 'post',
-      //   headers: getters.authHeader,
-      // })
-        // .then(() => {
+    logout({ dispatch, state }) {
+       axios({
+       url: drf.accounts.logout(),
+         method: 'GET',
+         headers: {
+          Authorization: `Bearer ${state.accessToken}`
+        },
+       })
+       .then(() => {
           dispatch('removeToken')
           alert('성공적으로 logout!')
-          router.push({ name: 'LoginView' })
-        // })
-        // .error(err => {
-        //   console.error(err.response)
-        // })
+          router.push({ name: 'NonLoginView' })
+         })
+         .error(err => {
+           console.error(err.response)
+        })
     },
-    getUserInfo() {
-      //잘됨
+    getUserInfo({ commit, state}){
       axios({
-        url: drf.accounts.userInfo()+`${state.user.userEmail}`,
+        url: drf.accounts.userInfo() + state.userEmail,
         method: 'GET',
       }).then(  res =>
           console.log(res),
-          // 보낼 곳은 프로파일 뷰?
+          //어디서 쓸건가요?
         )
         .catch(err => {
           console.error(err.response.data)

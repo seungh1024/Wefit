@@ -74,13 +74,10 @@ export default {
 		const auth = getAuth();
     signInWithPopup(auth, provider).then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    
     // The signed-in user info.
-    const user = result.user;
-		console.log(user);
-		this.$store.dispatch('socialLogin', socialLoginData)
+    //const user = result.user;
+		//console.log(token);
+		this.$store.dispatch('socialLogin', result.user)
 		
     // ...
      }).catch((error) => {
@@ -94,40 +91,7 @@ export default {
     // ...
      });
 	},
-	// kakaoLogin(){
-	//  Kakao.isInitialized();
-	//  window.Kakao.Auth.authorize({
-  //    redirectUri: 'http://localhost:8080/kakaocallback'
-  //    });
-
-	 
-	 
-   
-
-	 /*
-	 Kakao.Auth.login({	
-      success: function (response) {
-        Kakao.API.request({
-          url: '/v2/user/me',
-          success: function (response) {
-        	  console.log(response)
-          },
-          fail: function (error) {
-            console.log(error)
-          },
-        })
-      },
-      fail: function (error) {
-        console.log(error)
-      },
-    })
-	*/
     },
-
-	// naverLogin(){
-		
-	// }
-
 }
 </script>
 

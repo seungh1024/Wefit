@@ -42,6 +42,7 @@
             <label for="emailInput" id = "emailtext" class = "text">이메일</label>
             </div>
             <input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="이메일을 입력하세요." />
+            <button @click.prevent = "doubleCheck">로그인중복테스트</button>
         <div>
           <div>
 				<label for="passwordInput" id = "passwordtext" class = "text">비밀번호</label>
@@ -54,8 +55,8 @@
 				</div>
 				<input type="password" id="passwordInput" name="userPasswordCheck" class="input_text" ref="passwordInput" v-model.trim="userPasswordCheck" placeholder="패스워드를 확인하세요." />
               </div>
-        <div class="buttons">
-          <button @click.prevent="login" class="button blue" id = "loginbtn">회원가입</button>
+          <div class="buttons">
+          <button @click.prevent="emailSignup" class="button blue" id = "loginbtn">회원가입</button>
           <div class="center_box">
 
           </div>
@@ -80,7 +81,8 @@ export default {
         return {
             userEmail: '',
             userPassword: '',
-            userPasswordCheck:''
+            userPasswordCheck:'',
+            userEmailcheck :this.$store.getters.userEmailCheck,
         }
     },
     computed: {
@@ -89,26 +91,41 @@ export default {
     methods: {
       emailSignup(event) {
       event.preventDefault();
-      if(this.userEmail != '')
+      console.log(this.$store.getters.userEmailCheck)
+      if(this.userEmail != '' && this.$store.getters.userEmailCheck === false)
       {
       const userData = {
         "userEmail": this.userEmail,
         "userPassword": this.userPassword,
       }
-	    if(this.userPassword !='' &&this.userPassword == this.userPasswordCheck)
-	    {
+      if(this.userPassword !='' &&this.userPassword == this.userPasswordCheck)
+      {
          this.$store.dispatch('signup', userData);
-	   	 //this.$router.push('signupdetail');
-	    }
-	    else{
-	  	alert('비밀번호를 확인하세요');
-	     }
       }
       else{
-      alert('아이디를 확인하세요');
+      alert('비밀번호를 확인하세요');
+      }
+      }else{
+      alert('이메일을 확인하세요');
       }
     },
+    check(){
+      const userEmail = this.userEmail;
+      this.$store.dispatch('doubleCheck',userEmail)
+    },
+    async doubleCheck(){
+      await this.check()
+      setTimeout(() => {
+      if(this.$store.getters.userEmailCheck == true){
+        alert("중복된 이메일입니다. ")
+      }
+      else{
+        alert("이용 가능한 이메일입니다.")
+      }
+      }, 100)
     }
+
+  }
 }
 </script>
 <style scoped>
