@@ -77,13 +77,9 @@
           <div class="col-3">
             <div class="card2">
               <!-- 처음 진입시 -->
-              <div v-if="!startTalk && !gameStatus">
+              <div v-if="!talkStatus && !gameStatus">
                 <div class="card-container">
-                  <div
-                    id="carouselExampleIndicators"
-                    class="carousel slide"
-                    data-bs-ride="true"
-                  >
+                  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                       <button
                         type="button"
@@ -99,12 +95,12 @@
                         data-bs-slide-to="1"
                         aria-label="Slide 2"
                       ></button>
-                      <button
+                      <!-- <button
                         type="button"
                         data-bs-target="#carouselExampleIndicators"
                         data-bs-slide-to="2"
                         aria-label="Slide 3"
-                      ></button>
+                      ></button> -->
                     </div>
                     <div class="carousel-inner">
                       <div class="carousel-item active">
@@ -116,7 +112,7 @@
                         <div class="container">
                           <div class="carousel-caption text-center">
                             <h1>대화카드</h1>
-                            <p>당신의 취향에 맞는 친구를 찾아 떠나보아요</p>
+                            <p>대화 카드를 통해 상대방의 목소리를 벗겨보아요</p>
                           </div>
                         </div>
                       </div>
@@ -128,19 +124,14 @@
                         />
                         <div class="container">
                           <div class="carousel-caption text-end">
-                            <h1>방 만들기</h1>
-                            <p>방을 직접 만들어서 친구들과 소통해요</p>
+                            <h1>대화카드</h1>
+                            <p>당신의 일상을 들려주세요</p>
                             <p>
-                              <a class="btn btn-lg btn-outline-light" href="#"
-                                >방 만들기</a
-                              >
+                              <a class="btn btn-lg btn-outline-light" @click="startTalk">카드보기</a>
                             </p>
                           </div>
                         </div>
                       </div>
-                      <button href="#" class="card-link align-self-end">
-                        시작하기
-                      </button>
                       <button
                         class="carousel-control-prev"
                         type="button"
@@ -167,17 +158,86 @@
                       </button>
                     </div>
                   </div>
+                </div>
+              </div>
                   <!-- 시작하기 버튼을 클릭한 후 -->
-                  <div class="card-body" v-if="startTalk && !gameStatus">
-                    <h5 class="card-title">대화카드 주제</h5>
-                    <p class="card-text">
-                      다음 주제를 통해 자신을 소개해 보아요
-                    </p>
-                    <p class="card-text">주제에 대한 설명 주저리주저리</p>
-                    <button href="#" class="card-link">대화 완료</button>
+                  <div class="card-body" v-if="talkStatus && !gameStatus">
+                    <div class="card-container">
+                  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                      <button
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="0"
+                        class="active"
+                        aria-current="true"
+                        aria-label="Slide 1"
+                      ></button>
+                      <button
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="1"
+                        aria-label="Slide 2"
+                      ></button>
+                      <!-- <button
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="2"
+                        aria-label="Slide 3"
+                      ></button> -->
+                    </div>
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img
+                          src="@/assets/talkcard/대화카드1.jpg"
+                          class="d-block w-100"
+                          alt="nonLoginPage.jpg"
+                        />
+                      </div>
+                      <div class="carousel-item">
+                        <img
+                          src="@/assets/talkcard/대화카드2.jpg"
+                          class="d-block w-100"
+                          alt="nonLoginPage.jpg"
+                        />
+                        <div class="container">
+                          <div class="carousel-caption text-end"> 
+                            <p>
+                              <a class="btn btn-lg btn-outline-light" @click="vidControll">게임하러 가기</a>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev"
+                      >
+                        <span
+                          class="carousel-control-prev-icon"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button
+                        class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next"
+                      >
+                        <span
+                          class="carousel-control-next-icon"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
                   </div>
                   <!-- 게임 선택 버튼 -->
-                  <div class="card-body" v-if="!startTalk && gameStatus">
+                  <div class="card-body" v-if="!talkStatus && gameStatus">
                     <h5 class="card-title">게임을 골라주세요!</h5>
                     <button @click="startGame1">
                       <div v-if="!isReadyCatch">캐치마인드</div>
@@ -190,8 +250,6 @@
                   </div>
                   <!-- 캐치마인드 -->
                   <!-- <CatchMind /> -->
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -229,7 +287,9 @@ export default {
       subscribers: [],
       micStatus: false,
       gameStatus: false,
-      startTalk: false,
+      talkStatus: false,
+      vidStatus: false,
+      voiceStatus: true,
 
       mySessionId: "3333",
       myUserName: "3333",
@@ -237,7 +297,9 @@ export default {
       mbtiModalOpen: false,
     };
   },
-  computed: {},
+  computed: {
+
+  },
   created() {
     // this.myUserName = this.getUserInfo.userNickName
     // this.mySessionId = this.getUserInfo.userEmail
@@ -247,6 +309,32 @@ export default {
       this.mbtiModalOpen = false;
       this.userHateMbtitList = value;
     },
+    startTalk(){
+			this.talkStatus=!this.talkStatus;
+			// this.session.signal({
+			// 	data: this.isReadyBal,
+			// 	to:[],
+			// 	type: 'game-start'
+			// })
+      console.log(this.talkStatus)
+		},
+		startGame2(){
+			this.isReadyCat=!this.isReadyCat;
+			this.session.signal({
+				data: this.isReadyCat,
+				to:[],
+				type: 'game-start2'
+			})
+		},
+    vidControll(){
+      this.voiceStatus = !this.voiceStatus;
+			this.vidStatus = !this.vidStatus;
+      this.talkStatus = !this.talkStatus
+      this.gameStatus = !this.gameStatus
+			this.publisher.publishVideo(this.vidStatus);
+      console.log(this.vidStatus)
+		},
+
     joinSession() {
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -304,6 +392,8 @@ export default {
             // --- Publish your stream ---
 
             this.session.publish(this.publisher);
+
+            this.voiceControll();
           })
           .catch((error) => {
             console.log(
@@ -368,89 +458,17 @@ export default {
           console.log(err);
         });
     },
-
-    /**
-     * --------------------------
-     * SERVER-SIDE RESPONSIBILITY
-     * --------------------------
-     * These methods retrieve the mandatory user token from OpenVidu Server.
-     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-     * the API REST, openvidu-java-client or openvidu-node-client):
-     *   1) Initialize a Session in OpenVidu Server    (POST /openvidu/api/sessions)
-     *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
-     *   3) The Connection.token must be consumed in Session.connect() method
-     */
-
-    // getToken(mySessionId) {
-    //   return this.createSession(mySessionId).then((sessionId) =>
-    //     this.createToken(sessionId)
-    //   );
-    // },
-
-    // // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
-    // createSession() {
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .post(
-    //         `${OPENVIDU_SERVER_URL}api/v1/createSession`,
-    //         JSON.stringify({
-    //           // customSessionId: sessionId,
-    //               "userEmail":this.myUserName
-    //         }),
-    //         {
-    //           auth: {
-    //             username: "OPENVIDUAPP",
-    //             password: OPENVIDU_SERVER_SECRET,
-    //           },
-    //         }
-    //       )
-    //       .then((response) =>{
-    //         response.data
-    //         console.log(response.data)
-    //       }
-    //       )
-    //       .then((data) => resolve(data.token))
-    //       .catch((error) => {
-    //         if (error.response.status === 409) {
-    //          // resolve(sessionId);
-    //         } else {
-    //           console.warn(
-    //             `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
-    //           );
-    //           if (
-    //             window.confirm(
-    //               `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-    //             )
-    //           ) {
-    //             location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-    //           }
-    //           reject(error.response);
-    //         }
-    //       });
-    //   });
-    // },
-
-    // // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
-    // createToken(myUserName) {
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .post(
-    //         `${OPENVIDU_SERVER_URL}/api/v1/createSession`,
-    //         {"userEmail":myUserName},
-    //         {
-    //           auth: {
-    //             username: "OPENVIDUAPP",
-    //             password: OPENVIDU_SERVER_SECRET,
-    //           },
-    //         }
-    //       )
-    //       .then((response) => {response.data;
-    //       console.log("createSessionData", response.data);
-    //       })
-    //       .then((data) => resolve(data.token))
-    //       .catch((error) => reject(error.response));
-    //   });
-    // },
+  voiceControll(){
+			// this.voiceStatus=!this.voiceStatus;
+			let pitchs = ['0.76', '0.77', '0.78', '0.79', '0.80', '1.3', '1.4', '1.5', '1.6', '1.7']
+            let pitch = pitchs[8]
+			if(this.voiceStatus){
+				this.publisher.stream.applyFilter("GStreamerFilter", {"command": `pitch pitch=${pitch}`});
+			}
+			else{
+				this.publisher.stream.removeFilter();
+			}
+		},
   },
 };
 </script>
