@@ -27,7 +27,7 @@ public class OpenviduService {
     private Map<String, Session> mapSessions = new HashMap<>();
     // 세션이름 ,세션 토큰, 유저 이메일
     private Map<String, Map<String, String>> mapSessionNamesTokensRand = new HashMap<>();
-    // 세션이름 ,세션 토큰, 유저 이메일
+    // 세션이름 <세션 토큰, 유저 이메일>
     private Map<String, Map<String, String>> mapSessionNamesTokens = new HashMap<>();
     // 유저 이름, <세션이름, 세션토큰>
     private Map<String, Map<String, String>> mapUserSession = new HashMap<>();
@@ -166,8 +166,8 @@ public class OpenviduService {
             // Store the session and the token in our collections
             // 세션 정보 입력
             this.mapSessions.put(sessionName, session);
-            this.mapSessionNamesTokens.put(sessionName, new ConcurrentHashMap<>());
-            this.mapSessionNamesTokens.get(sessionName).put(token, userEmail);
+            this.mapSessionNamesTokensRand.put(sessionName, new ConcurrentHashMap<>());
+            this.mapSessionNamesTokensRand.get(sessionName).put(token, userEmail);
 //            this.mapUserSession.put(userEmail, new HashMap<>());
 //            this.mapUserSession.get(userEmail).put(sessionName, token);
             // Prepare the response with the token
@@ -193,7 +193,7 @@ public class OpenviduService {
 
             // Update our collection storing the new token
             // 새로운 토큰 정보 저장
-            this.mapSessionNamesTokens.get(sessionName).put(token, userEmail); // 우선 역할은 publisher로 통일
+            this.mapSessionNamesTokensRand.get(sessionName).put(token, userEmail); // 우선 역할은 publisher로 통일
 //            this.mapUserSession.put(userEmail, new HashMap<>());
 //            this.mapUserSession.get(userEmail).put(sessionName, token);
 
