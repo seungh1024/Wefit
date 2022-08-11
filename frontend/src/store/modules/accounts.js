@@ -20,7 +20,7 @@ export default {
     authError: '',
   },
   getters: {
-    isLoggedIn: state => !!state.token,
+    isLoggedIn: state => !!state.accessToken,
     currentUser: state => state.currentUser,
     authError: state => state.authError,
     getUserEmail: state => state.userEmail,
@@ -226,24 +226,24 @@ export default {
     getUserToken(){
       //정확히 어떤 함수? 
 
-    }
+    },
 
-    // fetchCurrentUser({ commit, getters, dispatch }) {
-    //   if (getters.isLoggedIn) {
-    //     axios({
-    //       url: drf.accounts.currentUserInfo(),
-    //       method: 'get',
-    //       headers: getters.authHeader,
-    //     })
-    //       .then(res => commit('SET_CURRENT_USER', res.data))
-    //       .catch(err => {
-    //         if (err.response.status === 401) {
-    //           dispatch('removeToken')
-    //           router.push({ name: 'LoginView' })
-    //         }
-    //       })
-    //     }
-    //   },
+    fetchCurrentUser({ commit, getters, dispatch }) {
+      if (getters.isLoggedIn) {
+        axios({
+          url: drf.accounts.userInfo(),
+          method: 'get',
+          headers: getters.authHeader,
+        })
+          .then(res => commit('SET_CURRENT_USER', res.data))
+          .catch(err => {
+            if (err.response.status === 401) {
+              dispatch('removeToken')
+              router.push({ name: 'LoginView' })
+            }
+          })
+        }
+      },
   },
   modules: {
   }
