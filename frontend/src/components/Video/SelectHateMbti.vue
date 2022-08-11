@@ -69,19 +69,33 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapGetters } from 'vuex';
 export default{
   data() {
       return {
        checkedValues:[],
+       userEmail: ''
     }
     },
+    created() {
+      this.userEmail = this.getUserInfo.userEmail
+    },
     computed: {
-      
+      ...mapGetters(['getUserInfo'])
     },
     methods: {
     selectmbti(){
       const mbti = this.checkedValues;
       this.$emit("selectmbti",mbti);
+      console.log(mbti)
+      for (var i = 0; i < mbti.length; i++) {
+        let formData = {
+          'userHateMbti':mbti[i]
+        }
+        axios.post(`http://localhost:8080/api/v1/mbti/${this.userEmail}`, formData)
+        console.log(formData)
+      }
     }    
   }
 };

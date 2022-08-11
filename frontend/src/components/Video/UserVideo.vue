@@ -1,7 +1,7 @@
 <template>
-<div v-if="streamManager">
+<div v-if="streamManager" class="parent-video">
 	<ov-video :stream-manager="streamManager"/>
-	<div><p>{{ clientData }}</p></div>
+	<div class="child-name"><p>{{ clientData }}</p></div>
 </div>
 </template>
 
@@ -34,3 +34,13 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.parent-video {
+	position:relative;
+}
+.child-name {
+	color: white;
+	position:absolute; left: 45%; top: 90%; /* 위치 수정 필요 */
+}
+</style>

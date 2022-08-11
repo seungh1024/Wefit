@@ -1,12 +1,12 @@
 <template>
   <MainNavbar />
   <div id="main-container" class="container">
-    <div class="card mt-3" style="max-width: 1000px" v-if="!session">
+    <div class="card mt-3" v-if="!session">
       <div class="row g-0">
         <div class="col-md-4 col-lg-4">
           <img
             src="@/assets/img.png"
-            class="img-fluid rounded-start"
+            class="firstimage img-fluid"
             alt="img"
           />
         </div>
@@ -163,7 +163,7 @@
                   <!-- 시작하기 버튼을 클릭한 후 -->
                   <div class="card-body" v-if="talkStatus && !gameStatus">
                     <div class="card-container">
-                  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                  <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-indicators">
                       <button
                         type="button"
@@ -179,17 +179,24 @@
                         data-bs-slide-to="1"
                         aria-label="Slide 2"
                       ></button>
-                      <!-- <button
+                      <button
                         type="button"
                         data-bs-target="#carouselExampleIndicators"
                         data-bs-slide-to="2"
                         aria-label="Slide 3"
-                      ></button> -->
+                      ></button>
                     </div>
                     <div class="carousel-inner">
                       <div class="carousel-item active">
                         <img
                           src="@/assets/talkcard/대화카드1.jpg"
+                          class="d-block w-100"
+                          alt="nonLoginPage.jpg"
+                        />
+                      </div>
+                      <div class="carousel-item">
+                        <img
+                          src="@/assets/talkcard/대화카드3.jpg"
                           class="d-block w-100"
                           alt="nonLoginPage.jpg"
                         />
@@ -203,7 +210,7 @@
                         <div class="container">
                           <div class="carousel-caption text-end"> 
                             <p>
-                              <a class="btn btn-lg btn-outline-light" @click="vidControll">게임하러 가기</a>
+                              <a class="btn btn-lg btn-outline-light" @click="vidControll">대화완료</a>
                             </p>
                           </div>
                         </div>
@@ -235,19 +242,19 @@
                     </div>
                   </div>
                 </div>
-                  </div>
+                </div>
                   <!-- 게임 선택 버튼 -->
-                  <div class="card-body" v-if="!talkStatus && gameStatus">
-                    <h5 class="card-title">게임을 골라주세요!</h5>
-                    <button @click="startGame1">
-                      <div v-if="!isReadyCatch">캐치마인드</div>
-                      <div v-else>준비완료</div>
-                    </button>
-                    <button @click="startGame2">
-                      <div v-if="!isReadyCatch">옛날옛적에</div>
-                      <div v-else>준비완료</div>
-                    </button>
-                  </div>
+                <div class="card-body" v-if="!talkStatus && gameStatus">
+                  <h5 class="card-title">게임을 골라주세요!</h5>
+                  <button @click="startGame1">
+                    <div v-if="!isReadyCatch">캐치마인드</div>
+                    <div v-else>준비완료</div>
+                  </button>
+                  <button @click="startGame2">
+                    <div v-if="!isReadyCatch">옛날옛적에</div>
+                    <div v-else>준비완료</div>
+                  </button>
+                </div>
                   <!-- 캐치마인드 -->
                   <!-- <CatchMind /> -->
             </div>
@@ -290,6 +297,7 @@ export default {
       talkStatus: false,
       vidStatus: false,
       voiceStatus: true,
+      bgStatus: false,
 
       mySessionId: "3333",
       myUserName: "3333",
@@ -483,7 +491,7 @@ export default {
 .card2 {
   outline-style: solid;
   outline-color: #97cdbd;
-  /* height: 45vh; */
+  /* height: 40vh; */
   /* background: url("https://s-media-cache-ak0.pinimg.com/564x/cf/1e/c4/cf1ec4b0c96e59657a46867a91bb0d1e.jpg") no-repeat;
   background-size: cover;
   background-position: center center; */
@@ -494,6 +502,11 @@ export default {
   color: #97cdbd;
   position: relative;
   text-align: center;
+}
+
+.firstimage {
+  height: 400px;
+  width: 400px;
 }
 
 .v_box {
