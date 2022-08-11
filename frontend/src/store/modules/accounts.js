@@ -25,7 +25,8 @@ export default {
     authError: state => state.authError,
     getUserEmail: state => state.userEmail,
     userEmailCheck: state => state.userEmailCheck,
-    getAccessoken: state => state.accessToken
+    getAccessoken: state => state.accessToken,
+    getUser: state => state.user
   },
   mutations: {
   Login(state) {
@@ -52,7 +53,7 @@ export default {
       commit('SET_TOKEN', '')
       localStorage.setItem('token', '')
     }, 
-    login({ commit, dispatch }, userData) {
+    login({ commit, dispatch, state}, userData) {
       axios({
             url: drf.accounts.login(),
             method: 'post',
@@ -62,6 +63,9 @@ export default {
               dispatch('saveToken', res.data.token)
               dispatch('saveToken', res.data.refreshToken)
               //dispatch('fetchCurrentUser')
+              commit('SET_USEREMAIL', userData.userEmail)
+              dispatch('getUserInfo')
+              console.log(state.user)
               router.push({ name: 'LoginHome' })
             })
             .catch(err => {
