@@ -1,33 +1,4 @@
 <template>
- <!-- <div class="signupbyemail">
-		<form class="signupbyemailform">
-		<h2>회원가입 페이지</h2>
-			<p>
-				<div>
-				<label for="emailInput" id = "emailtext" class = "text">email</label>
-				</div>
-				<input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="아이디를 입력하세요." />
-			</p>
-			<p>
-				<div>
-				<label for="passwordInput" id = "passwordtext" class = "text">password</label>
-				</div>
-				<input type="password" id="passwordInput" name="userPassword" class="input_text" ref="passwordInput" v-model.trim="userPassword" placeholder="패스워드를 입력하세요." />
-			</p>
-            <p>
-				<div>
-				<label for="passwordInput" id = "passwordtext" class = "text">password confirmation</label>
-				</div>
-				<input type="password" id="passwordInput" name="userPasswordCheck" class="input_text" ref="passwordInput" v-model.trim="userPasswordCheck" placeholder="패스워드를 확인하세요." />
-			</p>
-            <div>                
-                <input type = "checkbox"> <label>i agree 어쩌구</label>
-            </div>
-            <div>
-                <button @click.prevent = "emailSignup" id = "btn"> create your account</button>
-            </div>
-        </form>
- </div> -->
 <div class="Back">
     <div class="login">
       <div class="background">
@@ -41,8 +12,10 @@
           <div>
             <label for="emailInput" id = "emailtext" class = "text">이메일</label>
             </div>
-            <input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="이메일을 입력하세요." />
-            <button @click.prevent = "doubleCheck">로그인중복테스트</button>
+          <div class="nodap">
+            <input type="text" id="emailInput" name="userEmail" class="email" ref="emailInput" v-model.trim="userEmail" placeholder="이메일을 입력하세요." />
+            <button class="btn" @click.prevent = "doubleCheck">중복확인</button>
+          </div>
         <div>
           <div>
 				<label for="passwordInput" id = "passwordtext" class = "text">비밀번호</label>
@@ -128,6 +101,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .title{
   color:white;
@@ -247,5 +221,32 @@ checkbox{
 }
 .checkbox_1{
     color: #fff;
+}
+
+.nodap{
+  position:relative;
+}
+
+.btn{
+  position: absolute;
+  right:90px;
+  top:6px;
+  text-align: center;
+  font-size: 9px;
+}
+.btn:hover{
+  border: none;
+  outline:none;
+  box-shadow: none;
+}
+.btn:active{
+  border: none;
+  outline:none;
+  box-shadow: none;
+}
+.btn:focus{
+  border: none;
+  outline:none;
+  box-shadow: none;
 }
 </style>

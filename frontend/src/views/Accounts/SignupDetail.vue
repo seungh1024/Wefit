@@ -10,7 +10,7 @@
             <tr>
                 <td>이름</td> 
                 <td v-if ="nameOpen ===false"><span @click = "nameOpen =true" >입력</span></td>
-                <td v-if ="nameOpen ===true"><input class="input_long" type="text" v-model ="userName"></td>
+                <td v-if ="nameOpen ===true"><input class="input_long" type="text" v-model ="userName"  maxlength='10' placeholder="10자 이내로 입력해주세요."></td>
             </tr>
             <tr> 
                 <td> 이메일 </td> 
@@ -26,33 +26,40 @@
             <tr>
                 <td> 닉네임</td>  
                 <td v-if ="nicknameOpen === false"><span @click= "nicknameOpen = true" >입력</span></td>
-                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickName"></td>
+                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickName"  maxlength='8' placeholder="8자 이내로 입력해주세요."></td>
             </tr>
             <tr>   
                 <td>지역</td>
                 <td v-if ="userFieldOpen === false"> <span @click = "userFieldOpen = true" > 입력</span> </td>
-                <td v-if ="userFieldOpen === true"><input  class="input_long" type="text" v-model ="userField"></td>
+                <td v-if ="userFieldOpen === true"><input  class="input_long" type="text" v-model ="userField"  maxlength='10' placeholder="시만 입력해주세요"></td>
             </tr>
             <tr>   
                 <td>MBTI</td>  
-                <td><span @click = "mbtiModalOpen = true"> 입력 </span> </td>
+                <td v-if ="userMBTI === ''"><span @click = "mbtiModalOpen = true"> 입력 </span> </td>
                 <td v-if ="userMBTI !== ''">{{userMBTI}}</td> 
             </tr>
             <tr>
                 <td>전화번호</td>  
-                <td><span @click = "phoneOpen = true"> 입력 </span> </td>
-                <td v-if ="phoneOpen === true"><input class="input_long" type="text" v-model ="userPhone"></td>
+                <td v-if="phoneOpen === false"><span @click = "phoneOpen = true"> 입력 </span> </td>
+                <td v-if ="phoneOpen === true"><input class="input_long" type="text" v-model ="userPhone" placeholder="'-'를 제외하고 입력해주세요."  maxlength='11'></td>
             </tr>
             <tr>
                 <td>관심사</td>  
-                <td><span @click = "interestModalOpen = true">입력 </span> </td>
-                <td v-if ="userInterestList != []">{{userInterestList}}</td> 
+                <td v-if ="userInterestList == ''"><span @click = "interestModalOpen = true">입력 </span> </td>
+                <td v-if ="userInterestList != ''">{{userInterestList}}</td> 
             </tr>
             </table>
             <button id = "submitbtn" @click.prevent = "submit">가입하기</button>
             </div>
                 <div class="img_2">
                 </div>
+            </div>
+            <div class="rewrite_mbti" v-if ="userMBTI !== ''">
+                <button @click = "mbtiModalOpen = true" class="re_mbti">재입력</button>
+            </div>
+            <div class="space_box" v-if="userInterestList != '' && userMBTI === ''">qwcqwc</div>
+            <div class="rewrite_interest" v-if ="userInterestList != ''">
+                <button @click = "interestModalOpen = true" class="re_interest">재입력</button>
             </div>
         </div>
     </div>
@@ -267,5 +274,30 @@ input[type=text] {
   border-bottom: 2px solid red;
   background-color: rgba(22, 22, 22, 22);
   color:white;
+}
+.rewrite_mbti{
+    position: relative;
+    top : -270px;
+    left: 500px;
+}
+
+.rewrite_interest{
+    position: relative;
+    bottom : 160px;
+    left: 500px;
+}
+
+.re_interest{
+    color:rgb(211, 222, 120);
+    background-color:transparent;
+    border : none;
+}
+.re_mbti{
+    color:rgb(211, 222, 120);
+    background-color:transparent;
+    border : none;
+}
+.space_box{
+    height: 30px;
 }
 </style>
