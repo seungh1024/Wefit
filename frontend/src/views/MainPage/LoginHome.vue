@@ -120,17 +120,10 @@
 <script>
 import MainNavbar from '@/components/MainPage/MainNavbar.vue'
 import MainFooter from '@/components/MainPage/MainFooter.vue'
-import { mapActions } from 'vuex'
+
 export default {
   components: { MainNavbar, MainFooter },
-  methods: {
-    ...mapActions(['fetchCurrentUser'])
-  },
-  created() {
-    const payload = JSON.parse(window.localStorage.vuex)
-    this.fetchCurrentUser(payload.accounts.userEmail)
-    console.log(this.$store.state)
-  },
+
 }
 </script>
 
