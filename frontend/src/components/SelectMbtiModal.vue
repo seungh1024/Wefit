@@ -86,7 +86,7 @@ export default{
         },
     selectmbti(){
       let mbti = this.checkedValues[0];
-      this.$emit("selectmbti",mbti);
+      this.$emit("selectmbti", mbti);
     }    
   }
 };
@@ -99,11 +99,13 @@ export default{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 50px;
 }
 .white-bg {
-  background-color: #272724;
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.8);
   height: 50vh;
-  width : 50vw;
+  width : 700px;
 }
 table{
   height : 80%;
@@ -129,7 +131,7 @@ p{
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
     display: block;
-    width: 25vw;
+    width: 100px;
     height: 50px;
     padding-bottom: 1px;
     border-radius: 10px;

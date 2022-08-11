@@ -1,35 +1,42 @@
 <template>
-	<div class="login">
-		<form class="loginform">
-		<h2>로그인 페이지</h2>
-			<p>
-				<div>
-				<label for="emailInput" id = "emailtext">your email</label>
-				</div>
-				<input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="아이디를 입력하세요." />
-			</p>
-			<p>
-				<div>
-				<label for="passwordInput" id = "passwordtext">your password</label>
-				</div>
-				<input type="password" id="passwordInput" name="userPassword" class="input_text" ref="passwordInput" v-model.trim="userPassword" placeholder="패스워드를 입력하세요." />
-			</p>
-			<p class="buttons">
-				<button @click.prevent="login" class="button blue" id = "loginbtn">로그인</button>
-
-				<div><p><span @click.prevent="$router.push('findid')" id = "findid">아이디찾기</span>  <span @click.prevent="$router.push('findpw')" id = "findpw" >비밀번호찾기</span>  <span @click.prevent="$router.push('signup')" id = "signup">회원가입</span></p></div> 
-				<div>
-				<button @click.prevent="google" id = "googlebtn" >구글 로그인</button>
-				</div>
-				<div>
-				<button @click.prevent="kakaoLogin" id = "kakaobtn"> 카카오 로그인</button>
-				</div>
-				<div>
-				<button @click.prevent="naverLogin" id = "naverbtn"> 네이버 로그인</button>
-				</div>
-			</p>
-		</form>
-	</div>
+  <div class="Back">
+    <div class="login">
+      <div class="background">
+      <div class="top-box"></div>
+      <div class="d-flex justify-content-center">
+        <h2>로그인 페이지</h2>
+      </div>
+      <div class="bottom-box"></div>
+      <form class="loginform">
+        <div>
+          <div>
+            <label for="emailInput" id = "emailtext">아이디</label>
+          </div>
+            <input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="아이디를 입력하세요." />
+          </div>
+        <div>
+          <div>
+            <label for="passwordInput" id = "passwordtext">비밀번호</label>
+          </div>
+				    <input type="password" id="passwordInput" name="userPassword" class="input_text" ref="passwordInput" v-model.trim="userPassword" placeholder="패스워드를 입력하세요." />
+			  </div>
+        <div class="buttons">
+          <button @click.prevent="login" class="button blue" id = "loginbtn">로그인</button>
+          <div class="center_box">
+            <div class="fw_su_box">
+              <div @click.prevent="$router.push('findid')" id = "findid">아이디찾기</div>  
+              <div @click.prevent="$router.push('findpw')" id = "findpw" >비밀번호찾기</div>  
+              <div @click.prevent="$router.push('signup')" id = "signup">회원가입</div>
+            </div>
+          </div> 
+          <div>
+            <button @click.prevent="google" id = "googlebtn" type="button"></button>
+          </div>
+        </div>
+		  </form>
+    </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -57,7 +64,6 @@ export default {
       }
       // dispatch
       this.$store.dispatch('login', userData);
-      //
     },
 	google(){
 		const provider = new GoogleAuthProvider();
@@ -68,13 +74,10 @@ export default {
 		const auth = getAuth();
     signInWithPopup(auth, provider).then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    
     // The signed-in user info.
-    const user = result.user;
-		console.log(user);
-		this.$store.dispatch('socialLogin', socialLoginData)
+    //const user = result.user;
+		//console.log(token);
+		this.$store.dispatch('socialLogin', result.user)
 		
     // ...
      }).catch((error) => {
@@ -82,66 +85,77 @@ export default {
     const errorCode = error.code;
     const errorMessage = error.message;
     // The email of the user's account used.
-    const email = error.customData.email;
+     const email = error.customData.email;
     // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
+    //const credential = GoogleAuthProvider.credentialFromError(error);
     // ...
      });
 	},
-	// kakaoLogin(){
-	//  Kakao.isInitialized();
-	//  window.Kakao.Auth.authorize({
-  //    redirectUri: 'http://localhost:8080/kakaocallback'
-  //    });
-
-	 
-	 
-   
-
-	 /*
-	 Kakao.Auth.login({	
-      success: function (response) {
-        Kakao.API.request({
-          url: '/v2/user/me',
-          success: function (response) {
-        	  console.log(response)
-          },
-          fail: function (error) {
-            console.log(error)
-          },
-        })
-      },
-      fail: function (error) {
-        console.log(error)
-      },
-    })
-	*/
     },
-
-	// naverLogin(){
-		
-	// }
-
 }
 </script>
 
 <style scoped>
+.title{
+  color:white;
+  width: 100%;
+}
+.top-box{
+  height: 65px;
+}
+.bottom-box{
+  height: 60px;
+}
+
+.fw_su_box{
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+}
+.center_box{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.background{
+  height: 660px;
+  width: 500px;
+  overflow: hidden;
+  margin:0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image:linear-gradient(
+    rgba(0, 0, 0, 0),
+        rgba(255, 255, 255, 0)
+      ), url("@/assets/MainPage/menu_bg4.png");
+}
 .login{
-    height: 100vh;
-    background-image: url("@/assets/loginpage.jpg");
-    background-repeat : no-repeat;
-    background-size : cover;
- }
+  width:80%; 
+  min-width: 500px;
+  margin:0 auto; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Back{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(30, 30, 30, 6);
+}
+
  .loginform{
   text-align:center;
-  position : relative;
-  top :25%;
- }
+}
+
  h2{
-	color : red;
+	color : white;
  }
- /* .loginform{
- } */
+
  #signup {
   font-weight: bold;
   color: white;
@@ -165,9 +179,11 @@ export default {
  }
  input{
   border-radius: 8px;
-  width : 24%;
+  width: 315px;
   height: 40px;
-  margin-left: 10px;
+ }
+ input::placeholder{
+  padding-left: 10px;
  }
  #loginbtn{
     text-size-adjust: none;
@@ -179,82 +195,39 @@ export default {
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
     display: block;
-    width: 23%;
+    width: 315px;
     height: 46px;
     padding-bottom: 1px;
     border-radius: 10px;
     cursor: pointer;
-    color: #fff;
+    color: rgb(30,30,30);
     font-weight: bold;
-    background: #ef3e43;
+    background: rgb(217, 188, 128);
     border: 0;
     margin-top: 30px;
     font-size: 17px;
+    margin-bottom : 10px;
  }
+
+ /* #kakaobtn{
+  background-image: url("@/assets/Kakao_Login.png");
+  margin-top:5px;
+  width: 315px;
+  height: 47px;
+  border-radius: 8px;
+ }
+
  #naverbtn{
-    text-size-adjust: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    appearance: none;
-    margin: auto;
-    padding: 0;
-    outline: none;
-    user-select: none;
-    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
-    display: block;
-    width: 23%;
-    height: 46px;
-    padding-bottom: 1px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #fff;
-    font-weight: bold;
-    background: #2db400;
-    border: 0;
-    margin-top: 10px;
-    font-size: 17px;
- }
- #kakaobtn{
- text-size-adjust: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    appearance: none;
-    margin: auto;
-    padding: 0;
-    outline: none;
-    user-select: none;
-    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
-    display: block;
-    width: 23%;
-    height: 46px;
-    padding-bottom: 1px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: black;
-    font-weight: bold;
-    background: #fde102;
-    border: 0;
-    margin-top: 10px;
-    font-size: 17px;
- }
+  background-image: url("@/assets/Kakao_Login.png");
+  width: 315px;
+  height: 47px;
+
+  border-radius: 8px;
+ } */
  #googlebtn{
-  text-size-adjust: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    appearance: none;
-    margin: auto;
-    padding: 0;
-    outline: none;
-    user-select: none;
-    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
-    display: block;
-    width: 23%;
-    height: 46px;
-    padding-bottom: 1px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: black;
-    font-weight: bold;
-    background : white;
-    border: 0;
-    margin-top: 10px;
-    font-size: 17px;
- }
+  background-image: url("@/assets/Google_Login2.png");
+  width: 315px;
+  height: 49px;
+  border-radius : 7px;
+ } 
 </style>
