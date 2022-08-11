@@ -19,8 +19,8 @@
       </ul>
         <form class="d-flex" role="search">
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-        <button class="btn btn-outline-success mx-3" @click.pervent="submit">Logout</button>
-        <router-link :to="{name:'ProfileView/:'} + this.$store.getters.getUserEmail" class="btn btn-outline-success"><v-btn class="mx-1" dark>Profile</v-btn></router-link>
+        <button class="btn btn-outline-success mx-3" @click.prevent="submit">Logout</button>
+        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success"><v-btn class="mx-1" dark>Profile</v-btn></router-link>
       </form>
     </div>
   </div>
@@ -30,13 +30,13 @@
 <script>
 export default {
   name: 'MainNavbar',
-  method:{
+  methods: {
     submit(){
-      console.log(1111)
       this.$store.dispatch('logout')
     }
   },
 }
+
 </script>
 
 <style>

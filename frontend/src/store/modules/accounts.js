@@ -48,8 +48,13 @@ export default {
       commit('SET_REFRESHTOKEN', refreshToken)
       localStorage.setItem('token', refreshToken)
     },
+    removeRefreshToken({ commit }){
+      commit('SET_REFRESHTOKEN', "")
+    },
+    removeVuex() {
+      localStorage.setItem('vuex', '')  
+    }, 
     removeToken({ commit }) {
-      console.log('good')
       commit('SET_TOKEN', '')
       localStorage.setItem('token', '')
     }, 
@@ -61,11 +66,11 @@ export default {
           })
             .then(res => {
               dispatch('saveToken', res.data.token)
-              dispatch('saveToken', res.data.refreshToken)
-              //dispatch('fetchCurrentUser')
+              dispatch('saveRefreshToken', res.data.refreshToken)
+              dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
               dispatch('getUserInfo')
-              console.log(state.user)
+
               router.push({ name: 'LoginHome' })
             })
             .catch(err => {
@@ -179,24 +184,40 @@ export default {
           commit('SET_AUTH_ERROR')
         })
     },
-    logout({ dispatch, state }) {
-      console.log(1111)
-       axios({
-       url: drf.accounts.logout(),
-         method: 'GET',
-         headers: {
-          Authorization: `Bearer ${state.accessToken}`
-        },
-       })
-       .then(() => {
+
+
+    logout({ dispatch, commit, state }) {
+      axios({
+        url: drf.accounts.logout(),
+        method: 'GET',
+        headers: {
+        Authorization: `Bearer ${state.accessToken}`
+        }
+        }).then(res => {
+          const userdata = {
+          userMbti   : '',
+          userGender : '', 
+          userName   : '',
+          userField  : '',
+          userPhone  : '',
+          userNickName : '',
+          }
           dispatch('removeToken')
+          dispatch('removeVuex')
+          dispatch('setUserInfo',userdata)
+          commit('SET_USEREMAIL','')
+          commit('SET_DOUBLE_CHECK',true)
           alert('성공적으로 logout!')
           router.push({ name: 'NonLoginView' })
-         })
-         .error(err => {
-           console.error(err.response)
         })
-    },
+        .catch(err => {
+         confirm("에러!")
+         console.log(state.accessToken)
+         console.error(err.response)
+       })
+   },
+
+
     getUserInfo({commit,dispatch, state}){
         axios({
           url: drf.accounts.userInfo()+`${state.userEmail}`,
@@ -211,7 +232,6 @@ export default {
               userPhone  : res.data.userPhone,
               userNickName : res.data.userNickname,
             }
-            console.log(userdata)
             dispatch('setUserInfo',userdata)
           })
           .catch((err) => {
