@@ -14,7 +14,7 @@
       </div>
       <div class="center_box">
         <div>
-          <button @click.prevent="google" id = "googlebtn" type="button"></button>
+          <button @click.prevent="googleSignup" id = "googlebtn" type="button"></button>
         </div>
       </div>
       <div class="center_box">
