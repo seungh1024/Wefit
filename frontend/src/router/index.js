@@ -41,7 +41,7 @@ const routes = [
     component: SigupDetail,
   },
   {
-    path: '/profile/:username',
+    path: '/profile',
     name: 'ProfileView',
     component: ProfileView,
   },

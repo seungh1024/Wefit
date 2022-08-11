@@ -120,6 +120,7 @@
 <script>
 import MainNavbar from '@/components/MainPage/MainNavbar.vue'
 import MainFooter from '@/components/MainPage/MainFooter.vue'
+
 export default {
   components: { MainNavbar, MainFooter },
 
