@@ -16,8 +16,8 @@ export default {
       userField  : '',
       userPhone  : '',
       userNickName : '',
-      userInterestList : [],
-    }
+    },
+    authError: '',
   },
   getters: {
     isLoggedIn: state => !!state.token,
@@ -33,7 +33,7 @@ export default {
     },
     SET_TOKEN: (state, token) => state.accessToken = token,
     SET_REFRESHTOKEN: (state, refreshToken) => state.refreshToken = refreshToken,
-    SET_CURRENT_USER: (state, user) => state.currentUser = user,
+    SET_CURRENT_USER: (state, user) => state.user = user,
     SET_AUTH_ERROR: (state, error) => state.authError = error,
     SET_USEREMAIL: (state, userEmail) => state.userEmail = userEmail,
     SET_DOUBLE_CHECK: (state, userEmailCheck) => state.userEmailCheck = userEmailCheck,
@@ -65,12 +65,14 @@ export default {
               router.push({ name: 'LoginHome' })
             })
             .catch(err => {
+              confirm("아이디 또는 비밀번호가 잘못되었습니다.확인하고 다시 입력하세요")
               console.log(err)
               console.error(err)
               commit('SET_AUTH_ERROR', err)
             })
     },
-    socialLogin({ commit, dispatch } , user){
+    socialLogin({ commit, dispatch, state } , user){
+      console.log(1111)
       axios({
         url: drf.accounts.socialLogin(),
         method: 'post',
@@ -79,9 +81,21 @@ export default {
         },
       })
         .then(res => {
-          console.log(res.data)
-          commit('SET_CURRENT_USER',user.userEmail)
-          if( this.$store.actions.getUserInfo().userField ==''){
+          commit('SET_USEREMAIL',user.email)
+          dispatch('getUserInfo')
+          let data = state.user
+          if(data.userMbti == ''){
+            confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
+            router.push({name : 'signupdetail'})
+          }
+          else{
+            dispatch('saveToken', res.data.token)
+            dispatch('saveToken', res.data.refreshToken)
+            router.push({ name: 'LoginHome' })
+          }    
+          /*
+          if(self.getUserInfo().then == null ){
+            confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
             router.push({name : 'signupdetail'})
           }
           else{
@@ -89,6 +103,7 @@ export default {
             dispatch('saveToken', res.data.refreshToken)
             router.push({ name: 'LoginHome' })
           }
+          */
         })
         .catch(err => {
           console.log(err)
@@ -161,6 +176,7 @@ export default {
         })
     },
     logout({ dispatch, state }) {
+      console.log(1111)
        axios({
        url: drf.accounts.logout(),
          method: 'GET',
@@ -177,18 +193,31 @@ export default {
            console.error(err.response)
         })
     },
-    getUserInfo({ commit, state}){
-      axios({
-        url: drf.accounts.userInfo() + state.userEmail,
-        method: 'GET',
-      }).then(  res =>
-          console.log(res),
-          //어디서 쓸건가요?
-        )
-        .catch(err => {
-          console.error(err.response.data)
+    getUserInfo({commit,dispatch, state}){
+        axios({
+          url: drf.accounts.userInfo()+`${state.userEmail}`,
+          method: 'GET',
+           }).then((res) =>
+            {
+            const userdata = {
+              userMbti   : res.data.userMBTI,
+              userGender : res.data.userGender, 
+              userName   : res.data.userName,
+              userField  : res.data.userField,
+              userPhone  : res.data.userPhone,
+              userNickName : res.data.userNickname,
+            }
+            console.log(userdata)
+            dispatch('setUserInfo',userdata)
+          })
+          .catch((err) => {
+            console.error(err.response.data)
           commit('SET_AUTH_ERROR', err.response.data)
-        })
+          });
+      },
+    setUserInfo({commit},userdata){
+      //console.log(userdata)
+      commit('SET_CURRENT_USER', userdata)
     },
     getUserToken(){
       //정확히 어떤 함수? 
@@ -211,7 +240,7 @@ export default {
     //       })
     //     }
     //   },
-    },
+  },
   modules: {
   }
 }

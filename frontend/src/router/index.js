@@ -3,9 +3,6 @@ import NonLoginView from '@/views/MainPage/NonLoginHome.vue'
 import LoginHome from '@/views/MainPage/LoginHome.vue'
 import LoginView from '@/views/Accounts/LoginView.vue'
 import SignupView from '@/views/Accounts/SignupView.vue'
-import KakaoCallBack from '@/views/Accounts/KakaoCallBack.vue'
-import findId from '@/views/Accounts/FindId.vue'
-import findPw from '@/views/Accounts/FindPw.vue'
 import SignUpByEmail from '@/views/Accounts/SignupByEmailView.vue'
 import SigupDetail from '@/views/Accounts/SignupDetail.vue'
 import ProfileView from '@/views/Accounts/ProfileView.vue'
@@ -40,21 +37,6 @@ const routes = [
     path: '/signupdetail',
     name: 'signupdetail',
     component: SigupDetail,
-  },
-  {
-    path: '/kakaocallback',
-    name: 'kakaoCallBackView',
-    component: KakaoCallBack,
-  },
-  {
-    path: '/findid',
-    name: 'findid',
-    component: findId,
-  },
-  {
-    path: '/findpw',
-    name: 'findpw',
-    component: findPw,
   },
   {
     path: '/profile/:username',
