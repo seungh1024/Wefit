@@ -6,6 +6,7 @@ import SignupView from '@/views/Accounts/SignupView.vue'
 import SignUpByEmail from '@/views/Accounts/SignupByEmailView.vue'
 import SigupDetail from '@/views/Accounts/SignupDetail.vue'
 import ProfileView from '@/views/Accounts/ProfileView.vue'
+import RandomVideo from '@/views/Video/RandomVideo.vue'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'ProfileView',
     component: ProfileView,
   },
+  {
+    path: '/randomvideo',
+    name: 'RandomVideo',
+    component: RandomVideo,
+  }
 ]
 
 const router = createRouter({
