@@ -7,7 +7,7 @@ import SignUpByEmail from '@/views/Accounts/SignupByEmailView.vue'
 import SigupDetail from '@/views/Accounts/SignupDetail.vue'
 import ProfileView from '@/views/Accounts/ProfileView.vue'
 import RandomVideo from '@/views/Video/RandomVideo.vue'
-import store from '@/store/modules/accounts'
+
 
 const routes = [
   {

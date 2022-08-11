@@ -20,12 +20,13 @@ export default {
     authError: '',
   },
   getters: {
-    isLoggedIn: state => !!state.token,
+    isLoggedIn: state => !!state.accessToken,
     currentUser: state => state.currentUser,
     authError: state => state.authError,
     getUserEmail: state => state.userEmail,
     userEmailCheck: state => state.userEmailCheck,
-    getAccessoken: state => state.accessToken
+    getAccessoken: state => state.accessToken,
+    getUser: state => state.user
   },
   mutations: {
   Login(state) {
@@ -52,7 +53,7 @@ export default {
       commit('SET_TOKEN', '')
       localStorage.setItem('token', '')
     }, 
-    login({ commit, dispatch }, userData) {
+    login({ commit, dispatch, state}, userData) {
       axios({
             url: drf.accounts.login(),
             method: 'post',
@@ -62,6 +63,9 @@ export default {
               dispatch('saveToken', res.data.token)
               dispatch('saveToken', res.data.refreshToken)
               //dispatch('fetchCurrentUser')
+              commit('SET_USEREMAIL', userData.userEmail)
+              dispatch('getUserInfo')
+              console.log(state.user)
               router.push({ name: 'LoginHome' })
             })
             .catch(err => {
@@ -222,24 +226,24 @@ export default {
     getUserToken(){
       //정확히 어떤 함수? 
 
-    }
+    },
 
-    // fetchCurrentUser({ commit, getters, dispatch }) {
-    //   if (getters.isLoggedIn) {
-    //     axios({
-    //       url: drf.accounts.currentUserInfo(),
-    //       method: 'get',
-    //       headers: getters.authHeader,
-    //     })
-    //       .then(res => commit('SET_CURRENT_USER', res.data))
-    //       .catch(err => {
-    //         if (err.response.status === 401) {
-    //           dispatch('removeToken')
-    //           router.push({ name: 'LoginView' })
-    //         }
-    //       })
-    //     }
-    //   },
+    fetchCurrentUser({ commit, getters, dispatch }) {
+      if (getters.isLoggedIn) {
+        axios({
+          url: drf.accounts.userInfo(),
+          method: 'get',
+          headers: getters.authHeader,
+        })
+          .then(res => commit('SET_CURRENT_USER', res.data))
+          .catch(err => {
+            if (err.response.status === 401) {
+              dispatch('removeToken')
+              router.push({ name: 'LoginView' })
+            }
+          })
+        }
+      },
   },
   modules: {
   }
