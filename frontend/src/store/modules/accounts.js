@@ -86,7 +86,7 @@ export default {
           let data = state.user
           if(data.userMbti == ''){
             confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
-            router.push({name : 'signupdetail'})
+            router.push({name : 'SigupDetail'})
           }
           else{
             dispatch('saveToken', res.data.token)
@@ -120,7 +120,7 @@ export default {
         .then(  res =>
           console.log(res),
           commit('SET_USEREMAIL',userData.userEmail),
-          router.push({name : 'signupdetail'})
+          router.push({name : 'SigupDetail'})
         )
         .catch(err => {
           console.error(err.response.data)
@@ -153,7 +153,7 @@ export default {
         .then(  res => {
           console.log(res),
           commit('SET_USEREMAIL',user.email),
-          router.push({name : 'signupdetail'})
+          router.push({name : 'SigupDetail'})
         }
         )
         .catch(err => {

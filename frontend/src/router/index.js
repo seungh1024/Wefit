@@ -7,17 +7,18 @@ import SignUpByEmail from '@/views/Accounts/SignupByEmailView.vue'
 import SigupDetail from '@/views/Accounts/SignupDetail.vue'
 import ProfileView from '@/views/Accounts/ProfileView.vue'
 import RandomVideo from '@/views/Video/RandomVideo.vue'
+import store from '@/store/modules/accounts'
 
 const routes = [
   {
     path: '/',
     name: 'NonLoginView',
-    component: NonLoginView
+    component: NonLoginView,
   },
   {
     path: '/Home',
     name: 'LoginHome',
-    component: LoginHome
+    component: LoginHome,
   },
   {
     path: '/login',
@@ -31,12 +32,12 @@ const routes = [
   },
   {
     path: '/signupbyemail',
-    name: 'SignupByEmailView',
+    name: 'SignUpByEmail',
     component: SignUpByEmail,
   },
   {
     path: '/signupdetail',
-    name: 'signupdetail',
+    name: 'SigupDetail',
     component: SigupDetail,
   },
   {
@@ -54,6 +55,23 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('accessToken')
+  const noAuthPages = ['NonLoginView' ,'LoginView', 'SignupView','SigupDetail','SignUpByEmail']
+  if (noAuthPages.includes(to.name)) {
+    if (token) {
+      next({ name: 'HomeView' })
+    }
+  } else {
+    if (!token) {
+      alert('로그인해라')
+      next({ name: 'LoginView' })
+    }
+  }
+  next()
 })
 
 export default router
