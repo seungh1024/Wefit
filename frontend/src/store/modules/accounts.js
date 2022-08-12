@@ -70,7 +70,6 @@ export default {
               console.log(res.data.token);
               dispatch('saveToken', res.data.token)
               dispatch('saveRefreshToken', res.data.refreshToken)
-              // dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
               dispatch('getUserInfo')
 
@@ -97,7 +96,7 @@ export default {
           dispatch('getUserInfo')
           
           setTimeout(()=>{
-            alert(state.user);
+            alert(state.user)
             console.log("state.user:",state.user)
             let data = state.user
             if(data.userMbti == ''){
@@ -109,19 +108,9 @@ export default {
             dispatch('saveRefreshToken', res.data.refreshToken)
             router.push({ name: 'LoginHome' })
           }    
-          }, 500)
+          }, 750)
           
-          /*
-          if(self.getUserInfo().then == null ){
-            confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
-            router.push({name : 'signupdetail'})
-          }
-          else{
-            dispatch('saveToken', res.data.token)
-            dispatch('saveToken', res.data.refreshToken)
-            router.push({ name: 'LoginHome' })
-          }
-          */
+          
         })
         .catch(err => {
           console.log(err)
