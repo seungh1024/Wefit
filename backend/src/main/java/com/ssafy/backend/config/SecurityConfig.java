@@ -115,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/login",
                         "/api/v1/user/**",
                         "/api/v1/re-issue",
-                        "/api/v1/email/**"
+                        "/api/v1/email/**",
                         "/ws/**"
 //                        "/api/v1/user-info/**",
 //                        "/api/v1/social/googleSignup",
