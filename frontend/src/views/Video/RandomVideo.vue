@@ -364,7 +364,7 @@ import SockJS from 'sockjs-client'
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "http://i7b206.p.ssafy.io:8080/api/v1/webrtc";
+const OPENVIDU_SERVER_URL = "https://i7b206.p.ssafy.io/api/v1/webrtc";
 
 export default {
   name: "App",
