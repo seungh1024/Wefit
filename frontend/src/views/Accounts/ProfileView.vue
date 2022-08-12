@@ -106,7 +106,7 @@ export default {
   }
   },
   computed: {
-    ...mapGetters(['']),
+    ...mapGetters(['getUser']),
   },
   methods:{
    submit(){
@@ -118,9 +118,9 @@ export default {
         "userField" : this.userField,
         "userPhone": this.userPhone,   
       }
-     setTimeout(() => {this.$store.dispatch('setUserInfo', userDetailData)}, 100)
-
-     this.$store.dispatch('editProfile', userDetailData);
+      
+      this.$store.dispatch('editProfile', userDetailData)
+      this.$store.dispatch('setUserInfo', userDetailData)      
   },
    selectmbti(value){
         this.mbtiModalOpen = false;
