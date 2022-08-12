@@ -31,6 +31,7 @@ public class UserDetailService {
     public UserDetail createUserDetail(String userEmail, UserDetail userDetail){
         User user = userRepository.findUserByUserEmail(userEmail);
         userDetail.setUser(user);
+        deleteUserDetail(userEmail);
         userDetailRepository.save(userDetail);
 
         return userDetail;
