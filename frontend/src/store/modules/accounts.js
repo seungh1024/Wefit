@@ -58,7 +58,7 @@ export default {
       commit('SET_TOKEN', '')
       localStorage.setItem('token', '')
     }, 
-    login({ commit, dispatch, state}, userData) {
+    login({ commit, dispatch,}, userData) {
       axios({
             url: drf.accounts.login(),
             method: 'post',
@@ -70,9 +70,9 @@ export default {
               console.log(res.data.token);
               dispatch('saveToken', res.data.token)
               dispatch('saveRefreshToken', res.data.refreshToken)
-              dispatch('fetchCurrentUser')
+              // dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
-              dispatch('getUserInfo')
+              // dispatch('getUserInfo')
 
               router.push({ name: 'LoginHome' })
             })
