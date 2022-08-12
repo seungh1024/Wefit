@@ -929,7 +929,7 @@ export default {
         .post(`${OPENVIDU_SERVER_URL}/matching`, {
           userEmail: self.userEmail,
           headers:{
-            Authentication: `Bearer ${this.$store.state.accessToken}`
+            Authorization: `Bearer ${this.$store.state.accessToken}`
           }
         })
         .then((response) => {
