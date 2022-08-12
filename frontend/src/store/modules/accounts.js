@@ -59,7 +59,6 @@ export default {
       localStorage.setItem('token', '')
     }, 
     login({ commit, dispatch, state}, userData) {
-      console.log(drf)
       axios({
             url: drf.accounts.login(),
             method: 'post',
