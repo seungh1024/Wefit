@@ -101,7 +101,7 @@ pipeline {
                     script {
                         sh 'docker-compose stop'
                         sh 'docker rm vue'
-                        sh 'docker rmi frontend-vue'
+                        sh 'docker rmi frontend_vue'
                     }
                 }
 
