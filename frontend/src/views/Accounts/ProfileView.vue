@@ -1,17 +1,18 @@
 <template>
-<!-- <MainNav /> -->
+
+<MainNav />
 <main class="main">
   <aside class="sidebar">
     <nav class="nav">
-      <ul>
+      <ul class="ul-top">
         <li class="active"><a href="#">프로필</a></li>
-        <li><router-link :to="{name:'SignupView'}" class="signupstyle">임시로 로그인으로 이동</router-link></li>
-        <li><router-link :to="{name:'SignupView'}" class="signupstyle">임시로 로그인으로 이동</router-link></li>
+        <li><router-link :to="`#`" class="signupstyle">친구목록</router-link></li>
+        <li><router-link :to="`#`" class="signupstyle">유저설정</router-link></li>
       </ul>
     </nav>
   </aside>
 
-  <section class="profile_section">
+  <div class="profile_section">
     <div class="content">
       <div class="border-box">
       <div class="profile-box">
@@ -20,64 +21,128 @@
         </div>
         <ul class="myInfo_area">
           <li>닉네임</li>
-          <li>닉네임(암튼 들어가고)</li>
-          <li><button>수정</button></li>
+          <li v-if ="nicknameOpen !=true">{{userNickname}}</li>
+          <li v-if ="nicknameOpen ===true"> <input type="text" v-model ="userNickname"></li>
+          <li v-if ="nicknameOpen !=true"><button @click.prevent = "nicknameOpen = true" class="update_btn"> 수정하기 </button></li>
+          <li v-if ="nicknameOpen ===true"><button @click.prevent = "nicknameOpen = false" class="update_btn"> 수정하기 </button></li>
         </ul>
         <hr>
         <ul class="myInfo_area">
           <li>이메일</li>
-          <li>Email0101@Email.com</li>
+          <li>{{this.$store.getters.getUserEmail}}</li>
           <li></li>
         </ul>      
          <hr>  
         <ul class="myInfo_area">
           <li>핸드폰 번호</li>
-          <li>010-0000-0000</li>
-          <li></li>
+          <li v-if="phoneOpen != true"><span>{{userPhone}}</span></li>
+          <li v-if="phoneOpen === true"><input  type="text" v-model ="userPhone" ></li>
+          <li v-if="phoneOpen != true"><button @click = "phoneOpen = true" class="update_btn"> 수정하기 </button></li>
+          <li v-if="phoneOpen === true"><button @click = "phoneOpen = false" class="update_btn"> 수정하기 </button></li>
+        </ul>
+          <hr>
+          <ul class="myInfo_area">
+          <li>지역</li>
+          <li v-if="userFieldOpen != true"><span>{{userField}}</span></li>
+          <li v-if="userFieldOpen === true"><input  v-if="userFieldOpen === true"  type="text" v-model ="userField" ></li>
+          <li v-if="userFieldOpen != true"> <button @click ="userFieldOpen = true" class="update_btn"> 수정하기 </button></li>
+          <li v-if="userFieldOpen === true"> <button @click ="userFieldOpen = false" class="update_btn"> 수정하기 </button></li>
         </ul>
          <hr>
         <ul class="myInfo_area">
           <li>MBTI</li>
-          <li>CUTE</li>
-          <li><button>수정</button></li>
+          <li>{{userMBTI}}</li>
+          <li><button @click = "mbtiModalOpen =true" class="update_btn"> 수정하기 </button></li>
         </ul>
         <hr>
         <ul class="myInfo_area">
           <li>성향</li>
-          <li>아무튼 씐남 ㅋ</li>
-          <li><button>수정</button></li>
+          <li>{{userInterestList}}</li>
+          <li><button @click = "interestModalOpen =true" class="update_btn"> 수정하기 </button></li>
         </ul>
-        
-      </div>
-    </div>
-    <div class="space_box"/>
-    <div class="border-box">
-      <div class="profile-box">
-        <div class="title">
-          <h3>추가정보</h3>
-        </div>
-        <ul class="myInfo_area">
-          <li>필요하면</li>
-          <li>그때 사용 ㄱ</li>
-          <li><button>수정</button></li>
+        <ul>
+          <li><button @click.prevent = "submit" class="btn btn-success" >수정</button></li>
         </ul>
       </div>
     </div>
-    <div>
-      <button class="pass_change btn btn-outline-danger">비밀번호 변경</button>
     </div>
-    </div>
-  </section>
+  </div>
 </main>
+
+        <SelectMbtiModal v-if="mbtiModalOpen ===true" v-model ="userMbti"  v-on:selectmbti = "selectmbti" />
+
+        <SelectInterestModal v-if="interestModalOpen === true" v-model = "userInterestList"   v-on:SelectInterest = "SelectInterest" />
+
 </template>
 
 <script>
+import { mapGetters, } from 'vuex'
+import MainNav from '@/components/MainPage/MainNavbar.vue'
+import SelectMbtiModal from '@/components/SelectMbtiModal.vue';
+import SelectInterestModal from '@/components/SelectInterestModal.vue';
 export default {
+  components: {
+    SelectMbtiModal,
+    SelectInterestModal,
+    MainNav
+  },
+  data(){
+  return{
+        userEmail :  '',
+        userMBTI   : this.$store.getters.getUser.userMbti,
+        userGender : this.$store.getters.getUser.userGender, 
+        userName   : this.$store.getters.getUser.userName,
+        userField  : this.$store.getters.getUser.userField,
+        userPhone  : this.$store.getters.getUser.userPhone,
+        userNickname : this.$store.getters.getUser.userNickname,
+        userInterestList : [],
+        mbtiModalOpen : false,
+        interestModalOpen: false,
+        nameOpen: false,
+        nicknameOpen: false,
+        userFieldOpen: false,
+        phoneOpen:false,
+        genderOpen:false,
+  }
+  },
+  computed: {
+    ...mapGetters(['']),
+  },
+  methods:{
+   submit(){
+     const userDetailData = {
+        "userMbti": this.userMBTI,
+        "userGender": this.userGender,
+        "userNickname" : this.userNickname,
+        "userName": this.userName,
+        "userField" : this.userField,
+        "userPhone": this.userPhone,   
+      }
+     setTimeout(() => {this.$store.dispatch('setUserInfo', userDetailData)}, 100)
 
+     this.$store.dispatch('editProfile', userDetailData);
+  },
+   selectmbti(value){
+        this.mbtiModalOpen = false;
+        this.userMBTI = value;
+        console.log(this.userMBTI);
+        //일단 이건 잘돌아감 mbti 모달에서 데이터 잘 받음
+    },
+    SelectInterest(value){
+        this.interestModalOpen = false;
+        this.userInterestList = value;
+        console.log(this.userInterestList) 
+    },
+}
 }
 </script>
 
 <style scoped>
+/* 폰트 */
+
+main{
+  min-width: 950px;
+}
 /* 폰트 */
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
@@ -88,17 +153,18 @@ export default {
 
 /* 사이드바 기본 */
 .sidebar {
-  position: fixed;
+  float: left;
   width: 20%;
-  height: 100vh;
+  height: 90vh;
   font-size: 0.75em;
   background: white;
   box-shadow: 1px 1px 16px 0 rgb(0 0 0 / 16%);
+  min-width: 200px;
 }
 
 /* 프로필 공간 */
 .content{
-  margin-top : 5rem;
+  margin-top : 1rem;
   padding-inline: 5rem;
 }
 
@@ -148,7 +214,9 @@ export default {
 .nav ul li.active a {
   color: black;
 }
-
+.ul-top{
+  margin-top:0px;
+}
 /* active아닐시 */
 .nav ul li:not(.active)::after {
   opacity: 0.2;
@@ -169,7 +237,7 @@ export default {
   background: black;
   left: 0;
   bottom: 0;
-  background-image: linear-gradient(to right, #175bee, #0f0e0f);
+  background-image: linear-gradient(to right, #2bb23f, #00ffb3);
 }
 
 /* 프로필 박스 */
@@ -177,9 +245,8 @@ export default {
   /* background-color: rgba(240,255,240,233); */
   position: relative;
   font-family: 'Noto Sans KR', sans-serif;
-  width: 80%;
+  width: 75%;
   float: right;
-  height: 100vh;
 }
 
 /* 컨테이너(현재 안씀) */
@@ -238,11 +305,11 @@ export default {
 }
 
 .myInfo_area li:nth-child(2) {
-    width: 75%;
+    width: 70%;
     text-align: left;
 }
 .myInfo_area li:nth-child(3) {
-    width: 10%;
+    width: 15%;
     text-align: left;
 }
 
@@ -273,5 +340,14 @@ hr{
   color: gray;
   width: 95%;
 }
+.update_btn{
+  min-width: 75px;
+  border-radius: 8px;
+  border: green 2px solid;
+  color : green;
+  background-color: white;
+}
 
 </style>
+
+
