@@ -46,7 +46,7 @@ export default {
     },
     saveRefreshToken({ commit }, refreshToken){
       commit('SET_REFRESHTOKEN', refreshToken)
-      localStorage.setItem('token', refreshToken)
+      localStorage.setItem('refreshToken', refreshToken)
     },
     removeRefreshToken({ commit }){
       commit('SET_REFRESHTOKEN', "")
@@ -72,7 +72,7 @@ export default {
               dispatch('saveRefreshToken', res.data.refreshToken)
               dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
-              dispatch('getUserInfo')
+              // dispatch('getUserInfo')
 
               // router.push({ name: 'LoginHome' })
             })
