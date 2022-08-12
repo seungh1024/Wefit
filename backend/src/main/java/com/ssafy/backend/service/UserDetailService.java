@@ -7,6 +7,7 @@ import com.ssafy.backend.repository.UserDetailRepository;
 import com.ssafy.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +29,11 @@ public class UserDetailService {
     }
 
     // 유저 디테일 정보 저장 C
+    @Transactional
     public UserDetail createUserDetail(String userEmail, UserDetail userDetail){
         User user = userRepository.findUserByUserEmail(userEmail);
         userDetail.setUser(user);
-        deleteUserDetail(userEmail);
+        userDetailRepository.deleteUserDetailByUserUserEmail(userEmail);
         userDetailRepository.save(userDetail);
 
         return userDetail;
