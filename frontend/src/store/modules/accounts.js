@@ -254,12 +254,14 @@ export default {
 
     },
 
-    fetchCurrentUser({ commit, getters, dispatch }) {
+    fetchCurrentUser({ commit, getters, dispatch,state }) {
       if (getters.isLoggedIn) {
         axios({
           url: drf.accounts.userInfo(),
           method: 'get',
-          headers: getters.authHeader,
+          headers: {
+            Authorization: `Bearer ${state.accessToken}`
+            },
         })
           .then(res => commit('SET_CURRENT_USER', res.data))
           .catch(err => {
