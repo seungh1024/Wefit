@@ -11,6 +11,9 @@ COPY package*.json ./
 
 # install project dependencies
 RUN npm install
+RUN npm install --save-dev @iconify/vue
+RUN npm i webstomp-client sockjs-client
+RUN npm install sweetalert2
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
