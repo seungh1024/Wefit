@@ -42,7 +42,7 @@ export default {
   actions: {
     saveToken({ commit }, token) {
       commit('SET_TOKEN', token)
-      localStorage.setItem('token', token)
+      localStorage.setItem('accessToken', token)
     },
     saveRefreshToken({ commit }, refreshToken){
       commit('SET_REFRESHTOKEN', refreshToken)
