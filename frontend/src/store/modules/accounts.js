@@ -95,8 +95,10 @@ export default {
         .then(res => {
           commit('SET_USEREMAIL',user.email)
           dispatch('getUserInfo')
+          console.log(state.user)
           let data = state.user
-          if(data.userMbti == ''){
+          setTimeout(()=>{
+            if(data.userMbti == ''){
             confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
             router.push({name : 'SigupDetail'})
           }
@@ -105,6 +107,8 @@ export default {
             dispatch('saveRefreshToken', res.data.refreshToken)
             router.push({ name: 'LoginHome' })
           }    
+          }, 500)
+          
           /*
           if(self.getUserInfo().then == null ){
             confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
