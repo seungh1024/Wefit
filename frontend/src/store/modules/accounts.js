@@ -72,7 +72,7 @@ export default {
               dispatch('saveRefreshToken', res.data.refreshToken)
               // dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
-              // dispatch('getUserInfo')
+              dispatch('getUserInfo')
 
               router.push({ name: 'LoginHome' })
             })

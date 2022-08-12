@@ -61,17 +61,18 @@ export default {
     // The signed-in user info.
     //const user = result.user;
 		
-		this.$store.dispatch('socialSignup', user)
+		// this.$store.dispatch('socialSignup', user)
     // ...
      }).catch((error) => {
     // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // // The email of the user's account used.
+    // const email = error.customData.email;
+    // // The AuthCredential type that was used.
+    // const credential = GoogleAuthProvider.credentialFromError(error);
+    // // ...
+      console.error(error)
      });
       }
     }
