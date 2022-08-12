@@ -114,7 +114,7 @@ pipeline {
                 }
             }
         }
-        stage('Bulid & Run') {
+        stage('Fronteend Build & Run') {
             steps {
                 dir('frontend'){
                     sh 'echo " Frontend Build and Start"'
