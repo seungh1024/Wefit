@@ -76,7 +76,7 @@ export default {
               router.push({ name: 'LoginHome' })
             })
             .catch(err => {
-              confirm("아이디 또는 비밀번호가 잘못되었습니다.확인하고 다시 입력하세요")
+              alert("아이디 또는 비밀번호가 잘못되었습니다.확인하고 다시 입력하세요")
               console.log(err)
               console.error(err)
               commit('SET_AUTH_ERROR', err)
@@ -96,8 +96,6 @@ export default {
           dispatch('getUserInfo')
           
           setTimeout(()=>{
-            alert(state.user)
-            console.log("state.user:",state.user)
             let data = state.user
             if(data.userMbti == ''){
             alert("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
@@ -170,7 +168,7 @@ export default {
           commit('SET_AUTH_ERROR', err.response.data)
         })
     },
-    signupdetail({ commit }, userDetailData, userInterestList) {
+    signupdetail({ commit }, userDetailData) {
       axios({
         url: drf.accounts.userInfo()+userDetailData.userEmail,
         method: 'post',
@@ -193,27 +191,27 @@ export default {
         headers: {
         Authorization: `Bearer ${state.accessToken}`
         }
-        }).then(res => {
+        }).then(() => {
           const userdata = {
-          userMbti   : '',
-          userGender : '', 
-          userName   : '',
-          userField  : '',
-          userPhone  : '',
-          userNickName : '',
+            userMbti   : '',
+            userGender : '', 
+            userName   : '',
+            userField  : '',
+            userPhone  : '',
+            userNickName : '',
           }
-          dispatch('removeToken')
-          dispatch('removeVuex')
-          dispatch('setUserInfo',userdata)
-          commit('SET_USEREMAIL','')
-          commit('SET_DOUBLE_CHECK',true)
-          alert('성공적으로 logout!')
-          router.push({ name: 'NonLoginView' })
+            dispatch('removeToken')
+            dispatch('removeVuex')
+            dispatch('setUserInfo',userdata)
+            commit('SET_USEREMAIL','')
+            commit('SET_DOUBLE_CHECK',true)
+            alert('성공적으로 logout!')
+            router.push({ name: 'NonLoginView' })
         })
         .catch(err => {
-         confirm("에러!")
-         console.log(state.accessToken)
-         console.error(err.response)
+          alert("에러!")
+          console.log(state.accessToken)
+          console.error(err.response)
        })
    },
 
