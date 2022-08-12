@@ -64,14 +64,17 @@ export default {
             method: 'post',
             data: userData
           })
-            .then(res => {
+            .then((res) => {
+              console.log(res);
+              console.log(res.data);
+              console.log(res.data.token);
               dispatch('saveToken', res.data.token)
               dispatch('saveRefreshToken', res.data.refreshToken)
               dispatch('fetchCurrentUser')
               commit('SET_USEREMAIL', userData.userEmail)
               dispatch('getUserInfo')
 
-              router.push({ name: 'LoginHome' })
+              // router.push({ name: 'LoginHome' })
             })
             .catch(err => {
               confirm("아이디 또는 비밀번호가 잘못되었습니다.확인하고 다시 입력하세요")
