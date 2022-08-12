@@ -31,7 +31,7 @@ public class TokenService {
 
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
-        this.accessTokenValidityInMilliseconds = 1000L * 30 * 1; //3m
+        this.accessTokenValidityInMilliseconds = 1000L * 30 * 10; //3m
         this.refreshTokenValidityInMilliseconds = 1000L * 60 * 60 * 24 * 14; // 14d
         this.redisService = redisService;
     }
