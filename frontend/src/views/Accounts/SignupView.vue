@@ -46,22 +46,22 @@ export default {
     },
     methods: {
     googleSignup(){
-    const provider = new GoogleAuthProvider();
-		provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-		provider.setCustomParameters({
-       'login_hint': 'user@example.com'
-        });
-		const auth = getAuth();
-    signInWithPopup(auth, provider).then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    console.log(result.user);
-    const user = result.user;
+      const provider = new GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      provider.setCustomParameters({
+        'login_hint': 'user@example.com'
+          });
+      const auth = getAuth();
+      signInWithPopup(auth, provider).then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      console.log(result.user);
+      const user = result.user;
     
     // The signed-in user info.
     //const user = result.user;
 		
-		// this.$store.dispatch('socialSignup', user)
+		this.$store.dispatch('socialSignup', user)
     // ...
      }).catch((error) => {
     // Handle Errors here.
