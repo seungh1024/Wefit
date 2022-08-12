@@ -119,12 +119,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/ws/**",
                         "/api/v1/user-info/**",
                         "/api/v1/social/googleSignup",
-                        "/api/v1/social/googleLogin"
+                        "/api/v1/social/googleLogin",
 //                        "/api/v1/mbti/**",
 //                        "/api/v1/like/**",
-//                        "/api/v1/password",
+                        "/api/v1/password",
 //                        "/api/v1/user-singo/**",
-//                        "/api/v1/check/**"
+                        "/api/v1/check/**"
 
                 ).permitAll()
 
