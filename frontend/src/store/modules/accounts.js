@@ -224,6 +224,9 @@ export default {
     getUserInfo({commit,dispatch, state}){
         axios({
           url: drf.accounts.userInfo()+`${state.userEmail}`,
+          headers: {
+            Authorization: `Bearer ${state.accessToken}`
+            },
           method: 'GET',
            }).then((res) =>
             {
