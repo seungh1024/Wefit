@@ -704,7 +704,7 @@ export default {
           .post(`${OPENVIDU_SERVER_URL}/createSession`, {
             userEmail: mySessionId,
             headers:{
-            Authorization: `Bearer ${this.$store.state.accessToken}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
           })
           .then((response) => {
@@ -928,12 +928,12 @@ export default {
       let self = this;
       this.socketConnect();
       setTimeout(() => {
-        console.log(this.$store.state.accessToken)
+        console.log(localStorage.getItem("accessToken"))
         axios
         .post(`${OPENVIDU_SERVER_URL}/matching`, {
           userEmail: self.userEmail,
           headers:{
-            Authorization: `Bearer ${this.$store.state.accessToken}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
         })
         .then((response) => {
@@ -952,7 +952,7 @@ export default {
         .post(`${OPENVIDU_SERVER_URL}/exitMatching`, {
           userEmail: self.userEmail,
           headers:{
-            Authorization: `Bearer ${this.$store.state.accessToken}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
         })
         .then((response) => {
