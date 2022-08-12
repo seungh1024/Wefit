@@ -1,4 +1,5 @@
-const HOST = 'http://3.36.88.140:8080/api/v1/'
+// const HOST = 'http://3.36.88.140:8080/api/v1/'
+const HOST = 'http://i7b206.p.ssafy.io/api/v1'
 // const HOST = '3.34.252.133'
 
 // const ACCOUNTS = 'accounts/'
