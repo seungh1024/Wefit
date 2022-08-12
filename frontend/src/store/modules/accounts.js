@@ -102,7 +102,7 @@ export default {
           }
           else{
             dispatch('saveToken', res.data.token)
-            dispatch('saveToken', res.data.refreshToken)
+            dispatch('saveRefreshToken', res.data.refreshToken)
             router.push({ name: 'LoginHome' })
           }    
           /*
