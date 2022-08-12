@@ -27,7 +27,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 //        request.setAttribute("401","유효하지 않습니다");
 //        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(os, new ResponseEntity<ErrorDto>(new ErrorDto(401,"유효하지 않은 토큰입니다"),HttpStatus.UNAUTHORIZED));

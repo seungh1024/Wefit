@@ -56,7 +56,7 @@ public class UserController {
 
     // 해당 사용자 정보 조회
     @GetMapping("/user/{username}")
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> getUserInfo(@PathVariable String username){
         User user = userRepository.findUserByUserEmail(username);
         if(user==null){

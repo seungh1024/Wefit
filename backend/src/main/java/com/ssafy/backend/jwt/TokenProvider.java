@@ -43,7 +43,7 @@ public class TokenProvider implements InitializingBean {
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds, //토큰 유효기간
             UserRepository userRepository, RedisService redisService, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds ;
         this.userRepository = userRepository;
         this.redisService = redisService;
         this.authenticationManagerBuilder = authenticationManagerBuilder; // 0726 refactoring
