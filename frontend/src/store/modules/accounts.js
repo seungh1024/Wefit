@@ -249,24 +249,24 @@ export default {
 
     },
 
-    fetchCurrentUser({ commit, getters, dispatch,state }) {
-      if (getters.isLoggedIn) {
-        axios({
-          url: drf.accounts.userInfo(),
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${state.accessToken}`
-            },
-        })
-          .then(res => commit('SET_CURRENT_USER', res.data))
-          .catch(err => {
-            if (err.response.status === 401) {
-              dispatch('removeToken')
-              router.push({ name: 'LoginView' })
-            }
+    editProfile({dispatch,commit,state} ,userDetailData){
+      console.log(1111)
+      axios({
+        url: drf.accounts.userInfo()+state.userEmail,
+        method: 'PUT',
+        data: userDetailData,
+      }).then( res=> {
+          dispatch('getUserInfo')
+          confirm("회원정보가 수정되었습니다.")
+          console.log(res)
+          router.push({ name:'ProfileView'})
           })
-        }
-      },
+        .catch(err => {
+          console.error(err)
+          commit('SET_AUTH_ERROR')
+        })
+    },
+    
   },
   modules: {
   }
