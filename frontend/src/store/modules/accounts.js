@@ -95,11 +95,13 @@ export default {
         .then(res => {
           commit('SET_USEREMAIL',user.email)
           dispatch('getUserInfo')
-          console.log(state.user)
-          let data = state.user
+          
           setTimeout(()=>{
+            alert(state.user);
+            console.log("state.user:",state.user)
+            let data = state.user
             if(data.userMbti == ''){
-            confirm("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
+            alert("상세정보가 입력되지 않았습니다. 상세정보로 이동합니다")
             router.push({name : 'SigupDetail'})
           }
           else{
