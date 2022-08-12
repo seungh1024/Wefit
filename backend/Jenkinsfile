@@ -86,58 +86,13 @@ pipeline {
                         sh 'docker-compose up -d'
                     }
                 }
-
-
             }
 
             post {
                 failure {
                     sh 'echo "Bulid Docker Fail"'
                 }
-              }
-        }
-
-        stage('[FE] prepare') {
-            steps {
-                dir('frontend'){
-                    sh 'echo " Frontend Bulid Start"'
-                    script {
-                        sh 'docker-compose stop'
-                        sh 'docker rm vue'
-                        sh 'docker rmi frontend-vue'
-                    }
-                }
-
-
             }
-
-            post {
-                failure {
-                    sh 'echo "Frontend Build Fail"'
-                }
-              }
         }
-        stage('Bulid & Run') {
-            steps {
-                dir('frontend'){
-                    sh 'echo " Frontend Build and Start"'
-                    script {
-
-//                         업데이트된 코드로 빌드 및 실행
-                        sh 'docker-compose up -d'
-                    }
-                }
-
-
-            }
-
-            post {
-                failure {
-                    sh 'echo "Bulid Docker Fail"'
-                }
-              }
-        }
-
-
     }
 }
