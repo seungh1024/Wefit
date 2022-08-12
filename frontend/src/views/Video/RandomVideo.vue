@@ -703,6 +703,9 @@ export default {
         axios
           .post(`${OPENVIDU_SERVER_URL}/createSession`, {
             userEmail: mySessionId,
+            headers:{
+            Authorization: `Bearer ${this.$store.state.accessToken}`
+          }
           })
           .then((response) => {
             console.log("debuf - getCreateToken", response.data["token"]);
@@ -925,6 +928,7 @@ export default {
       let self = this;
       this.socketConnect();
       setTimeout(() => {
+        console.log(this.$store.state.accessToken)
         axios
         .post(`${OPENVIDU_SERVER_URL}/matching`, {
           userEmail: self.userEmail,
@@ -947,6 +951,9 @@ export default {
       axios
         .post(`${OPENVIDU_SERVER_URL}/exitMatching`, {
           userEmail: self.userEmail,
+          headers:{
+            Authorization: `Bearer ${this.$store.state.accessToken}`
+          }
         })
         .then((response) => {
           console.log("debuf - cancleMatchingReqeust", response);
