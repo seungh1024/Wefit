@@ -71,7 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
-                        "/favicon.ico"
+                        "/favicon.ico",
+                        "/ws"
 //                        "/api/v1/login",
 //                        "/api/v1/user/**",
 //                        "/api/v1/re-issue",

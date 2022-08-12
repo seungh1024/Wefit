@@ -59,7 +59,7 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('accessToken')
   const noAuthPages = ['NonLoginView' ,'LoginView', 'SignupView','SigupDetail','SignUpByEmail']
   if (noAuthPages.includes(to.name)) {
     if (token) {
