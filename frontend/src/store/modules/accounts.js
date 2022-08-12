@@ -155,6 +155,8 @@ export default {
     },
     socialSignup({ commit }, user) {
       console.log(user)
+      console.log("se: ",user.se)
+      console.log("token: ",user.accessToken)
       axios({
         url: drf.accounts.socialSignup(),
         method: 'post',
