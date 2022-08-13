@@ -948,7 +948,7 @@ export default {
           console.log(err);
           self.socketClose();
         });
-      }, 1000);      
+      }, 3000);      
     },
     
     cancleMatchingReqeust(){ //매칭 요청 취소 하기
