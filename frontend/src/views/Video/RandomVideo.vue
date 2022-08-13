@@ -938,7 +938,7 @@ export default {
         method: 'post',
         data: {userEmail: self.userEmail},
         headers: {
-          Authorization: `Bearer ${user.accessToken}`
+          Authorization: `Bearer ${self.$store.state.user.accessToken}`
         },
       })        
         .then((response) => {
@@ -958,7 +958,7 @@ export default {
         method: 'post',
         data: {userEmail: self.userEmail},
         headers: {
-          Authorization: `Bearer ${user.accessToken}`
+          Authorization: `Bearer ${self.$store.state.user.accessToken}`
         },
       })
         .then((response) => {
@@ -982,7 +982,7 @@ export default {
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       this.stompClient.connect(
         {
-          Authorization: `Bearer ${user.accessToken}`
+          Authorization: `Bearer ${self.$store.state.user.accessToken}`
         },
         frame => {
           // 소켓 연결 성공          
