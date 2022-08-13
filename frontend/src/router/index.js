@@ -58,21 +58,21 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('accessToken')
-  const noAuthPages = ['NonLoginView' ,'LoginView', 'SignupView','SigupDetail','SignUpByEmail']
-  if (noAuthPages.includes(to.name)) {
-    if (token) {
-      alert('로그아웃 후 이동할 수 있습니다.')
-      next({ name: 'LoginHome' })
-    }
-  } else {
-    if (!token) {
-      alert('로그인 후 접근해 주세요.')
-      next({ name: 'LoginView' })
-    }
-  }
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem('accessToken')
+//   const noAuthPages = ['NonLoginView' ,'LoginView', 'SignupView','SigupDetail','SignUpByEmail']
+//   if (noAuthPages.includes(to.name)) {
+//     if (token) {
+//       alert('로그아웃 후 이동할 수 있습니다.')
+//       next({ name: 'LoginHome' })
+//     }
+//   } else {
+//     if (!token) {
+//       alert('로그인 후 접근해 주세요.')
+//       next({ name: 'LoginView' })
+//     }
+//   }
+//   next()
+// })
 
 export default router
