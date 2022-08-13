@@ -5,21 +5,21 @@
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> -->
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="@/assets/MainPage/nonLoginPage.jpg" class="d-block w-100" alt="nonLoginPage.jpg">
+      <img src="@/assets/MainPage/loginhome.png" class="image-1 d-block w-100" alt="loginhome.png">
       <div class="container">
         <div class="carousel-caption text-end">
           <h1>랜덤 매칭</h1>
           <p>당신의 취향에 맞는 친구를 찾아 떠나보아요</p>
-          <p><a class="btn btn-lg btn-outline-light" href="#">매칭하러 가기</a></p>
+          <p><a class="btn btn-lg btn-outline-light" href="/randomvideo">매칭하러 가기</a></p>
         </div>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="@/assets/MainPage/nonLoginPage.jpg" class="d-block w-100" alt="nonLoginPage.jpg">
+      <img src="@/assets/MainPage/loginhome.png" class="d-block w-100" alt="nonLoginPage.jpg">
       <div class="container">
         <div class="carousel-caption text-end">
           <h1>방 만들기</h1>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="carousel-item">
+    <!-- <div class="carousel-item">
       <img src="@/assets/MainPage/nonLoginPage.jpg" class="d-block w-100" alt="nonLoginPage.jpg">
       <div class="container">
         <div class="carousel-caption text-end">
@@ -37,7 +37,7 @@
           <p><a class="btn btn-lg btn-outline-light" href="#">커뮤니티 둘러보기</a></p>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -128,54 +128,55 @@ export default {
 </script>
 
 <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
+  .bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  }
 
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
+  @media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+  }
 
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
+  .b-example-divider {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
 
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
+  .b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+  }
 
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
+  .bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+  }
 
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
+  .nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  }
     </style>

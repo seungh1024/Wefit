@@ -70,7 +70,7 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 export default{
   data() {
       return {
@@ -79,23 +79,35 @@ export default{
     }
     },
     created() {
-      this.userEmail = this.getUserInfo.userEmail
-    },
-    computed: {
-      ...mapGetters(['getUserInfo'])
+      const payload = JSON.parse(window.localStorage.vuex)
+      this.getUserInfo(payload.accounts.userEmail)
+      console.log(this.$store.state)
+      this.userEmail = this.$store.state.accounts.userEmail
+      console.log(this.userEmail)
     },
     methods: {
+    ...mapActions(['getUserInfo']),
+
     selectmbti(){
       const mbti = this.checkedValues;
       this.$emit("selectmbti",mbti);
       console.log(mbti)
+      let formData = []
       for (var i = 0; i < mbti.length; i++) {
-        let formData = {
-          'userHateMbti':mbti[i]
-        }
-        axios.post(`http://localhost:8080/api/v1/mbti/${this.userEmail}`, formData)
-        console.log(formData)
+        formData.push(
+         {
+            'mbtiName':mbti[i]
+          })
+          
       }
+      console.log(formData)
+      axios.post(`http://i7b206.p.ssafy.io/api/v1/mbti/${this.userEmail}`, formData)
+      .then( res => {
+        console.log(res)
+        })
+      .catch(err => {
+        console.error(err)
+      })
     }    
   }
 };
@@ -105,7 +117,7 @@ export default{
 .mbti {
   color : #343434;
   position: fixed;
-  top: 35%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

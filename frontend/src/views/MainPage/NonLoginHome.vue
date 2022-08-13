@@ -15,33 +15,6 @@
           <router-link :to="{name:'SignupView'}" class="signupstyle">Signup</router-link>
         </button>
       </div>
-    </div>
-    <div class="sec-background">
-      <div class="spacebox"></div>
-      <div class="sub-mention">
-        이 세상의 어쩌구 저쩌구
-      </div>
-      <div class="spacebox"></div>
-      <div class="whitebox rounded">
-        <img src="http://image.kyobobook.co.kr/newimages/giftshop_new/goods/400/1361/S1579002728239.jpg" class="rounded">
-        <div class="div-center">
-          첫번째 설명
-        </div>
-      </div>
-      <div class="spacebox"></div>
-      <div class="whitebox-right rounded">
-        <div class="div-center">
-          두번째 설명
-        </div>
-        <img src="http://image.kyobobook.co.kr/newimages/giftshop_new/goods/400/1361/S1579002728239.jpg" class="rounded">
-      </div>
-      <div class="spacebox"></div>
-      <div class="whitebox rounded">
-        <img src="http://image.kyobobook.co.kr/newimages/giftshop_new/goods/400/1361/S1579002728239.jpg" class="rounded">
-        <div class="div-center">
-          세번째 설명
-        </div>
-      </div>
       <div class="spacebox"></div>
     </div>
   </div>
@@ -60,10 +33,10 @@ export default {
   background-color: rgba(6, 6, 6, 6);
 }
 /* 메인 크기(1200기준으로 남는 부분 검정 채우기) */
-.main{
+/* .main{
   width:1200px; 
   margin:0 auto; 
-}
+} */
 
 /* 배경 사진 */
 .background{
@@ -87,7 +60,7 @@ export default {
 
 /* 중간 상자(공백 만들기) */
 .spacebox{
-  height:5rem;
+  height:25rem;
 }
 
 /* 기본 폰트 */
