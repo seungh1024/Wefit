@@ -341,6 +341,10 @@
             </div>                  
           </div>          
         </div>
+        <div>
+          <input type="text" v-model="userEmail">
+          <button @click="socketConnect">소켓 연결해보기</button>
+        </div>
   </div>
 </template>
 
