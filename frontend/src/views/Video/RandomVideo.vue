@@ -930,7 +930,7 @@ export default {
 //---------------- random matching start 
     matchingReqeust(){ //매칭 요청 하기
       let self = this;
-      // this.socketConnect();
+      this.socketConnect();
       setTimeout(() => {
         console.log(localStorage.getItem("accessToken"))
         axios({
