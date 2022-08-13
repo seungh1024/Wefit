@@ -368,7 +368,7 @@ import SockJS from 'sockjs-client'
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://i7b206.p.ssafy.io/api/v1/webrtc";
+const OPENVIDU_SERVER_URL = "http://i7b206.p.ssafy.io:8080/api/v1/webrtc";
 
 export default {
   name: "App",
@@ -933,13 +933,14 @@ export default {
       this.socketConnect();
       setTimeout(() => {
         console.log(localStorage.getItem("accessToken"))
-        axios
-        .post(`${OPENVIDU_SERVER_URL}/matching`, {
-          userEmail: self.userEmail,
-          headers:{
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        })
+        axios({
+        url: `${OPENVIDU_SERVER_URL}/matching`,
+        method: 'post',
+        data: {userEmail: self.userEmail},
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        },
+      })        
         .then((response) => {
           console.log("debuf - matchingReqeust", response);                  
         })
@@ -952,13 +953,14 @@ export default {
     
     cancleMatchingReqeust(){ //매칭 요청 취소 하기
       let self = this;
-      axios
-        .post(`${OPENVIDU_SERVER_URL}/exitMatching`, {
-          userEmail: self.userEmail,
-          headers:{
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        })
+       axios({
+        url: `${OPENVIDU_SERVER_URL}/exitMatching`,
+        method: 'post',
+        data: {userEmail: self.userEmail},
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        },
+      })
         .then((response) => {
           console.log("debuf - cancleMatchingReqeust", response);
           self.socketClose();
