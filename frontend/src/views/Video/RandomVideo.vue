@@ -930,7 +930,7 @@ export default {
 //---------------- random matching start 
     matchingReqeust(){ //매칭 요청 하기
       let self = this;
-      this.socketConnect();
+      // this.socketConnect();
       setTimeout(() => {
         console.log(localStorage.getItem("accessToken"))
         axios({
@@ -976,12 +976,14 @@ export default {
 
     socketConnect(){ // 소켓 연결
       let self = this;
-      const serverURL = "http://i7b206.p.ssafy.io:8080/ws"
+      const serverURL = "https://i7b206.p.ssafy.io:8080/ws"
       this.socket = new SockJS(serverURL);     
       this.stompClient = Stomp.over(this.socket);
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       this.stompClient.connect(
-        {},
+        {
+          Authorization: `Bearer ${user.accessToken}`
+        },
         frame => {
           // 소켓 연결 성공          
           console.log('소켓 연결 성공', frame);         
