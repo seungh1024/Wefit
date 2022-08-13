@@ -368,7 +368,7 @@ import SockJS from 'sockjs-client'
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "http://i7b206.p.ssafy.io:8080/api/v1/webrtc";
+const OPENVIDU_SERVER_URL = "http://i7b206.p.ssafy.io/api/v1/webrtc";
 
 export default {
   name: "App",
@@ -976,7 +976,7 @@ export default {
 
     socketConnect(){ // 소켓 연결
       let self = this;
-      const serverURL = "http://i7b206.p.ssafy.io:8080/ws"
+      const serverURL = "http://i7b206.p.ssafy.io/ws"
       this.socket = new SockJS(serverURL);     
       this.stompClient = Stomp.over(this.socket);
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
