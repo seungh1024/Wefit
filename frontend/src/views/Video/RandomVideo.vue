@@ -970,7 +970,7 @@ export default {
 
     socketConnect(){ // 소켓 연결
       let self = this;
-      const serverURL = "https://i7b206.p.ssafy.io/ws"
+      const serverURL = "http://i7b206.p.ssafy.io:8080/ws"
       this.socket = new SockJS(serverURL);     
       this.stompClient = Stomp.over(this.socket);
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
