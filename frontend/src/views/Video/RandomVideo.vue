@@ -694,6 +694,8 @@ export default {
       this.subscribers = [];
       this.OV = undefined;
 
+      this.socketClose();
+
       window.removeEventListener("beforeunload", this.leaveSession);
     },
 
