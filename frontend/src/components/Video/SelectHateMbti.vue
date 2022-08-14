@@ -2,7 +2,7 @@
    <div class="mbti">
    <div class="white-bg">
     <br>
-    <p>MBTI를 선택해 주세요</p>
+    <p>싫어하는 MBTI를 선택해 주세요</p>
     <table>
     <tr>
     <td>
