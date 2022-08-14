@@ -5,7 +5,8 @@
           </div>
       </v-row>
       <div>
-        <h1>WEFIT</h1>
+        
+        <h1><div class="wefit_logo" />EFIT</h1>
         <button class="btn btn-outline-light loginbtn">
           <router-link :to="{name:'LoginView'}" class="loginstyle">Login</router-link>
         </button>
@@ -38,7 +39,7 @@ export default {
     rgba(6, 6, 6, 0),
         rgba(255, 255, 255, 0)
       ), url("@/assets/images/Home.png");
-      min-width: 1400px;
+      min-width: 1500px;
 }
 
 /* 상단 margin 처리 */
@@ -67,6 +68,12 @@ h1{
   font-size: 150px;
 }
 
+.wefit_logo{
+  display: inline-block;
+  width:216px;
+  height: 130px;
+  background-image: url("@/assets/WeFIt_title_Logo.PNG");
+}
 /* 아랫배경(색동일) */
 .sec-background{
 

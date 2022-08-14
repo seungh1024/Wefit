@@ -112,6 +112,11 @@ export default {
 h2{
   font-family: 'GmarketSansMedium';
 	color : white;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
  }
 .title{
   color:white;

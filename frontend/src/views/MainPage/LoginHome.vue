@@ -59,8 +59,8 @@
     <br>
     <div class="row my-3 py-3">
       <div class="text-center">
-        <h1>너랑 나랑 위핏</h1>
-        <h4 class="pt-2">블라블라</h4>
+        <h1 class="title_font">너랑 나랑 위핏</h1>
+        <h4 class="title_font pt-2">당신에게 딱 맞는 친구 위핏</h4>
         <br>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
@@ -76,8 +76,8 @@
         <h2 class="featurette-heading fw-normal lh-1">가랑비에 옷 젖는 줄 모르는 인연 찾기</h2>
          <!-- <span class="text-muted">It’ll blow your mind.</span> -->
          <br>
-        <p class="lead my-3"> • 1초 만에 프로필을 스와이프 하는 쇼핑 같은 인연을 즐기신다면, 위핏은 맞지 않아요.</p>
-        <p class="lead my-3"> • 인연은 첫눈에 결정되는 것이 아니라, '가랑비에 옷 젖는 줄 모른다’라는 속담처럼 어느새 상대방에게 스며드는 것이죠.</p>
+        <p class="lead my-3"> 1초 만에 프로필을 스와이프 하는 쇼핑 같은 인연을 즐기신다면, 위핏은 맞지 않아요.</p>
+        <p class="lead my-3"> 인연은 첫눈에 결정되는 것이 아니라, '가랑비에 옷 젖는 줄 모른다’라는 속담처럼 어느새 상대방에게 스며드는 것이죠.</p>
         <p class="lead my-3"></p>
       </div>
       <div class="col-md-5">
@@ -97,7 +97,7 @@
       </div>
     </div>
     <hr class="featurette-divider">
-    <div class="row featurette">
+    <div class="row featurette" id="tester">
       <div class="col-md-7 order-md-2">
       <br><br>
         <h2 class="featurette-heading fw-normal lh-1">대화 먼저, 얼굴 공개는 천천히</h2>
@@ -156,7 +156,25 @@ export default {
 </script>
 
 <style>
-
+@font-face {
+    font-family: 'RIDIBatang';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.title_font{
+  font-family: 'RIDIBatang';
+}
+#tester{
+  font-family: 'RIDIBatang';
+}
+h1{
+    -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
   .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
