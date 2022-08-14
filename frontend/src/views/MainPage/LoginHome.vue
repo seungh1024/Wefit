@@ -56,9 +56,11 @@
   <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
+    <br>
     <div class="row my-3 py-3">
       <div class="text-center">
         <h1>우리의 서비스는 이렇습니다</h1>
+        <br>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
@@ -67,34 +69,56 @@
 
     <hr class="featurette-divider">
 
-    <div class="row featurette">
+    <div id="tester" class="row featurette">
       <div class="col-md-7">
+        <br><br>
         <h2 class="featurette-heading fw-normal lh-1">영혼의 듀오를 찾아보세요</h2>
          <!-- <span class="text-muted">It’ll blow your mind.</span> -->
+         <br>
         <p class="lead my-3">MBTI, 취향에 맞는 사람 찾기</p>
       </div>
       <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+        <br>
+        <img class="bd-placeholder-img 
+        bd-placeholder-img-lg 
+        featurette-image 
+        img-fluid mx-auto" 
+        width="500" height="500" 
+        src="@/assets/MainPage/loginhome1.png" 
+        role="img" aria-label="Placeholder: 500x500" 
+        preserveAspectRatio="xMidYMid slice" 
+        focusable="false">
+        <div>
+          <br><br>
+        </div>
       </div>
     </div>
-
     <hr class="featurette-divider">
-
     <div class="row featurette">
       <div class="col-md-7 order-md-2">
-        <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-        <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+      <br><br>
+        <h2 class="featurette-heading fw-normal lh-1">얼굴이 안보여</h2>
+        <br>
+        <p class="lead"> 당신의 마음에 드는 사람에게만 모습 공개 가능</p>
       </div>
       <div class="col-md-5 order-md-1">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+        <br><br>
+        <img class="bd-placeholder-img 
+        bd-placeholder-img-lg 
+        featurette-image 
+        img-fluid mx-auto" 
+        width="500" height="500" 
+        src="@/assets/MainPage/loginhome2.jpg" 
+        role="img" aria-label="Placeholder: 500x500" 
+        preserveAspectRatio="xMidYMid slice" 
+        focusable="false">
+      <div>
+        <br><br>
+      </div>
       </div>
     </div>
 
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
+    <!-- <div class="row featurette">
       <div class="col-md-7">
         <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
         <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
@@ -105,7 +129,7 @@
       </div>
     </div>
 
-    <hr class="featurette-divider">
+    <hr class="featurette-divider"> -->
 
     <!-- /END THE FEATURETTES -->
 
@@ -123,7 +147,6 @@ import MainFooter from '@/components/MainPage/MainFooter.vue'
 
 export default {
   components: { MainNavbar, MainFooter },
-
 }
 </script>
 
