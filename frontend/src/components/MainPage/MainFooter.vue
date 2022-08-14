@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div class="qqq">
+    <br><br>
     <footer class="container">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>&copy; 2021. WEFIT Co. all rights reserved. &middot; </p>
+    <p class="float-end"><a href="#" class="text-decoration-none text-black">Back to top</a></p>
+    <p>&copy; 2022. WEFIT Co. all rights reserved. &middot; </p>
+    <br>
+    <br>
+    <br>
   </footer>
   </div>
 </template>
@@ -13,6 +17,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.qqq {
+  background-color: #F9F9F9;
+}
 </style>

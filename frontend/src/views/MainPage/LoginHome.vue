@@ -56,9 +56,11 @@
   <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
+    <br>
     <div class="row my-3 py-3">
       <div class="text-center">
         <h1>우리의 서비스는 이렇습니다</h1>
+        <br>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
@@ -69,12 +71,14 @@
 
     <div id="tester" class="row featurette">
       <div class="col-md-7">
+        <br><br>
         <h2 class="featurette-heading fw-normal lh-1">영혼의 듀오를 찾아보세요</h2>
          <!-- <span class="text-muted">It’ll blow your mind.</span> -->
          <br>
         <p class="lead my-3">MBTI, 취향에 맞는 사람 찾기</p>
       </div>
       <div class="col-md-5">
+        <br>
         <img class="bd-placeholder-img 
         bd-placeholder-img-lg 
         featurette-image 
@@ -84,18 +88,21 @@
         role="img" aria-label="Placeholder: 500x500" 
         preserveAspectRatio="xMidYMid slice" 
         focusable="false">
-
+        <div>
+          <br><br>
+        </div>
       </div>
     </div>
     <hr class="featurette-divider">
-    <hr class="featurette-divider">
     <div class="row featurette">
       <div class="col-md-7 order-md-2">
+      <br><br>
         <h2 class="featurette-heading fw-normal lh-1">얼굴이 안보여</h2>
         <br>
         <p class="lead"> 당신의 마음에 드는 사람에게만 모습 공개 가능</p>
       </div>
       <div class="col-md-5 order-md-1">
+        <br><br>
         <img class="bd-placeholder-img 
         bd-placeholder-img-lg 
         featurette-image 
@@ -105,10 +112,11 @@
         role="img" aria-label="Placeholder: 500x500" 
         preserveAspectRatio="xMidYMid slice" 
         focusable="false">
+      <div>
+        <br><br>
+      </div>
       </div>
     </div>
-
-    <hr class="featurette-divider">
 
     <!-- <div class="row featurette">
       <div class="col-md-7">
