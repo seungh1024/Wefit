@@ -26,7 +26,7 @@
             <tr>
                 <td> 닉네임</td>  
                 <td v-if ="nicknameOpen === false"><span @click= "nicknameOpen = true" >입력</span></td>
-                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickName"  maxlength='8' placeholder="8자 이내로 입력해주세요."></td>
+                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickname"  maxlength='8' placeholder="8자 이내로 입력해주세요."></td>
             </tr>
             <tr>   
                 <td>지역</td>
@@ -97,7 +97,7 @@ export default {
         userName   : '',
         userField  : '',
         userPhone  : '',
-        userNickName : '',
+        userNickname : '',
         userInterestList : [],
         mbtiModalOpen : false,
         interestModalOpen: false,
@@ -116,7 +116,7 @@ export default {
         "userEmail" : this.$store.getters.getUserEmail,
         "userMBTI": this.userMBTI,
         "userGender": this.userGender,
-        "userNickname" : this.userNickName,
+        "userNickname" : this.userNickname,
         "userName": this.userName,
         "userField" : this.userField,
         "userPhone": this.userPhone,   

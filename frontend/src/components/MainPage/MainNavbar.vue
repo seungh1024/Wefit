@@ -16,7 +16,7 @@
         <form class="d-flex" role="search">
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
         <button class="btn btn-outline-success mx-3" @click.prevent="submit">로그아웃</button>
-        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success"><v-btn class="mx-1" dark>{{userNickName}}</v-btn></router-link>
+        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success"><v-btn class="mx-1" dark>{{userNickname}}</v-btn></router-link>
       </form>
     </div>
   </div>
@@ -29,14 +29,14 @@ export default {
   name: 'MainNavbar',
   data(){
     return{
-      userNickName:""
+      userNickname:""
     }
   },
    created() {
       const payload = JSON.parse(window.localStorage.vuex)
-      this.getUserInfo(payload.accounts.user.userNickName)
+      this.getUserInfo(payload.accounts.user.userNickname)
       console.log(this.$store.state)
-      this.userNickName = this.$store.state.accounts.user.userNickName
+      this.userNickname = this.$store.state.accounts.user.userNickname
     },
   methods: {
     ...mapActions(['getUserInfo']),
