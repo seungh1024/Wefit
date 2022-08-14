@@ -59,7 +59,8 @@
     <br>
     <div class="row my-3 py-3">
       <div class="text-center">
-        <h1>우리의 서비스는 이렇습니다</h1>
+        <h1>너랑 나랑 위핏</h1>
+        <h4 class="pt-2">블라블라</h4>
         <br>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
@@ -72,10 +73,12 @@
     <div id="tester" class="row featurette">
       <div class="col-md-7">
         <br><br>
-        <h2 class="featurette-heading fw-normal lh-1">영혼의 듀오를 찾아보세요</h2>
+        <h2 class="featurette-heading fw-normal lh-1">가랑비에 옷 젖는 줄 모르는 인연 찾기</h2>
          <!-- <span class="text-muted">It’ll blow your mind.</span> -->
          <br>
-        <p class="lead my-3">MBTI, 취향에 맞는 사람 찾기</p>
+        <p class="lead my-3"> • 1초 만에 프로필을 스와이프 하는 쇼핑 같은 인연을 즐기신다면, 위핏은 맞지 않아요.</p>
+        <p class="lead my-3"> • 인연은 첫눈에 결정되는 것이 아니라, '가랑비에 옷 젖는 줄 모른다’라는 속담처럼 어느새 상대방에게 스며드는 것이죠.</p>
+        <p class="lead my-3"></p>
       </div>
       <div class="col-md-5">
         <br>
@@ -97,9 +100,11 @@
     <div class="row featurette">
       <div class="col-md-7 order-md-2">
       <br><br>
-        <h2 class="featurette-heading fw-normal lh-1">얼굴이 안보여</h2>
+        <h2 class="featurette-heading fw-normal lh-1">대화 먼저, 얼굴 공개는 천천히</h2>
         <br>
-        <p class="lead"> 당신의 마음에 드는 사람에게만 모습 공개 가능</p>
+        <p class="lead"> • 위핏에서는 대화할수록 프로필이 점점 선명해져요.</p>
+        <p class="lead"> • 안전하고, 프라이버시에 민감한 사람을 위해 만들었어요. </p>
+        <p class="lead"> </p>
       </div>
       <div class="col-md-5 order-md-1">
         <br><br>
