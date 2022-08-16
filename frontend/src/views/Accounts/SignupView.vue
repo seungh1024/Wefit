@@ -80,6 +80,21 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+h2{
+  font-family: 'GmarketSansMedium';
+	color : white;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+ }
 .title{
   color:white;
   width: 100%;
@@ -121,12 +136,6 @@ export default {
   min-height: 100vh;
   background-color: rgba(30, 30, 30, 6);
 }
-
- h2{
-	color : white;
- }
-
-
 
  #signupbtn{
     text-size-adjust: none;

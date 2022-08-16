@@ -15,7 +15,7 @@
             <input type="text" id="emailInput" name="userEmail" class="input_text" ref="emailInput" v-model.trim="userEmail" placeholder="아이디를 입력하세요." />
           </div>
         <div>
-          <div>
+          <div class="mt-3">
             <label for="passwordInput" id = "passwordtext">비밀번호</label>
           </div>
 				    <input type="password" id="passwordInput" name="userPassword" class="input_text" ref="passwordInput" v-model.trim="userPassword" placeholder="패스워드를 입력하세요." />
@@ -23,14 +23,14 @@
         <div class="buttons">
           <button @click.prevent="login" class="button blue" id = "loginbtn">로그인</button>
           <div class="center_box">
-            <div class="fw_su_box">
+            <div class="fw_su_box mt-2">
               <div @click.prevent="$router.push('findid')" id = "findid">아이디찾기</div>  
               <div @click.prevent="$router.push('findpw')" id = "findpw" >비밀번호찾기</div>  
               <div @click.prevent="$router.push('signup')" id = "signup">회원가입</div>
             </div>
           </div> 
           <div>
-            <button @click.prevent="google" id = "googlebtn" type="button"></button>
+            <button @click.prevent="google" id = "googlebtn" type="button" class="mt-2"></button>
           </div>
         </div>
 		  </form>
@@ -96,6 +96,21 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+h2{
+  font-family: 'GmarketSansMedium';
+	color : white;
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+ }
 .title{
   color:white;
   width: 100%;
@@ -151,10 +166,6 @@ export default {
  .loginform{
   text-align:center;
 }
-
- h2{
-	color : white;
- }
 
  #signup {
   font-weight: bold;

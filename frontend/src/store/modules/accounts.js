@@ -15,7 +15,7 @@ export default {
       userName   : '',
       userField  : '',
       userPhone  : '',
-      userNickName : '',
+      userNickname : '',
     },
     authError: '',
   },
@@ -198,7 +198,7 @@ export default {
             userName   : '',
             userField  : '',
             userPhone  : '',
-            userNickName : '',
+            userNickname : '',
           }
             dispatch('removeToken')
             dispatch('removeVuex')
@@ -231,7 +231,7 @@ export default {
               userName   : res.data.userName,
               userField  : res.data.userField,
               userPhone  : res.data.userPhone,
-              userNickName : res.data.userNickname,
+              userNickname : res.data.userNickname,
             }
             dispatch('setUserInfo',userdata)
           })

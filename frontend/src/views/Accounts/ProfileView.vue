@@ -70,7 +70,6 @@
 </main>
 
         <SelectMbtiModal v-if="mbtiModalOpen ===true" v-model ="userMbti"  v-on:selectmbti = "selectmbti" />
-
         <SelectInterestModal v-if="interestModalOpen === true" v-model = "userInterestList"   v-on:SelectInterest = "SelectInterest" />
 
 </template>
