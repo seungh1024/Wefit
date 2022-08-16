@@ -1,5 +1,5 @@
 <template>
-	<video autoplay/>
+	<video :class="{ 'isCatchMind': catchMindStatus}" autoplay/>
 </template>
 
 <script>
@@ -8,6 +8,7 @@ export default {
 
 	props: {
 		streamManager: Object,
+		catchMindStatus: Boolean
 	},
 
 	mounted () {
@@ -15,3 +16,9 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.isCatchMind{
+	width: 700px;
+	height: 700px;
+}
+</style>

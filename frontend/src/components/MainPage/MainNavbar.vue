@@ -1,7 +1,9 @@
 <template>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/home">Wefit</a>
+    <a class="navbar-brand" href="/home">
+    <img class="navbar-img" src="@/assets/images/wefitlogo.jpg" alt="#">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,7 +16,10 @@
         <form class="d-flex" role="search">
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
         <button class="btn btn-outline-success mx-3" @click.prevent="submit">로그아웃</button>
-        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success"><v-btn class="mx-1" dark>프로필</v-btn></router-link>
+        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success">
+          <v-btn class="mx-1" dark v-if="userNickname==''">{{userNickname}}</v-btn>
+          <v-btn class="mx-1" dark v-if="userNickname!=''">프로필</v-btn>
+        </router-link>
       </form>
     </div>
   </div>
@@ -22,9 +27,22 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'MainNavbar',
+  data(){
+    return{
+      userNickname:""
+    }
+  },
+   created() {
+      const payload = JSON.parse(window.localStorage.vuex)
+      this.getUserInfo(payload.accounts.user.userNickname)
+      console.log(this.$store.state)
+      this.userNickname = this.$store.state.accounts.user.userNickname
+    },
   methods: {
+    ...mapActions(['getUserInfo']),
     submit(){
       this.$store.dispatch('logout')
     }
@@ -34,5 +52,9 @@ export default {
 </script>
 
 <style>
-
+.navbar-img {
+  margin-bottom: 7px;
+  max-height: 20px;
+  max-width: 50px;
+}
 </style>
