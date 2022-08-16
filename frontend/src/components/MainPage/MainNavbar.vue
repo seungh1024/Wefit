@@ -16,7 +16,10 @@
         <form class="d-flex" role="search">
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
         <button class="btn btn-outline-success mx-3" @click.prevent="submit">로그아웃</button>
-        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success"><v-btn class="mx-1" dark>{{userNickname}}</v-btn></router-link>
+        <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success">
+          <v-btn class="mx-1" dark v-if="userNickname==''">{{userNickname}}</v-btn>
+          <v-btn class="mx-1" dark v-if="userNickname!=''">프로필</v-btn>
+        </router-link>
       </form>
     </div>
   </div>

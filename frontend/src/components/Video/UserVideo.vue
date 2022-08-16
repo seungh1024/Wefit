@@ -1,6 +1,8 @@
 <template>
 <div v-if="streamManager" class="parent-video">
-	<ov-video :stream-manager="streamManager"/>
+	<ov-video :stream-manager="streamManager"
+		v-bind:catchMindStatus="this.catchMindStatus"
+	/>
 	<div class="child-name"><p>{{ clientData }}</p></div>
 </div>
 </template>
@@ -17,6 +19,7 @@ export default {
 
 	props: {
 		streamManager: Object,
+		catchMindStatus: Boolean
 	},
 
 	computed: {
