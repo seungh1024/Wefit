@@ -1,5 +1,5 @@
 <template>
-	<video :class="{ 'isCatchMind': catchMindStatus}" autoplay/>
+	<video class="webcam" :class="{ 'isCatchMind': catchMindStatus, 'isNotCatchMind': !catchMindStatus}" autoplay/>
 </template>
 
 <script>
@@ -17,8 +17,19 @@ export default {
 };
 </script>
 <style scoped>
+/* 캐치마인드인 경우 */
 .isCatchMind{
-	width: 700px;
-	height: 700px;
+	width: 180px;
+	height: 150px;
 }
+/* 기본옵션 */
+.isNotCatchMind{  
+	width: 500px;
+	height: 650px;
+}
+
+.webcam {
+	border-radius: 40px;
+}
+
 </style>
