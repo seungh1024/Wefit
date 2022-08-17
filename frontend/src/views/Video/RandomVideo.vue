@@ -1,9 +1,9 @@
 <template>
-  <MainNavbar v-if="!session" />
-  <VideoNavBar v-if="session" v-on:leaveSession ="leaveSession" />
+  <!-- <MainNavbar v-if="!session" />
+  <VideoNavBar v-if="session" v-on:leaveSession ="leaveSession" /> -->
   <div
     id="main-container"
-    :class="{ 'container-2': !session, 'containser-3': session }"
+    :class="{ 'container-2': !session, 'container-3': session }"
   >
     <div class="non-matching_bg" v-if="!session">
       <div class="matching-title pt-5">
@@ -278,6 +278,7 @@
                     <div v-if="!isReadyCatch">캐치마인드</div>
                     <div v-else>준비완료</div>
                   </button>
+                    <div v-if="isReadyCatch">캐치마인드 설명을 작성한다.</div>
                   <button @click="startABGame" v-if="stageStatus < 2">
                     <div v-if="!isReadyBal">밸런스 게임</div>
                     <div v-else>준비완료</div>
@@ -286,10 +287,18 @@
                     <div v-if="!isReadyCry">고요속의 외침</div>
                     <div v-else>준비완료</div>
                   </button>
+                    <div v-if="isReadyCry">상대의 입모양을 보고 답을 맞춰야한다.</div>
                 </div>
                 <!-- 교요 속의 외침 start -->
                 <div v-if="crystartStatus">
-                  <div v-if="cryBoss">{{ cryList[cryCnt] }}</div>
+                  <div v-if="cryBoss">
+                    <div>
+                    {{ cryList[cryCnt] }}
+                    </div>
+                    <div class="game_explain">
+                      상대방의 입모양을 보고 단어를 유추해서 맞춰야한다!
+                    </div>
+                    </div>
                   <div class="silence-cry" v-if="session && cryStatus">
                     <!--<div class="silence-cry"> -->
                     <div id="silence-timer" v-if="cryCheck">
@@ -309,6 +318,9 @@
                         @click="sendCryAnswer"
                       />
                     </div>
+                    <div class="game_explain">
+                     상대방에게 입모양만으로 정답을 전달해야만 한다!
+                  </div>
                   </div>
                 </div>
 
@@ -332,9 +344,15 @@
                     placeholder="정답을 입력하세요"
                     @keydown.enter="sendAns"
                   />
+                  <div class="game_explain">
+                  상대가 그림을 맞춰야한다.
+                </div>
                 </div>
                 <div class="pb-div" v-if="myTurn && catchMindStatus">
                   {{ problem }}
+                </div>
+                <div class="game_explain" v-if="myTurn && catchMindStatus">
+                  상대가 그림을 맞추게 해야한다.
                 </div>
               </div>
 
@@ -1887,7 +1905,7 @@ export default {
   margin-left: auto;
   background-color: rgba(148, 209, 202, 176);
   height: 900px;
-  min-width: 1200px;
+  min-width: 1500px;
 }
 
 .non-matching_bg {
@@ -1958,9 +1976,9 @@ export default {
   height: 350px;
   padding: 0px;
   top: 40%;
-  outline-style: solid;
-  outline-color: red;
+  /* outline-style: solid; */
   text-align: center;
+  border:none;
 }
 
 .card-title {
@@ -2152,7 +2170,7 @@ export default {
 }
 .chatmain {
   height: 250px;
-
+  background-color: white;
   overflow: auto;
 }
 .my-chat-time {
@@ -2225,8 +2243,7 @@ export default {
 }
 .bodies {
   display: flex;
-  height: 80%;
-  background: #f0f2f5;
+  height: 100%;
   position: relative;
   min-width: 1400px;
 }
@@ -2330,7 +2347,13 @@ export default {
   padding: 0px;
   top: 40%;
   outline-style: solid;
-  outline-color: red;
+  background-color: white;
   text-align: center;
+  border:none;
   }
+.container-3{
+  background-image:url('@/assets/mint_bg.jpg');
+  background-repeat:no-repeat;
+  background-size: cover;
+}
 </style>
