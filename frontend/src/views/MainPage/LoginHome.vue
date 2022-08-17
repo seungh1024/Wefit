@@ -87,7 +87,7 @@
         featurette-image 
         img-fluid mx-auto" 
         width="500" height="500" 
-        src="@/assets/MainPage/loginhome1.png" 
+        src="@/assets/MainPage/wefitmaincat.jpg" 
         role="img" aria-label="Placeholder: 500x500" 
         preserveAspectRatio="xMidYMid slice" 
         focusable="false">
@@ -102,8 +102,8 @@
       <br><br>
         <h2 class="featurette-heading fw-normal lh-1">대화 먼저, 얼굴 공개는 천천히</h2>
         <br>
-        <p class="lead"> • 위핏에서는 대화할수록 프로필이 점점 선명해져요.</p>
-        <p class="lead"> • 안전하고, 프라이버시에 민감한 사람을 위해 만들었어요. </p>
+        <p class="lead"> 위핏에서는 대화할수록 프로필이 점점 선명해져요.</p>
+        <p class="lead"> 안전하고, 프라이버시에 민감한 사람을 위해 만들었어요. </p>
         <p class="lead"> </p>
       </div>
       <div class="col-md-5 order-md-1">

@@ -17,8 +17,7 @@
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
         <button class="btn btn-outline-success mx-3" @click.prevent="submit">로그아웃</button>
         <router-link :to="{name:'ProfileView'}" class="btn btn-outline-success">
-          <v-btn class="mx-1" dark v-if="userNickname==''">{{userNickname}}</v-btn>
-          <v-btn class="mx-1" dark v-if="userNickname!=''">프로필</v-btn>
+          <v-btn class="mx-1" dark >프로필</v-btn>
         </router-link>
       </form>
     </div>
@@ -36,10 +35,18 @@ export default {
     }
   },
    created() {
+ //     const payload = JSON.parse(window.localStorage.vuex)
+ //     console.log("payload: ",payload);
+ //     this.getUserInfo(payload.accounts.user.userNickname)
+ //     console.log(this.$store.state)
+ //     this.userNickname = payload.accounts.user.userNickname;
+    },
+    mounted(){
       const payload = JSON.parse(window.localStorage.vuex)
+      console.log("payload: ",payload);
       this.getUserInfo(payload.accounts.user.userNickname)
       console.log(this.$store.state)
-      this.userNickname = this.$store.state.accounts.user.userNickname
+      this.userNickname = payload.accounts.user.userNickname;
     },
   methods: {
     ...mapActions(['getUserInfo']),
@@ -51,10 +58,12 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+nav{
+  height: 50px;
+}
 .navbar-img {
   margin-bottom: 7px;
-  max-height: 20px;
   max-width: 50px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <MainNavbar v-if="!session" />
-  <VideoNavBar v-if="session" />
+  <VideoNavBar v-if="session" v-on:leaveSession ="leaveSession" />
   <div
     id="main-container"
     :class="{ 'container-2': !session, 'containser-3': session }"
@@ -17,18 +17,20 @@
             @click="mbtiModalOpen = true"
           >
             싫어하는 MBTI
-            <p v-if="mbtiModalOpen == true">{{ userHateMbtitList }}</p>
+            <p v-if="userHateMbtitList != ''">{{ userHateMbtitList }}</p>
           </div>
           <div class="matching">
             <button
               @click="[matchingReqeust(), (matching_ing = true)]"
               v-if="!matching_ing"
+              class="matching_start"
             >
               매칭
             </button>
             <button
               @click="[cancleMatchingReqeust(), (matching_ing = false)]"
               v-if="matching_ing"
+              class="matching_end"
             >
               매칭 취소
             </button>
@@ -38,166 +40,386 @@
     </div>
     <SelectHateMbti v-if="mbtiModalOpen == true" v-on:selectmbti="selectmbti" />
     <div v-if="session" class="container-fluid">
-      <div class="video-chat-box row mt-3">
-        
+      <div class="video-chat-box row" >
         <!-- video 부분 -->
         <div class="bodies">
-          <div class="videos col-9" v-if="session">
-            <button v-if="session" @click="leaveSession" :class="{ 'btn btn-danger btn-moving': !talkStatus && !gameStatus || talkStatus, 'btn btn-danger btn-moving2': !talkStatus && gameStatus }">방 나가기</button>
-            <div class="video col">
-              <!-- video1 -->
-              <!-- <div class="video"> -->
-              <user-video
-                class="video-section"
-                :stream-manager="mainStreamManager"
-                v-bind:catchMindStatus="this.catchMindStatus"
-              />
+          <div class="col-9 " v-if="session">
+            <div class="row videos">
+              <div class="video" :class="{ 'col-3': catchMindStatus, 'col': !catchMindStatus}">
+                <!-- video1 -->
+                <!-- <div class="video"> -->
+                <user-video
+                  class="video-section"
+                  :stream-manager="mainStreamManager"
+                  v-bind:catchMindStatus="this.catchMindStatus"
+                />
+              </div>
+              <!-- video2 -->
+              
+              <div class="video" :class="{ 'col-3': catchMindStatus, 'col': !catchMindStatus}">
+                <user-video
+                  class="video-section"
+                  v-for="sub in subscribers"
+                  :key="sub.stream.connection.connectionId"
+                  :stream-manager="sub"
+                  v-bind:catchMindStatus="this.catchMindStatus"
+                  @click="updateMainVideoStreamManager(sub)"
+                />
+              </div>
             </div>
-            <!-- video2 -->
-            <div class="video col">
-              <user-video
-                class="video-section"
-                v-for="sub in subscribers"
-                :key="sub.stream.connection.connectionId"
-                :stream-manager="sub"
-                v-bind:catchMindStatus="this.catchMindStatus"
-                @click="updateMainVideoStreamManager(sub)"
-              />
+            <div class="row">
+              <div class="draw-box" v-bind:class="{ catDis: !catchMindStatus }">
+                <!-- 정답 입력란 -->
+                <!-- 게임중 && 내가 그릴 차례 && 캐치마인드 시작됨  -->
+                <div
+                  class="draw-container"
+                  v-bind:class="{ catDis: !catchMindStatus }"
+                >
+                  <!-- 게임이 실행중이 아니면 catDis 클래스 추가 -->
+                  <!-- 그림 그리는 캔버스 -->
+                  <canvas
+                    id="myCanvas"
+                    width="1200"
+                    height="500"
+                    @mousedown="beginDrawing"
+                    @mousemove="keepDrawing"
+                    @mouseup="stopDrawing"
+                  />
+                  <!-- 그리기 도구 -->
+                  <div v-if="catchMindStatus && myTurn" class="draw-tool">
+                    <!-- 내가 그릴 차례|| 캐치마인드 시작 안됨  -->
+                    <table class="draw-opt">
+                      <!-- 그리기 도구 색상 지정 등-->
+                      <tr>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="akar-icons:circle-fill"
+                            color="black"
+                            @click="colorChange('black')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="akar-icons:circle-fill"
+                            color="red"
+                            @click="colorChange('red')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="akar-icons:circle-fill"
+                            color="blue"
+                            @click="colorChange('blue')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="akar-icons:circle-fill"
+                            color="yellow"
+                            @click="colorChange('yellow')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="akar-icons:circle-fill"
+                            color="green"
+                            @click="colorChange('green')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <Icon
+                            class="colorBtn"
+                            icon="bi:eraser"
+                            @click="colorChange('white')"
+                            width="24"
+                            height="24"
+                          />
+                        </td>
+                        <td>
+                          <button class="removeBtn" @click="allDelete">
+                            전체 지우기
+                          </button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
-            <!-- </div> -->
           </div>
           <div class="col-3">
-            <div class="card2">
-              <!-- 처음 진입시 -->
+            <!-- ---------------- 여기에 row를 어떻게 축 --추가??? -->
+            <div class="row test">
+              <div :class="{ card3: talkStatus || !gameStatus, card2: gameStatus}">
+                <!-- 처음 진입시 -->
 
-              <div v-if="!talkStatus && !gameStatus">
-                <div class="card-container">
-                  <div
-                    id="carouselExampleIndicators"
-                    class="carousel slide"
-                    data-bs-ride="carousel"
-                  >
-                    <div class="carousel-indicators">
-                      <button
-                        type="button"
-                        data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide-to="0"
-                        class="active"
-                        aria-current="true"
-                        aria-label="Slide 1"
-                      ></button>
-                      <button
-                        type="button"
-                        data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide-to="1"
-                        aria-label="Slide 2"
-                      ></button>
-                      <!-- <button
+                <div v-if="!talkStatus && !gameStatus">
+                  <div class="img-center">
+                    <div class="card-container">
+                      <div
+                        id="carouselExampleIndicators"
+                        class="carousel slide"
+                        data-bs-ride="carousel"
+                      >
+                        <div class="carousel-indicators">
+                          <button
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide-to="0"
+                            class="active"
+                            aria-current="true"
+                            aria-label="Slide 1"
+                          ></button>
+                          <button
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide-to="1"
+                            aria-label="Slide 2"
+                          ></button>
+                          <!-- <button
                         type="button"
                         data-bs-target="#carouselExampleIndicators"
                         data-bs-slide-to="2"
                         aria-label="Slide 3"
                       ></button> -->
-                    </div>
-                    <div v-if="!talkStatus" class="carousel-inner">
-                      <div class="carousel-item active">
-                        <img
-                          src="@/assets/talkcard/대화카드1.jpg"
-                          class="d-block w-100"
-                          alt="nonLoginPage.jpg"
-                        />
-                        <div class="container">
-                          <div class="carousel-caption text-center">
-                            <h1>대화카드</h1>
-                            <p>대화 카드를 통해 상대방의 목소리를 벗겨보아요</p>
+                        </div>
+                        <div v-if="!talkStatus" class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img
+                              src="@/assets/talkcard/대화카드1.jpg"
+                              class="img-center"
+                              alt="nonLoginPage.jpg"
+                            />
+                            <div class="container">
+                              <div class="carousel-caption text-center">
+                                <h1>대화카드</h1>
+                                <p>
+                                  대화 카드를 통해 상대방의 목소리를 벗겨보아요
+                                </p>
+                              </div>
+                            </div>
                           </div>
+                          <div class="carousel-item">
+                            <img
+                              src="@/assets/talkcard/대화카드1.jpg"
+                              class="img-center"
+                              alt="nonLoginPage.jpg"
+                            />
+                            <div class="container">
+                              <div class="carousel-caption text-end">
+                                <h1>대화카드</h1>
+                                <p>당신의 일상을 들려주세요</p>
+                                <p>
+                                  <a
+                                    v-if="!isTalkReady"
+                                    class="btn btn-lg btn-outline-light"
+                                    @click="startTalk"
+                                    >카드보기</a
+                                  >
+                                  <a
+                                    v-if="isTalkReady"
+                                    class="btn btn-lg btn-outline-light"
+                                    >카드 준비 중</a
+                                  >
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev"
+                          >
+                            <span
+                              class="carousel-control-prev-icon"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+                          <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next"
+                          >
+                            <span
+                              class="carousel-control-next-icon"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
                         </div>
                       </div>
-                      <div class="carousel-item">
-                        <img
-                          src="@/assets/talkcard/대화카드1.jpg"
-                          class="d-block w-100"
-                          alt="nonLoginPage.jpg"
-                        />
-                        <div class="container">
-                          <div class="carousel-caption text-end">
-                            <h1>대화카드</h1>
-                            <p>당신의 일상을 들려주세요</p>
-                            <p>
-                              <a
-                                v-if="!isTalkReady"
-                                class="btn btn-lg btn-outline-light"
-                                @click="startTalk"
-                                >카드보기</a
-                              >
-                              <a
-                                v-if="isTalkReady"
-                                class="btn btn-lg btn-outline-light"
-                                >카드 준비 중</a
-                              >
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        class="carousel-control-prev"
-                        type="button"
-                        data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="prev"
-                      >
-                        <span
-                          class="carousel-control-prev-icon"
-                          aria-hidden="true"
-                        ></span>
-                        <span class="visually-hidden">Previous</span>
-                      </button>
-                      <button
-                        class="carousel-control-next"
-                        type="button"
-                        data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="next"
-                      >
-                        <span
-                          class="carousel-control-next-icon"
-                          aria-hidden="true"
-                        ></span>
-                        <span class="visually-hidden">Next</span>
-                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- 시작하기 버튼을 클릭한 후 -->
+                <!-- 시작하기 버튼을 클릭한 후 -->
 
-              <!-- 게임 선택 버튼 -->
-              <div class="card-body" v-if="!talkStatus && gameStatus">
-                <h5 class="card-title">게임을 골라주세요!</h5>
-                <button @click="startCM">
-                  <div v-if="!isReadyCatch">캐치마인드</div>
-                  <div v-else>준비완료</div>
-                </button>
-                <button @click="startABGame">
-                  <div v-if="!isReadyBal">밸런스 게임</div>
-                  <div v-else>준비완료</div>
-                </button>
-                <button @click="readyStartGame">
-                  <div v-if="!isReadyCry">고요속의 외침</div>
-                  <div v-else>준비완료</div>
-                </button>
-              </div>
-              <!-- 캐치마인드 -->
-              <!-- <CatchMind /> -->
-              <div v-if="talkStatus" class="talk_card_box">
-                <div class="card_content">{{ card_item }}</div>
-                <img
-                  :src="card_item_image"
-                  alt=""
-                  class="d-block w-100"
+                <!-- 게임 선택 버튼 -->
+                <div class="card-body" v-if="!talkStatus && gameStatus && !gameRunningStatus">
+                  <h5 class="card-title">게임을 골라주세요!</h5>
+                  <button @click="startCM" v-if="stageStatus >= 2">
+                    <div v-if="!isReadyCatch">캐치마인드</div>
+                    <div v-else>준비완료</div>
+                  </button>
+                  <button @click="startABGame" v-if="stageStatus < 2">
+                    <div v-if="!isReadyBal">밸런스 게임</div>
+                    <div v-else>준비완료</div>
+                  </button>
+                  <button @click="readyStartGame" v-if="stageStatus >= 2">
+                    <div v-if="!isReadyCry">고요속의 외침</div>
+                    <div v-else>준비완료</div>
+                  </button>
+                </div>
+                <!-- 교요 속의 외침 start -->
+                <div v-if="crystartStatus">
+                  <div v-if="cryBoss">{{ cryList[cryCnt] }}</div>
+                  <div class="silence-cry" v-if="session && cryStatus">
+                    <!--<div class="silence-cry"> -->
+                    <div id="silence-timer" v-if="cryCheck">
+                      <p>{{ cryTime }}</p>
+                    </div>
+
+                    <div id="silence-input" v-if="cryCheck">
+                      <input
+                        id="cry-enter"
+                        v-model="cryAnswer"
+                        type="text"
+                        placeholder="정답을 입력해주세요"
+                        @keydown.enter="sendCryAnswer"
+                      />
+                      <Icon
+                        icon="fluent:send-24-filled"
+                        @click="sendCryAnswer"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                
+              <div class="draw-box" v-bind:class="{ catDis: !catchMindStatus }">
+                <!-- <Slider class="time-slider" v-if="catchMindStatus" v-model="countView" :max="60" /> - 이친구는 jquery인듯 돌아가는 게임이 없고 캐치마인드가 시작되었으면 -->
+                <input
+                  class="time-slider"
+                  type="range"
+                  :max="60"
+                  v-if="catchMindStatus"
+                  v-model="countView"
                 />
-                <button @click="nextTalkCard" class="btn btn-lg btn-outline-light next_card_btn">다음 대화 카드</button>
+                <!-- 정답 입력란 -->
+                <div v-if="catchMindStatus && !myTurn">
+                  <!-- 캐치마인드가 실행중 && 내가 그리는 차례가 아닐때-->
+                  <input
+                    class="ans-block"
+                    type="text"
+                    v-model="answer"
+                    placeholder="정답을 입력하세요"
+                    @keydown.enter="sendAns"
+                  />
+                </div>
+                <div class="pb-div" v-if="myTurn && catchMindStatus">
+                  {{ problem }}
+                </div>
+              </div>
+
+                <!-- 고요 속의 외침 end -->
+                <div class="Balgame" v-if="abgamestartStatus">
+                  <h3>밸런스 게임</h3>
+                  <h5>당신의 선택은? 신중히 골라주세요!</h5>
+                  <div class="center_box">
+                    <div class="select-box" @click="selectA">
+                      {{ A_item }}
+                    </div>
+                  </div>
+                  <div class="center_box">
+                  <div class="select-box" @click="selectB">
+                      {{ B_item }}
+                    </div>
+                  </div>
+                  <div class="select-result">
+                    <div v-for="(game, index) in gamedata" :key="index">
+                      <div class="select-comment">
+                        <span
+                          >{{ game.userId }}님이 {{ game.select }}를
+                          선택하셨습니다.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="next-problem" @click="nextProblem">다음문제</div>
+                </div>
+                <!-- 캐치마인드 -->
+                <!-- <CatchMind /> -->
+                <div v-if="talkStatus" class="talk_card_box">
+                  <div class="card_content">{{ card_item }}</div>
+                  <img :src="card_item_image" alt="" class="img-center" />
+                  <button
+                    @click="nextTalkCard"
+                    class="btn btn-lg btn-outline-light next_card_btn"
+                  >
+                    다음 대화 카드
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row align-items-end" id="chatRow">
+              <div v-if="session && gameRunningStatus && !talkStatus || stageStatus >= 2" class="chat-container">
+                <div id="chatbox">
+                  <div class="chat-detail">
+                    <div ref="chatmain" :class="{ chatmain: true }">
+                      <div v-for="(chat, index) in chatdata" :key="index">
+                        <div
+                          v-if="myUserName == chat.userId"
+                          class="my-chat-box"
+                        >
+                          <div class="chat-block">
+                            <div class="my-chat-time">{{ chat.now }}</div>
+                            <div class="my-chat">{{ chat.msg }}</div>
+                          </div>
+                        </div>
+                        <div v-else class="opp-chat-box">
+                          <div class="opp-name">{{ chat.userId }}</div>
+                          <div class="opp-block">
+                            <div class="opp-chat">{{ chat.msg }}</div>
+                            <div class="opp-chat-time">{{ chat.now }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="send-box">
+                  <input
+                    class="send-input"
+                    v-model="msg"
+                    type="text"
+                    placeholder="메세지를 입력해주세요"
+                    @keydown.enter="sendMsg"
+                  />
+                  <Icon icon="fluent:send-24-filled" @click="sendMsg" class ="send-icon" />
+                  <!-- <i class="send-icon fas fa-reply" @click="sendMsg"></i> -->
+                </div>
               </div>
             </div>
           </div>
+          <!-- ---------------- 여기에 row를 어떻게 축 --추가???  끝 -->
         </div>
       </div>
     </div>
@@ -208,7 +430,7 @@
 
     <!-- random matching end -->
 
-    <div class="Balgame" v-if="abgamestartStatus">
+    <!-- <div class="Balgame" v-if="abgamestartStatus">
       <h3>밸런스 게임</h3>
       <h5>당신의 선택은? 신중히 골라주세요!</h5>
       <div class="select-box" @click="selectA">
@@ -228,8 +450,7 @@
         </div>
       </div>
       <div class="next-problem" @click="nextProblem">다음문제</div>
-    </div>
-
+    </div> -->
     <!--  CatchMind start  -->
     <!-- // 캐치마인드 준비 화면 -->
     <!-- <div class="" v-if="!startStatus2 && !startStatus" @click="startGame2"> //모든 게임이 실행중이 아닌 경우 -->
@@ -241,120 +462,12 @@
 
     <!-- 캐치마인드 시작 버튼 -->
 
-    <div class="draw-box" v-bind:class="{ catDis: !catchMindStatus }">
-      <!-- <Slider class="time-slider" v-if="catchMindStatus" v-model="countView" :max="60" /> - 이친구는 jquery인듯 돌아가는 게임이 없고 캐치마인드가 시작되었으면 -->
-      <input
-        class="time-slider"
-        type="range"
-        :max="60"
-        v-if="catchMindStatus"
-        v-model="countView"
-      />
-      <!-- 정답 입력란 -->
-      <div v-if="catchMindStatus && !myTurn">
-        <!-- 캐치마인드가 실행중 && 내가 그리는 차례가 아닐때-->
-        <input
-          class="ans-block"
-          type="text"
-          v-model="answer"
-          placeholder="정답을 입력하세요"
-          @keydown.enter="sendAns"
-        />
-      </div>
-      <div class="pb-div" v-if="myTurn && catchMindStatus">{{ problem }}</div>
-      <!-- 게임중 && 내가 그릴 차례 && 캐치마인드 시작됨  -->
-      <div class="draw-container" v-bind:class="{ catDis: !catchMindStatus }">
-        <!-- 게임이 실행중이 아니면 catDis 클래스 추가 -->
-        <!-- 그림 그리는 캔버스 -->
-        <canvas
-          id="myCanvas"
-          width="560"
-          height="360"
-          @mousedown="beginDrawing"
-          @mousemove="keepDrawing"
-          @mouseup="stopDrawing"
-        />
-        <!-- 그리기 도구 -->
-        <div v-if="catchMindStatus && myTurn" class="draw-tool">
-          <!-- 내가 그릴 차례|| 캐치마인드 시작 안됨  -->
-          <table class="draw-opt">
-            <!-- 그리기 도구 색상 지정 등-->
-            <tr>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="akar-icons:circle-fill"
-                  color="black"
-                  @click="colorChange('black')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="akar-icons:circle-fill"
-                  color="red"
-                  @click="colorChange('red')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="akar-icons:circle-fill"
-                  color="blue"
-                  @click="colorChange('blue')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="akar-icons:circle-fill"
-                  color="yellow"
-                  @click="colorChange('yellow')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="akar-icons:circle-fill"
-                  color="green"
-                  @click="colorChange('green')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <Icon
-                  class="colorBtn"
-                  icon="bi:eraser"
-                  @click="colorChange('white')"
-                  width="24"
-                  height="24"
-                />
-              </td>
-              <td>
-                <button class="removeBtn" @click="allDelete">
-                  전체 지우기
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div v-if="session" class="chat-container">
-      <div id="chatbox">
+    <!-- <div v-if="session" class="chat-container">
+      <div id="chatbox" v-if="gameRunningStatus">
         <div class="chat-header">채팅방</div>
         <div class="chat-detail">
           <div ref="chatmain" :class="{ chatmain: true }">
-            <div v-for="(chat, index) in chatdata" :key="index">
+            <div v-for="(chat, index) in chatdata" :key="index">             
               <div v-if="myUserName == chat.userId" class="my-chat-box">
                 <div class="chat-block">
                   <div class="my-chat-time">{{ chat.now }}</div>
@@ -381,32 +494,22 @@
           @keydown.enter="sendMsg"
         />
         <Icon icon="fluent:send-24-filled" @click="sendMsg" />
-        <!-- <i class="send-icon fas fa-reply" @click="sendMsg"></i> -->
+ 
       </div>
-    </div>
+    </div> -->
 
-    <!-- 교요 속의 외침 start -->
-    <div v-if="crystartStatus">
-      <div v-if="cryBoss">{{ cryList[cryCnt] }}</div>
-      <div class="silence-cry" v-if="session && cryStatus">
-        <!--<div class="silence-cry"> -->
-        <div id="silence-timer" v-if="cryCheck">
-          <p>{{ cryTime }}</p>
-        </div>
-
-        <div id="silence-input" v-if="cryCheck">
-          <input
-            id="cry-enter"
-            v-model="cryAnswer"
-            type="text"
-            placeholder="정답을 입력해주세요"
-            @keydown.enter="sendCryAnswer"
-          />
-          <Icon icon="fluent:send-24-filled" @click="sendCryAnswer" />
-        </div>
-      </div>
-    </div>
-    <!-- 고요 속의 외침 end -->
+    
+<!--    <button
+      v-if="session"
+      @click="leaveSession"
+      :class="{
+        'btn btn-danger btn-moving': (!talkStatus && !gameStatus) || talkStatus,
+        'btn btn-danger btn-moving2': !talkStatus && gameStatus,
+      }"
+    >
+      방 나가기
+    </button>
+-->
   </div>
 </template>
 
@@ -456,6 +559,8 @@ export default {
 
       matching_ing: false,
 
+      gameRunningStatus: false,
+
       faceOverStatus: false,
       micStatus: false,
       gameStatus: false,
@@ -469,6 +574,9 @@ export default {
       userHateMbtitList: [],
       mbtiModalOpen: false,
       userGender: "",
+
+      // -------------------- 게임 순서
+      stageStatus: 0,
 
       // ----------------  Catch mind start
       sessionName: undefined, // 방장 여부 확인
@@ -528,6 +636,9 @@ export default {
       // ----------------  ab game start
 
       gamedata: [],
+      A_item_list: ["토맛 토마토"],
+      B_item_list: ["토마토맛 토"],
+      /*
       A_item_list: [
         "토맛 토마토",
         "민초",
@@ -546,6 +657,7 @@ export default {
         "월 500 직장인",
         "탕수육 찍먹",
       ],
+      */
       A_item: "",
       B_item: "",
       nextStatus: false,
@@ -608,24 +720,98 @@ export default {
   computed: {},
   created() {
     const payload = JSON.parse(window.localStorage.vuex);
-    this.fetchCurrentUser(payload.accounts.userEmail);
-    this.userEmail = this.$store.state.accounts.userEmail;
-    this.myUserName = this.$store.state.accounts.user.userNickName;
-    this.userGender = this.$store.state.accounts.user.userGender;
+    this.userEmail = payload.accounts.userEmail;
+    this.myUserName = payload.accounts.user.userNickname;
+    this.userGender = payload.accounts.user.userGender;
+
+    // this.userEmail = this.$store.state.accounts.userEmail;
+    // this.myUserName = this.$store.state.accounts.user.userNickName;
+    // this.userGender = this.$store.state.accounts.user.userGender;
     // this.myUserName = this.getUserInfo.userNickName
     // this.mySessionId = this.getUserInfo.userEmail
   },
   mounted() {
     // ----------------  Catch mind start
-
     // 캔버스 초기화
-    var c = document.getElementById("myCanvas");
-    this.canvas = c.getContext(`2d`);
-
+    //   var c = document.getElementById("myCanvas");
+    //   this.canvas = c.getContext(`2d`);
     // ----------------  Catch mind end
   },
   methods: {
     ...mapActions(["fetchCurrentUser"]),
+
+    initData(){
+      this.OV= undefined;
+      this.session= undefined;
+      this.mainStreamManager= undefined;
+      this.publisher= undefined;
+      this.subscribers= [];
+      this.matching_ing= false;
+      this.gameRunningStatus= false;
+      this.faceOverStatus= false;
+      this.micStatus= false;
+      this.gameStatus= false;
+      this.talkStatus= false; // 대화카드 상태
+      this.vidStatus= false;
+      this.voiceStatus= true;
+      this.catchMindStatus= false; // 캐치마인드 게임이 실행중인지 확인용
+      this.abgamestartStatus= false; // 밸런스 게임이 실행중인지 확인용
+      this.myUserName= "";
+      this.userHateMbtitList= [];
+      this.mbtiModalOpen= false;
+      this.userGender= "";
+      // -------------------- 게임 순서
+      this.stageStatus= 0;
+      // ----------------  Catch mind start
+      this.sessionName= undefined; // 방장 여부 확인
+      this.host= true; // 호스트인지 확인 - 호스트는 게임 실행 권한이 있음 - 차후 처리 (todo)
+      this.runningGameState= false; // 현재 실행중인 게임 있는지 확인용
+      this.myTurn= false; // 자신이 그림그릴 차례인지 확인
+      this.countView=""; // 남은시간이 얼마나 남았는지 표시
+      this.turn= 1; // 캐치마인드 진행된 턴 수
+      this.answer= ""; // 정답 제출용
+      this.timerInit= null; // 잘 모르겠음 todo ?????
+      this.count= 60; // 제한 시간
+      this.problem= ""; // 현재 문제
+      this.canvas= null; // 그림을 그릴 캔버스 정보
+      this.isDrawing= false; // 그리기 상태정보
+      this.color= "black"; // 펜 초기 색상
+      this.penSize= 2; // 펜 초기 사이즈
+      this.x= 0; // 펜 좌표정보
+      this.y= 0; // 펜 좌표정보
+      this.userEmail= "";
+      this.socket= undefined;
+      this.matchingTestToken= undefined;
+      this.matchingSessionName= undefined;
+      this.A_item= "";
+      this.B_item= "";
+      this.nextStatus= false;
+      this.gIndex= 0;
+      this.gameStart= [];
+      this.isSelected= false;
+      this.isReadyBal= false;
+      this.chatdata= [];
+      this.msg= "";
+      this.talkStart= [];
+      this.isTalkReady= false;
+      this.card_item= undefined; // 현재 보고 있는 카드 아이템
+      this.card_item_image= undefined;
+      this.cryStart= [];
+      this.crystartStatus= false;
+      this.isReadyCry= false;
+      this.cryStatus= false; // 게임 버튼 눌렀을 때 on/off 상태변수
+      this.cryCnt= 0; // 몇 개 진행 했는지 카운트 할 변수
+      this.cryCheck= false; // 정답자만 정답을 칠 수 있게 하는 T/F 변수
+      this.cryListCheck= false; //출제자에게 어떤 단어인지 보여줌
+      this.cryTime=30; // 몇 초 남았는지 보여줄 변수
+      this.cryAnswer= "";
+      this.cryModalShow= false; // 모달 on/off
+      this.cryCntMax= 3; //문제 최대치
+      this.cryBoss= false; // 출제자인지 확인
+      this.cryTimerInit= null;
+      this.matching_ing = false;
+    },
+
     selectmbti(value) {
       this.mbtiModalOpen = false;
       this.userHateMbtitList = value;
@@ -672,6 +858,8 @@ export default {
 
       clearInterval(this.cryTimerInit);
       this.cryTimerInit = null;
+
+      this.initData();
 
       window.removeEventListener("beforeunload", this.leaveSession);
     },
@@ -1077,6 +1265,7 @@ export default {
 
       // ----------------  Catch mind start
       this.session.on("signal:catch-start", (event) => {
+        this.gameRunningStatus = true;
         // 게임 시작 시그널
         this.catchMindStatus = true; // 캐치마인드 진행중으로 변경
         this.count = 60; // 시간초 초기화
@@ -1133,6 +1322,7 @@ export default {
           this.talkStart.pop();
         }
         if (this.talkStart.length == 2) {
+          this.gameRunningStatus = true;
           this.talkStatus = true;
           this.card_item = this.talk_card_item[this.gIndex];
           this.card_item_image = this.talk_card_image[this.gIndex];
@@ -1146,6 +1336,8 @@ export default {
           this.card_item_image = this.talk_card_image[this.gIndex];
         } else {
           Swal.fire("대화 카드 종료!");
+          this.gameRunningStatus = false;
+          this.stageStatus++;
           this.gIndex = 0;
           this.talkStatus = false;
           // this.voiceControll();
@@ -1169,6 +1361,7 @@ export default {
           this.gameStart.pop();
         }
         if (this.gameStart.length == 2) {
+        this.gameRunningStatus = true;
           this.abgamestartStatus = true;
           this.startStatus = true;
           this.A_item = this.A_item_list[this.gIndex];
@@ -1194,12 +1387,19 @@ export default {
             this.gamedata = [];
           } else {
             Swal.fire("밸런스 게임 종료!");
+            this.gameRunningStatus = false;
+            this.stageStatus++;
             this.gameStart = [];
             this.gamedata = [];
             this.startStatus = false;
             this.isReadyBal = false;
             this.gIndex = 0;
             this.abgamestartStatus = false;
+            if (this.stageStatus <= 2) {
+              this.removeFilter(); // 필터 제거
+              var c = document.getElementById("myCanvas");
+              this.canvas = c.getContext(`2d`);
+            }
           }
         }
       });
@@ -1223,6 +1423,7 @@ export default {
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
+            this.gameRunningStatus = false;
             this.catchMindStatus = false; // 게임중 상태 해제
             this.turn = 1; // 기타 게임 데이터 초기화
             this.count = 60;
@@ -1241,7 +1442,7 @@ export default {
         // 그리기 도구 색상 변경
         if (event.data == "all") {
           // 모두 지우기 이벤트 - allDelete()
-          this.canvas.clearRect(0, 0, 560, 360);
+          this.canvas.clearRect(0, 0, 1200, 550);
         } else if (event.data == "white") {
           // 흰색으로 변경 - 지우개
           this.penSize = 4;
@@ -1303,6 +1504,7 @@ export default {
           this.cryStart.pop();
         }
         if (this.cryStart.length == 2) {
+        this.gameRunningStatus = true;
           this.crystartStatus = true;
           this.startCryGame();
         }
@@ -1354,6 +1556,7 @@ export default {
           showConfirmButton: false,
           timer: 1500,
         });
+        this.gameRunningStatus = false;
         this.isReadyCry = false;
         this.cryCnt = 0;
         this.cryBoss = false;
@@ -1423,7 +1626,7 @@ export default {
         this.matchingSessionName
       );
       this.session
-        .connect(this.matchingTestToken, { clientData: this.userEmail })
+        .connect(this.matchingTestToken, { clientData: this.myUserName })
         .then(() => {
           // --- Get your own camera stream with the desired properties ---
           let publisher = this.OV.initPublisher(undefined, {
@@ -1677,7 +1880,6 @@ export default {
 }
 
 .container-2 {
-  margin-top: 1rem;
   margin-bottom: 1rem;
   padding-right: 0px;
   padding-left: 0px;
@@ -1750,9 +1952,14 @@ export default {
   transform: translate(-50%, -50%);
 }
 .card2 {
+  position: relative;
+  margin-top: 10%;
+  width: 400px;
+  height: 350px;
+  padding: 0px;
   top: 40%;
   outline-style: solid;
-  outline-color: #97cdbd;
+  outline-color: red;
   text-align: center;
 }
 
@@ -1767,29 +1974,30 @@ export default {
   width: 400px;
 }
 
-.bodies {
+/* .bodies {
   display: flex;
   height: 80%;
   background: #f0f2f5;
-  min-width: 1200px;
-}
+  min-width: 1150px;
+} */
 .video-box {
   height: 100%;
 }
 
 .videos {
   display: flex;
-  width: 75%;
-  height: 100%;
+  /* width: 75%;
+  height: 100%; */
   /* background: #f0f2f5; */
 }
 .video {
-  width: 50%;
-  height: 100%;
+  display: flex;
+  /* width: 50%;
+  height: 100%; */
   margin: 3px;
 }
 .video-section {
-  width: 20px;
+  padding-left: 20px;
 }
 .chat-box {
   height: 100%;
@@ -1879,12 +2087,16 @@ export default {
 
 /* Balance Game */
 .select-box {
-  padding: 5%;
-  margin: 5%;
+  padding: 0px;
+  margin: 0px;
+  margin-top:10px;
   color: #37474f;
   background: white;
   font-weight: bold;
   border-radius: 5px;
+  width:80%;
+  height:25px;
+  justify-content: center;
 }
 .select-box:hover {
   transform: scale(1.1);
@@ -1902,6 +2114,9 @@ export default {
 }
 
 .next-problem {
+  position: absolute;
+  bottom:0px;
+  left: 10%;
   width: 80%;
   margin: 10% auto;
   padding: 3%;
@@ -1916,7 +2131,9 @@ export default {
   color: #00aba2;
   border: 2px solid #00aba2;
 }
-
+.Balgame{
+  text-align: center;
+}
 /* Chat */
 
 .chat-header {
@@ -1934,7 +2151,8 @@ export default {
   margin: 10px;
 }
 .chatmain {
-  max-height: 500px;
+  height: 250px;
+
   overflow: auto;
 }
 .my-chat-time {
@@ -1983,7 +2201,7 @@ export default {
 }
 
 .send-box {
-  width: 25%;
+  /* width: 25%; */
 }
 .send-input {
   width: 85%;
@@ -1997,6 +2215,7 @@ export default {
   outline: none;
 }
 .send-icon {
+  margin-left:5px;
   font-size: 20px;
   color: #00aba2;
 }
@@ -2009,53 +2228,109 @@ export default {
   height: 80%;
   background: #f0f2f5;
   position: relative;
+  min-width: 1400px;
 }
-.videos {
+/* .videos {
   display: flex;
   width: 75%;
   height: 100%;
   background: #f0f2f5;
 }
 .video {
-  float: left;
-  margin-top:10%;
+  margin-top: 10%;
   width: 50%;
   height: 100%;
   margin: 3px;
-}
+} */
 .video-chat-box {
   height: 100%;
 }
 
-.next_card_btn{
-  position:absolute;
-  bottom:10%;
-  right:10%;
+.next_card_btn {
+  position: absolute;
+  top: 20%;
+  right: 10%;
 }
 
-.talk_card_box{
-  position:relative;
+.talk_card_box {
+  position: relative;
 }
-.card_content{
-  width:85%;  
+.card_content {
+  width: 85%;
   font-size: 20px;
   font-weight: bold;
-  color : white;
-  position:absolute;
-  top:10%;
-  left:50%;
-  transform:translate(-50%, -50%);
+  color: white;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.btn-moving{
-  position:absolute;
-  bottom:5%;
-  right:30%;
+.btn-moving {
+  position: absolute;
+  bottom: 5%;
+  right: 30%;
 }
 
-.btn-moving2{
-  position:absolute;
-  bottom:5%;
-  right:10%;
+.btn-moving2 {
+  position: absolute;
+  bottom: 5%;
+  right: 10%;
 }
+.test {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.img-center {
+  width: 400px;
+  height: 500px;
+  margin: auto;
+}
+
+.chat-container {
+  margin-top: 10px;
+}
+
+.matching_start {
+  border: none;
+  background-color: transparent;
+}
+
+.matching_end {
+  border: none;
+  background-color: transparent;
+}
+/* 캐치마인드 css */
+#myCanvas {
+  background: url(@/assets/sketch.jpeg) no-repeat;
+  background-position: center center;
+}
+
+.draw-tool {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 3px;
+}
+
+.colorBtn {
+  margin-right: 1rem;
+}
+
+.center_box{
+  display: flex;
+  justify-content: center;
+}
+
+.card3{
+  position: relative;
+  margin-top: 10%;
+  width: 400px;
+  height: 500px;
+  padding: 0px;
+  top: 40%;
+  outline-style: solid;
+  outline-color: red;
+  text-align: center;
+  }
 </style>
