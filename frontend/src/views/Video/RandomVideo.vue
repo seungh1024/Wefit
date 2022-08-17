@@ -1,6 +1,6 @@
 <template>
-  <!-- <MainNavbar v-if="!session" />
-  <VideoNavBar v-if="session" v-on:leaveSession ="leaveSession" /> -->
+  <MainNavbar v-if="!session" />
+  <VideoNavBar v-if="session" v-on:leaveSession="leaveSession" />
   <div
     id="main-container"
     :class="{ 'container-2': !session, 'container-3': session }"
@@ -40,12 +40,15 @@
     </div>
     <SelectHateMbti v-if="mbtiModalOpen == true" v-on:selectmbti="selectmbti" />
     <div v-if="session" class="container-fluid">
-      <div class="video-chat-box row" >
+      <div class="video-chat-box row">
         <!-- video 부분 -->
         <div class="bodies">
-          <div class="col-9 " v-if="session">
+          <div class="col-9" v-if="session">
             <div class="row videos">
-              <div class="video" :class="{ 'col-3': catchMindStatus, 'col': !catchMindStatus}">
+              <div
+                class="video"
+                :class="{ 'col-3': catchMindStatus, col: !catchMindStatus }"
+              >
                 <!-- video1 -->
                 <!-- <div class="video"> -->
                 <user-video
@@ -55,8 +58,11 @@
                 />
               </div>
               <!-- video2 -->
-              
-              <div class="video" :class="{ 'col-3': catchMindStatus, 'col': !catchMindStatus}">
+
+              <div
+                class="video"
+                :class="{ 'col-3': catchMindStatus, col: !catchMindStatus }"
+              >
                 <user-video
                   class="video-section"
                   v-for="sub in subscribers"
@@ -165,11 +171,13 @@
           <div class="col-3">
             <!-- ---------------- 여기에 row를 어떻게 축 --추가??? -->
             <div class="row test">
-              <div :class="{ card3: talkStatus || !gameStatus, card2: gameStatus}">
+              <div
+                :class="{ card3: talkStatus || !gameStatus, card2: gameStatus }"
+              >
                 <!-- 처음 진입시 -->
 
                 <div v-if="!talkStatus && !gameStatus">
-                  <div class="img-center">
+                  <div>
                     <div class="card-container">
                       <div
                         id="carouselExampleIndicators"
@@ -272,33 +280,58 @@
                 <!-- 시작하기 버튼을 클릭한 후 -->
 
                 <!-- 게임 선택 버튼 -->
-                <div class="card-body" v-if="!talkStatus && gameStatus && !gameRunningStatus">
-                  <h5 class="card-title">게임을 골라주세요!</h5>
-                  <button @click="startCM" v-if="stageStatus >= 2">
+                <div
+                  class="card-body"
+                  v-if="!talkStatus && gameStatus && !gameRunningStatus"
+                >
+                  <h5
+                    class="card-title"
+                    style="margin-top: 10px; margin-bottom: 10px"
+                  >
+                    게임을 골라주세요!
+                  </h5>
+                  <button
+                    @click="startCM"
+                    v-if="stageStatus >= 2"
+                    id="jittery"
+                    class="btn-4"
+                  >
                     <div v-if="!isReadyCatch">캐치마인드</div>
                     <div v-else>준비완료</div>
                   </button>
-                    <div v-if="isReadyCatch">캐치마인드 설명을 작성한다.</div>
-                  <button @click="startABGame" v-if="stageStatus < 2">
+                  <div v-if="isReadyCatch">캐치마인드 설명을 작성한다.</div>
+                  <button
+                    @click="startABGame"
+                    v-if="stageStatus < 2"
+                    id="jittery"
+                    class="btn-4"
+                  >
                     <div v-if="!isReadyBal">밸런스 게임</div>
                     <div v-else>준비완료</div>
                   </button>
-                  <button @click="readyStartGame" v-if="stageStatus >= 2">
+                  <button
+                    @click="readyStartGame"
+                    v-if="stageStatus >= 2"
+                    id="jittery"
+                    class="btn-4"
+                  >
                     <div v-if="!isReadyCry">고요속의 외침</div>
                     <div v-else>준비완료</div>
                   </button>
-                    <div v-if="isReadyCry">상대의 입모양을 보고 답을 맞춰야한다.</div>
+                  <div v-if="isReadyCry">
+                    상대의 입모양을 보고 답을 맞춰야한다.
+                  </div>
                 </div>
                 <!-- 교요 속의 외침 start -->
                 <div v-if="crystartStatus">
                   <div v-if="cryBoss">
                     <div>
-                    {{ cryList[cryCnt] }}
+                      {{ cryList[cryCnt] }}
                     </div>
                     <div class="game_explain">
-                      상대방의 입모양을 보고 단어를 유추해서 맞춰야한다!
+                      상대방의 입모양을 보고 단어를 맞춰야한다!
                     </div>
-                    </div>
+                  </div>
                   <div class="silence-cry" v-if="session && cryStatus">
                     <!--<div class="silence-cry"> -->
                     <div id="silence-timer" v-if="cryCheck">
@@ -319,46 +352,46 @@
                       />
                     </div>
                     <div class="game_explain">
-                     상대방에게 입모양만으로 정답을 전달해야만 한다!
-                  </div>
+                      상대방에게 입모양만으로 정답을 전달해야만 한다!
+                    </div>
                   </div>
                 </div>
 
-                
-              <div class="draw-box" v-bind:class="{ catDis: !catchMindStatus }">
-                <!-- <Slider class="time-slider" v-if="catchMindStatus" v-model="countView" :max="60" /> - 이친구는 jquery인듯 돌아가는 게임이 없고 캐치마인드가 시작되었으면 -->
-                <input
-                  class="time-slider"
-                  type="range"
-                  :max="60"
-                  v-if="catchMindStatus"
-                  v-model="countView"
-                />
-                <!-- 정답 입력란 -->
-                <div v-if="catchMindStatus && !myTurn">
-                  <!-- 캐치마인드가 실행중 && 내가 그리는 차례가 아닐때-->
+                <div
+                  class="draw-box"
+                  v-bind:class="{ catDis: !catchMindStatus }"
+                >
+                  <!-- <Slider class="time-slider" v-if="catchMindStatus" v-model="countView" :max="60" /> - 이친구는 jquery인듯 돌아가는 게임이 없고 캐치마인드가 시작되었으면 -->
                   <input
-                    class="ans-block"
-                    type="text"
-                    v-model="answer"
-                    placeholder="정답을 입력하세요"
-                    @keydown.enter="sendAns"
+                    class="time-slider"
+                    type="range"
+                    :max="60"
+                    v-if="catchMindStatus"
+                    v-model="countView"
                   />
-                  <div class="game_explain">
-                  상대가 그림을 맞춰야한다.
+                  <!-- 정답 입력란 -->
+                  <div v-if="catchMindStatus && !myTurn">
+                    <!-- 캐치마인드가 실행중 && 내가 그리는 차례가 아닐때-->
+                    <input
+                      class="ans-block"
+                      type="text"
+                      v-model="answer"
+                      placeholder="정답을 입력하세요"
+                      @keydown.enter="sendAns"
+                    />
+                    <div class="game_explain">상대가 그림을 맞춰야한다.</div>
+                  </div>
+                  <div class="pb-div" style="margin-top:20px;" v-if="myTurn && catchMindStatus">
+                    {{ problem }}
+                  </div>
+                  <div class="game_explain" v-if="myTurn && catchMindStatus">
+                    상대가 그림을 맞추게 해야한다.
+                  </div>
                 </div>
-                </div>
-                <div class="pb-div" v-if="myTurn && catchMindStatus">
-                  {{ problem }}
-                </div>
-                <div class="game_explain" v-if="myTurn && catchMindStatus">
-                  상대가 그림을 맞추게 해야한다.
-                </div>
-              </div>
 
                 <!-- 고요 속의 외침 end -->
                 <div class="Balgame" v-if="abgamestartStatus">
-                  <h3>밸런스 게임</h3>
+                  <h3 class="margin-top:10px;">밸런스 게임</h3>
                   <h5>당신의 선택은? 신중히 골라주세요!</h5>
                   <div class="center_box">
                     <div class="select-box" @click="selectA">
@@ -366,7 +399,7 @@
                     </div>
                   </div>
                   <div class="center_box">
-                  <div class="select-box" @click="selectB">
+                    <div class="select-box" @click="selectB">
                       {{ B_item }}
                     </div>
                   </div>
@@ -397,8 +430,18 @@
               </div>
             </div>
 
-            <div class="row align-items-end" id="chatRow">
-              <div v-if="session && gameRunningStatus && !talkStatus || stageStatus >= 2" class="chat-container">
+            <div
+              class="row align-items-end"
+              id="chatRow"
+              style="padding-right: 12px"
+            >
+              <div
+                v-if="
+                  (session && gameRunningStatus && !talkStatus) ||
+                  stageStatus >= 2
+                "
+                class="chat-container"
+              >
                 <div id="chatbox">
                   <div class="chat-detail">
                     <div ref="chatmain" :class="{ chatmain: true }">
@@ -431,7 +474,11 @@
                     placeholder="메세지를 입력해주세요"
                     @keydown.enter="sendMsg"
                   />
-                  <Icon icon="fluent:send-24-filled" @click="sendMsg" class ="send-icon" />
+                  <Icon
+                    icon="fluent:send-24-filled"
+                    @click="sendMsg"
+                    class="send-icon"
+                  />
                   <!-- <i class="send-icon fas fa-reply" @click="sendMsg"></i> -->
                 </div>
               </div>
@@ -516,8 +563,7 @@
       </div>
     </div> -->
 
-    
-<!--    <button
+    <!--    <button
       v-if="session"
       @click="leaveSession"
       :class="{
@@ -758,75 +804,75 @@ export default {
   methods: {
     ...mapActions(["fetchCurrentUser"]),
 
-    initData(){
-      this.OV= undefined;
-      this.session= undefined;
-      this.mainStreamManager= undefined;
-      this.publisher= undefined;
-      this.subscribers= [];
-      this.matching_ing= false;
-      this.gameRunningStatus= false;
-      this.faceOverStatus= false;
-      this.micStatus= false;
-      this.gameStatus= false;
-      this.talkStatus= false; // 대화카드 상태
-      this.vidStatus= false;
-      this.voiceStatus= true;
-      this.catchMindStatus= false; // 캐치마인드 게임이 실행중인지 확인용
-      this.abgamestartStatus= false; // 밸런스 게임이 실행중인지 확인용
-      this.myUserName= "";
-      this.userHateMbtitList= [];
-      this.mbtiModalOpen= false;
-      this.userGender= "";
+    initData() {
+      this.OV = undefined;
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.matching_ing = false;
+      this.gameRunningStatus = false;
+      this.faceOverStatus = false;
+      this.micStatus = false;
+      this.gameStatus = false;
+      this.talkStatus = false; // 대화카드 상태
+      this.vidStatus = false;
+      this.voiceStatus = true;
+      this.catchMindStatus = false; // 캐치마인드 게임이 실행중인지 확인용
+      this.abgamestartStatus = false; // 밸런스 게임이 실행중인지 확인용
+      this.myUserName = "";
+      this.userHateMbtitList = [];
+      this.mbtiModalOpen = false;
+      this.userGender = "";
       // -------------------- 게임 순서
-      this.stageStatus= 0;
+      this.stageStatus = 0;
       // ----------------  Catch mind start
-      this.sessionName= undefined; // 방장 여부 확인
-      this.host= true; // 호스트인지 확인 - 호스트는 게임 실행 권한이 있음 - 차후 처리 (todo)
-      this.runningGameState= false; // 현재 실행중인 게임 있는지 확인용
-      this.myTurn= false; // 자신이 그림그릴 차례인지 확인
-      this.countView=""; // 남은시간이 얼마나 남았는지 표시
-      this.turn= 1; // 캐치마인드 진행된 턴 수
-      this.answer= ""; // 정답 제출용
-      this.timerInit= null; // 잘 모르겠음 todo ?????
-      this.count= 60; // 제한 시간
-      this.problem= ""; // 현재 문제
-      this.canvas= null; // 그림을 그릴 캔버스 정보
-      this.isDrawing= false; // 그리기 상태정보
-      this.color= "black"; // 펜 초기 색상
-      this.penSize= 2; // 펜 초기 사이즈
-      this.x= 0; // 펜 좌표정보
-      this.y= 0; // 펜 좌표정보
-      this.userEmail= "";
-      this.socket= undefined;
-      this.matchingTestToken= undefined;
-      this.matchingSessionName= undefined;
-      this.A_item= "";
-      this.B_item= "";
-      this.nextStatus= false;
-      this.gIndex= 0;
-      this.gameStart= [];
-      this.isSelected= false;
-      this.isReadyBal= false;
-      this.chatdata= [];
-      this.msg= "";
-      this.talkStart= [];
-      this.isTalkReady= false;
-      this.card_item= undefined; // 현재 보고 있는 카드 아이템
-      this.card_item_image= undefined;
-      this.cryStart= [];
-      this.crystartStatus= false;
-      this.isReadyCry= false;
-      this.cryStatus= false; // 게임 버튼 눌렀을 때 on/off 상태변수
-      this.cryCnt= 0; // 몇 개 진행 했는지 카운트 할 변수
-      this.cryCheck= false; // 정답자만 정답을 칠 수 있게 하는 T/F 변수
-      this.cryListCheck= false; //출제자에게 어떤 단어인지 보여줌
-      this.cryTime=30; // 몇 초 남았는지 보여줄 변수
-      this.cryAnswer= "";
-      this.cryModalShow= false; // 모달 on/off
-      this.cryCntMax= 3; //문제 최대치
-      this.cryBoss= false; // 출제자인지 확인
-      this.cryTimerInit= null;
+      this.sessionName = undefined; // 방장 여부 확인
+      this.host = true; // 호스트인지 확인 - 호스트는 게임 실행 권한이 있음 - 차후 처리 (todo)
+      this.runningGameState = false; // 현재 실행중인 게임 있는지 확인용
+      this.myTurn = false; // 자신이 그림그릴 차례인지 확인
+      this.countView = ""; // 남은시간이 얼마나 남았는지 표시
+      this.turn = 1; // 캐치마인드 진행된 턴 수
+      this.answer = ""; // 정답 제출용
+      this.timerInit = null; // 잘 모르겠음 todo ?????
+      this.count = 60; // 제한 시간
+      this.problem = ""; // 현재 문제
+      this.canvas = null; // 그림을 그릴 캔버스 정보
+      this.isDrawing = false; // 그리기 상태정보
+      this.color = "black"; // 펜 초기 색상
+      this.penSize = 2; // 펜 초기 사이즈
+      this.x = 0; // 펜 좌표정보
+      this.y = 0; // 펜 좌표정보
+      this.userEmail = "";
+      this.socket = undefined;
+      this.matchingTestToken = undefined;
+      this.matchingSessionName = undefined;
+      this.A_item = "";
+      this.B_item = "";
+      this.nextStatus = false;
+      this.gIndex = 0;
+      this.gameStart = [];
+      this.isSelected = false;
+      this.isReadyBal = false;
+      this.chatdata = [];
+      this.msg = "";
+      this.talkStart = [];
+      this.isTalkReady = false;
+      this.card_item = undefined; // 현재 보고 있는 카드 아이템
+      this.card_item_image = undefined;
+      this.cryStart = [];
+      this.crystartStatus = false;
+      this.isReadyCry = false;
+      this.cryStatus = false; // 게임 버튼 눌렀을 때 on/off 상태변수
+      this.cryCnt = 0; // 몇 개 진행 했는지 카운트 할 변수
+      this.cryCheck = false; // 정답자만 정답을 칠 수 있게 하는 T/F 변수
+      this.cryListCheck = false; //출제자에게 어떤 단어인지 보여줌
+      this.cryTime = 30; // 몇 초 남았는지 보여줄 변수
+      this.cryAnswer = "";
+      this.cryModalShow = false; // 모달 on/off
+      this.cryCntMax = 3; //문제 최대치
+      this.cryBoss = false; // 출제자인지 확인
+      this.cryTimerInit = null;
       this.matching_ing = false;
     },
 
@@ -1379,7 +1425,7 @@ export default {
           this.gameStart.pop();
         }
         if (this.gameStart.length == 2) {
-        this.gameRunningStatus = true;
+          this.gameRunningStatus = true;
           this.abgamestartStatus = true;
           this.startStatus = true;
           this.A_item = this.A_item_list[this.gIndex];
@@ -1522,7 +1568,7 @@ export default {
           this.cryStart.pop();
         }
         if (this.cryStart.length == 2) {
-        this.gameRunningStatus = true;
+          this.gameRunningStatus = true;
           this.crystartStatus = true;
           this.startCryGame();
         }
@@ -1978,7 +2024,14 @@ export default {
   top: 40%;
   /* outline-style: solid; */
   text-align: center;
-  border:none;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(30px);
+  margin-top: 10px;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  border-radius: 20px;
 }
 
 .card-title {
@@ -2107,13 +2160,13 @@ export default {
 .select-box {
   padding: 0px;
   margin: 0px;
-  margin-top:10px;
+  margin-top: 10px;
   color: #37474f;
   background: white;
   font-weight: bold;
   border-radius: 5px;
-  width:80%;
-  height:25px;
+  width: 80%;
+  height: 25px;
   justify-content: center;
 }
 .select-box:hover {
@@ -2133,7 +2186,7 @@ export default {
 
 .next-problem {
   position: absolute;
-  bottom:0px;
+  bottom: 0px;
   left: 10%;
   width: 80%;
   margin: 10% auto;
@@ -2149,7 +2202,7 @@ export default {
   color: #00aba2;
   border: 2px solid #00aba2;
 }
-.Balgame{
+.Balgame {
   text-align: center;
 }
 /* Chat */
@@ -2170,7 +2223,7 @@ export default {
 }
 .chatmain {
   height: 250px;
-  background-color: white;
+  /* background-color: white; */
   overflow: auto;
 }
 .my-chat-time {
@@ -2220,20 +2273,22 @@ export default {
 
 .send-box {
   /* width: 25%; */
+  margin-left: 10px;
 }
 .send-input {
   width: 85%;
   height: 90%;
-  border: 0;
+  border: 3px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  margin: 1%;
+  margin: 10px;
   padding-left: 3%;
+  padding-top: 2px;
 }
 .send-input:focus {
   outline: none;
 }
 .send-icon {
-  margin-left:5px;
+  margin-left: 5px;
   font-size: 20px;
   color: #00aba2;
 }
@@ -2245,7 +2300,7 @@ export default {
   display: flex;
   height: 100%;
   position: relative;
-  min-width: 1400px;
+  min-width: 1420px;
 }
 /* .videos {
   display: flex;
@@ -2295,18 +2350,23 @@ export default {
   right: 10%;
 }
 .test {
-  padding-left: 12px;
   padding-right: 12px;
 }
 
 .img-center {
-  width: 400px;
-  height: 500px;
+  width: 90%;
+  height: 100%;
   margin: auto;
+  border: solid 2px black;
 }
 
 .chat-container {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(30px);
   margin-top: 10px;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  border-radius: 20px;
 }
 
 .matching_start {
@@ -2334,26 +2394,149 @@ export default {
   margin-right: 1rem;
 }
 
-.center_box{
+.center_box {
   display: flex;
   justify-content: center;
 }
 
-.card3{
+.card3 {
   position: relative;
   margin-top: 10%;
   width: 400px;
   height: 500px;
   padding: 0px;
   top: 40%;
-  outline-style: solid;
-  background-color: white;
   text-align: center;
-  border:none;
-  }
-.container-3{
-  background-image:url('@/assets/mint_bg.jpg');
-  background-repeat:no-repeat;
+  border: none;
+}
+.container-3 {
+  background-image: url("@/assets/mint_bg.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
 }
+
+.btn-4 {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+  margin: 20px;
+}
+
+.btn-4 {
+  background-color: #4dccc6;
+  background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn-4:hover {
+  background-color: #89d8d3;
+  background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+}
+.btn-4 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-4:before,
+.btn-4:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+  box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+    -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+    inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-4:before {
+  height: 0%;
+  width: 0.1px;
+}
+.btn-4:after {
+  width: 0%;
+  height: 0.1px;
+}
+.btn-4:hover:before {
+  height: 100%;
+}
+.btn-4:hover:after {
+  width: 100%;
+}
+.btn-4 span:before,
+.btn-4 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+    -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+    inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+    inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-4 span:before {
+  width: 0.1px;
+  height: 0%;
+}
+.btn-4 span:after {
+  width: 0%;
+  height: 0.1px;
+}
+.btn-4 span:hover:before {
+  height: 100%;
+}
+.btn-4 span:hover:after {
+  width: 100%;
+}
+
+#jittery {
+  animation: jittery 4s infinite;
+}
+
+@keyframes jittery {
+  5%,
+  50% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0.9);
+  }
+  15% {
+    transform: scale(1.15);
+  }
+  20% {
+    transform: scale(1.15) rotate(-5deg);
+  }
+  25% {
+    transform: scale(1.15) rotate(5deg);
+  }
+  30% {
+    transform: scale(1.15) rotate(-3deg);
+  }
+  35% {
+    transform: scale(1.15) rotate(2deg);
+  }
+  40% {
+    transform: scale(1.15) rotate(0);
+  }
+}
+.game_explain{
+  margin-top:20%;
+}
+
 </style>
