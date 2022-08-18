@@ -677,28 +677,32 @@ export default {
       count: 60, // 제한 시간
       // 문제 리스트
       catchProblem: [
-        "샴푸",
-        "송아지",
-        "강아지",
-        "소방관",
-        "포크레인",
-        "돈다발",
-        "철학",
-        "코딩",
-        "싸피",
-        "뚱이",
-        "스폰지밥",
-        "삼성",
-        "애플",
-        "아이폰",
-        "에어팟",
-        "경찰",
-        "신과함께",
-        "아이언맨",
-        "캡틴아메리카",
-        "토르",
-        "헐크",
+        "아이스링크",
+        "삼국시대"
       ],
+      // catchProblem: [
+      //   "샴푸",
+      //   "송아지",
+      //   "강아지",
+      //   "소방관",
+      //   "포크레인",
+      //   "돈다발",
+      //   "철학",
+      //   "코딩",
+      //   "싸피",
+      //   "뚱이",
+      //   "스폰지밥",
+      //   "삼성",
+      //   "애플",
+      //   "아이폰",
+      //   "에어팟",
+      //   "경찰",
+      //   "신과함께",
+      //   "아이언맨",
+      //   "캡틴아메리카",
+      //   "토르",
+      //   "헐크",
+      // ],
       problem: "", // 현재 문제
 
       canvas: null, // 그림을 그릴 캔버스 정보
@@ -719,8 +723,8 @@ export default {
       // ----------------  ab game start
 
       gamedata: [],
-      A_item_list: ["토맛 토마토"],
-      B_item_list: ["토마토맛 토"],
+      A_item_list: ["민초", "구글링 없이 개발", "2분마다 꺼지는 컴퓨터로 코딩"],
+      B_item_list: ["반민초", "복붙없이 개발", "한타당 2초 걸리는 컴퓨터로 코딩"],
       /*
       A_item_list: [
         "토맛 토마토",
@@ -785,9 +789,11 @@ export default {
       cryAnswer: "",
       cryModalShow: false, // 모달 on/off
       cryList: [
-        "백악관",
-        "트럼프",
-        "엘사",
+        "싸피",
+        "컨설턴트"
+        // "백악관",
+        // "트럼프",
+        // "엘사",
         // "삼성화재 유성연수원",
         // "범죄도시",
         // "모나리자",
@@ -798,6 +804,7 @@ export default {
       cryBoss: false, // 출제자인지 확인
       cryTimerInit: null, // setInterval 취소하기 위한 변수
       // --------------cry end------------
+      catchIndex : 0,
     };
   },
   computed: {},
@@ -893,6 +900,7 @@ export default {
       this.cryBoss = false; // 출제자인지 확인
       this.cryTimerInit = null;
       this.matching_ing = false;
+      this.catchIndex = 0;
     },
 
     selectmbti(value) {
@@ -1163,15 +1171,17 @@ export default {
       // 캐치마인드 게임 1턴 시작
       // this.publisher.resolution = "100x100"
       // this.publisher.resolution("320x240")
-      if (this.turn > 4) {
+      if (this.turn > 2) {
         // 4개의 문항이 완료되면 게임 종료???
         return;
       }
       let pb =
-        this.catchProblem[Math.floor(Math.random() * this.catchProblem.length)]; // 랜덤 문항 출제
+        // this.catchProblem[Math.floor(Math.random() * this.catchProblem.length)]; // 랜덤 문항 출제
+        this.catchProblem[this.catchIndex++];
       const sdata = {
         // 문제 출제용 데이터
         problem: pb,
+        catchIndex : this.catchIndex,
       };
       this.session.signal({
         // 문제 출제 signal 보내기
@@ -1366,8 +1376,9 @@ export default {
         console.log("myTurn 2", this.myTurn + " " + this.turn);
         let pb = JSON.parse(event.data); // 주어진 문제 파싱 및 변수 등록
         this.problem = pb.problem;
+        this.catchIndex = pb.catchIndex;
 
-        if (this.turn > 4) {
+        if (this.turn > 2) {
           // 4턴 이상 진행되면 캐치마인드 종료
           this.endCM();
           return;
@@ -1498,7 +1509,7 @@ export default {
           this.timerInit = null;
         }
         this.allDelete(); // 캔버스 초기화
-        if (this.turn > 4) {
+        if (this.turn > 2) {
           // 진행된 turn이 4 이상인 경우 게임 종료
           Swal.fire({
             // alert 보내기
@@ -1510,10 +1521,11 @@ export default {
             this.catchMindStatus = false; // 게임중 상태 해제
             this.turn = 1; // 기타 게임 데이터 초기화
             this.count = 60;
+            this.catchIndex= 0;
           });
           return;
         }
-        if (this.turn < 5) {
+        if (this.turn < 3) {
           setTimeout(() => {
             this.startCM(); // 다음 게임 실행
           }, 1000);
