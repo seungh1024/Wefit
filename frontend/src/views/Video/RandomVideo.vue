@@ -2363,7 +2363,8 @@ export default {
 .chat-container {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(30px);
-  margin-top: 10px;
+  margin-top: 15px;
+  margin-bottom:27px;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   border-radius: 20px;
