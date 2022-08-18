@@ -1,9 +1,8 @@
 package com.ssafy.backend.config;
 
-import com.ssafy.backend.jwt.JwtAccessDeniedHandler;
-import com.ssafy.backend.jwt.JwtAuthenticationEntryPoint;
-import com.ssafy.backend.jwt.JwtSecurityConfig;
-import com.ssafy.backend.jwt.TokenProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.ssafy.backend.jwt.*;
+import com.ssafy.backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,18 +29,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CorsFilter corsFilter;
-
+    private final CustomUserDetailsService customUserDetailsService;
+    private final FirebaseAuth firebaseAuth;
 
     public SecurityConfig(
             TokenProvider tokenProvider,
             CorsFilter corsFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-            JwtAccessDeniedHandler jwtAccessDeniedHandler
-    ) {
+            JwtAccessDeniedHandler jwtAccessDeniedHandler,
+            CustomUserDetailsService customUserDetailsService, FirebaseAuth firebaseAuth) {
         this.tokenProvider = tokenProvider;
         this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.customUserDetailsService = customUserDetailsService;
+        this.firebaseAuth = firebaseAuth;
     }
 
     @Bean
@@ -69,8 +71,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
-
                         "/favicon.ico"
+//                        "/api/v1/login",
+//                        "/api/v1/user/**",
+//                        "/api/v1/re-issue",
+//                        "/api/v1/user-info/**",
+//                        "/api/v1/social/googleSignup",
+//                        "/api/v1/social/googleLogin",
+//                        "/api/v1/mbti/**",
+//                        "/api/v1/like/**",
+//                        "/api/v1/password",
+//                        "/api/v1/user-singo/**",
+//                        "/api/v1/check/**",
+//                        "/api/vi/matching"
                 );
     }
 
@@ -98,13 +111,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/login").permitAll()
-                .antMatchers("/api/v1/user").permitAll()
-                .antMatchers("/api/v1/re-issue").permitAll()
+                .antMatchers(
+                        "/api/v1/login",
+                        "/api/v1/user/**",
+                        "/api/v1/re-issue",
+                        "/api/v1/email/**",
+                        "/ws/**",
+                        "/api/v1/user-info/**",
+                        "/api/v1/social/googleSignup",
+                        "/api/v1/social/googleLogin",
+//                        "/api/v1/mbti/**",
+//                        "/api/v1/like/**",
+                        "/api/v1/password",
+//                        "/api/v1/user-singo/**",
+                        "/api/v1/check/**"
 
-                .anyRequest().authenticated() // 권한이 필요 없는 부분
+                ).permitAll()
+
+                .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider, firebaseAuth, customUserDetailsService));
     }
 }

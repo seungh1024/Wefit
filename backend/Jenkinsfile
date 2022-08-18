@@ -1,0 +1,138 @@
+pipeline {
+    agent any
+
+//     environment {
+//         DOCKER_IMAGE_NAME = 'seungh1024/wefit'
+//         DOCKER_IMAGE = ''
+//     }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                sh 'echo "Clonning Repository"'
+                git branch: 'wefit_test',
+                    url: 'https://lab.ssafy.com/s07-webmobile1-sub2/S07P12B206.git',
+                    credentialsId: 'IDPW'
+            }
+            post {
+                success {
+                     sh 'echo "Successfully Cloned Repository"'
+                 }
+                 failure {
+                     sh 'echo "Fail Cloned Repository"'
+                 }
+            }
+        }
+        stage('Docker stop'){
+            steps {
+                dir('backend'){
+                    sh 'echo "Docker Container Stop"'
+    //              도커 컴포즈 다운
+                    sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+    //              해당 도커 컴포즈 다운한 경로로 권한 설정
+                    sh 'chmod -R 777 /usr/local/bin'
+                    sh 'chmod +x /usr/local/bin/docker-compose'
+    //              기존 백그라운드에 돌아가던 컨테이너 중지
+                    sh 'docker-compose stop'
+                }
+
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Docker Fail"'
+                }
+            }
+        }
+
+        stage('Remove Docker Image'){
+            steps {
+                sh 'echo "Remove Docker Image"'
+                sh 'docker rm spring'
+                sh 'docker rmi backend_spring'
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Remove Fail"'
+                }
+            }
+        }
+
+        stage('Bulid Gradle') {
+            steps {
+                sh 'echo "Bulid Gradle Start"'
+                dir('backend') {
+                    sh "chmod +x gradlew"
+                    sh """
+                    ./gradlew clean build --exclude-task test
+                    """
+                }
+            }
+            post {
+                 failure {
+                     sh 'echo "Bulid Gradle Fail"'
+                }
+            }
+        }
+
+        stage('Bulid & Run') {
+            steps {
+                dir('backend'){
+                    sh 'echo " Image Bulid Start"'
+                    script {
+
+//                         업데이트된 코드로 빌드 및 실행
+                        sh 'docker-compose up -d'
+                    }
+                }
+            }
+
+            post {
+                failure {
+                    sh 'echo "Bulid Docker Fail"'
+                }
+            }
+        }
+        stage('[FE] prepare') {
+            steps {
+                dir('frontend'){
+                    sh 'echo " Frontend Bulid Start"'
+                    script {
+                        sh 'docker-compose stop'
+                        sh 'docker rm vue'
+                        sh 'docker rmi frontend_vue'
+                    }
+                }
+
+
+            }
+
+            post {
+                failure {
+                    sh 'echo "Frontend Build Fail"'
+                }
+            }
+        }
+        stage('Fronteend Build & Run') {
+            steps {
+                dir('frontend'){
+                    sh 'echo " Frontend Build and Start"'
+                    script {
+
+//                         업데이트된 코드로 빌드 및 실행
+                        sh 'docker-compose up -d'
+                    }
+                }
+
+
+            }
+
+            post {
+                failure {
+                    sh 'echo "Bulid Docker Fail"'
+                }
+            }
+        }
+    }
+}

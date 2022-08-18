@@ -39,3 +39,9 @@ out/
 ### env ###
 !**/properties/
 env.properties
+
+<<<<<<< HEAD
+firevase.json
+=======
+firebase.json
+>>>>>>> 41b87075df7b9ae8b04f6d130d9aee3120b0c1e1

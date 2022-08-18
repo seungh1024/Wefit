@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class TokenService {
-
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final long accessTokenValidityInMilliseconds;
@@ -32,7 +31,7 @@ public class TokenService {
 
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
-        this.accessTokenValidityInMilliseconds = 1000L * 30 * 1; //3m
+        this.accessTokenValidityInMilliseconds = 1000L * 60 * 60 * 24; //3m
         this.refreshTokenValidityInMilliseconds = 1000L * 60 * 60 * 24 * 14; // 14d
         this.redisService = redisService;
     }
@@ -59,7 +58,6 @@ public class TokenService {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             token = bearerToken.substring(7);
         }
-
 
         //토큰이 있다면 유효성 검사후 결과 리턴
         if(tokenProvider.checkUnauthorize(token)){
