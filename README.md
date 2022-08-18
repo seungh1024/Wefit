@@ -20,7 +20,7 @@
 4. [주요 기능](#4)
 5. [팀원 소개](#5)
 6. [프로젝트 산출물](#6)
-7. [기술 회고](#7)
+7. [배포](#7)
    
 <br />
 
@@ -89,33 +89,31 @@
 |          | 커뮤니케이션                  | Mattermost   | \-          |
 |          | 커뮤니케이션                  | Notion   | \-          |
 | Server   | 서버                      | AWS EC2              | \-          |
-|          | 플랫폼                     | Ubuntu               | \-          |
-|          | 배포                      | Docker               | \-          |
-|          | 배포                      | Docker Compose              | \-          |
-|          | 배포                      | Jenkins              | \-          |
-|          | 배포                      | Nginx              | \-          |
+|         | 서버                      | FireBase             | 8.0.1         |
+|          | 플랫폼                     | Ubuntu               | 20.04         |
+|          | 배포                      | Docker               | 20.10.17         |
+|          | 배포                      | Docker Compose              |  2.6.0         |
+|          | 배포                      | Jenkins              | 2.346.2          |
+|          | 배포                      | Nginx              | 1.23.1         |
 | BackEnd  | DB                      | MySQL                | 8.0.29         |
-|          |                         | JPA                  | \-          |
+|          |                         | JPA                  | 5.0.0          |
 |          |                         | QueryDSL             | 5.0.0         |
 |          | Java                    | Zulu                 | 8   |
-|          | Spring                  | Spring               | \-          |
-|          |                         | Spring Boot          | \-          |
-|          |                         | Spring Security          | \-          |
-|          | IDE                     | Intellij             | \-          |
-|          | Cloud Storage           | AWS S3               | \-          |
-|          | Cache Storage           | Redis              | \-          |
+|          | Spring                  | Spring               | 5.3.22         |
+|          |                         | Spring Boot          | 2.7.2          |
+|          |                         | Spring Security          | 2.7.2          |
+|          | IDE                     | Intellij             | 2022.2          |
+|          | Cache Storage           | Redis              | 7-alpine         |
 |          | Build                   | Gradle               | 7.5        |
 |          | WebRTC                  | Openvidu              | 2.22.0          |
 |          | WebSocket                  | Stomp            | 2.7.2          |
 | FrontEnd | HTML5                   |                      | \-          |
 |          | CSS3                    |                      | \-          |
 |          | JavaScript(ES6)         |                      |\-           |
-|          | Vue         |                      |\-           |
-|          | IDE                     | Visual Studio Code   | \-          |
-|          | WebSocket               | @stomp/stompjs       | \-          |
-|          | WebSocket               | stompjs              | \-          |
-|          | WebSocket               | sockjs-client        | \-          |
-|          | WebSocket               | SockJs        | \-          |
+|          | Vue         |                      |  3.2.13        |
+|          | IDE                     | Visual Studio Code   |1.70.0          |
+|          | WebSocket               | webstomp-client       | 1.2.6          |
+|          | WebSocket               | sockjs-client       | 1.6.1          |
 
 <br />
 
@@ -126,13 +124,17 @@
 # 시스템 아키텍처
 
 ## 시스템 구성
-![시스템아키텍쳐](https://user-images.githubusercontent.com/53360337/185049818-fdb906f7-7009-4e75-a085-25ed670b99c7.png)
-
+![image](https://user-images.githubusercontent.com/53360337/185145709-d2519b71-e565-442b-bf1a-cae2323fef7b.png)
 
 <br />
 
 ## CI/CD
-![image](https://user-images.githubusercontent.com/53360337/184604858-47769d77-a3ce-49b2-965f-34a512d5cbff.png)
+![image](https://user-images.githubusercontent.com/53360337/185145852-3c1ea708-df03-457e-8e70-a77644ec27e8.png)
+
+<br />
+
+## 디렉토리 구조
+![image](https://user-images.githubusercontent.com/53360337/185148535-3ae41e28-9d5c-4665-bd8e-a682b66bf204.png)
 
 <br />
 
@@ -143,28 +145,42 @@
 * 만나기 싫은 MBTI는 만나지 않아요
 * 나와 관심사가 비슷한 사람을 찾아드려요
 
-이미지 추가
+![i7b206 p ssafy io_randomvideo](https://user-images.githubusercontent.com/53360337/185414241-54f53b97-a8e8-471c-869e-092b3e093eac.png)
+![i7b206 p ssafy io_randomvideo (1)](https://user-images.githubusercontent.com/53360337/185414353-44555f77-3812-4ed2-9245-22fb1000cf7d.png)
+
+
 
 ### 목소리 및 얼굴 필터
 * 목소리, 얼굴이 가려진 상태에서 게임을 해봐요
 * 게임이 진행될수록 필터가 사라져요
-  
-이미지 추가
+
+<img src="https://user-images.githubusercontent.com/53360337/185411425-a9bea897-db92-4b8c-b0e6-2e39a877396c.png" width="160px" />
+<img src="https://user-images.githubusercontent.com/53360337/185411477-db8e509a-9990-495d-a0a5-ecd67a742454.png" width="160px" />
+<img src="https://user-images.githubusercontent.com/53360337/185411554-5abd8ece-e665-4aa0-84d7-6cd6df57154f.png" width="160px" />
+
+<br />
 
 ### 대화 카드
 * 처음 만남에서 대화거리를 줄게요
   
-이미지 추가
+![대화카드](https://user-images.githubusercontent.com/53360337/185390652-81322dba-2560-4def-8d81-bbb2eb39ca03.gif)
+
 
 ### 벨런스 게임
 * 벨런스 게임을 통해서 상대와 대화해봐요
 
-이미지 추가
+![밸런스게임](https://user-images.githubusercontent.com/53360337/185412935-b2b367eb-ad8f-4f58-86d4-07b7460d758a.gif)
   
 ### 캐치마인드
 * 캐치마인드로 그림을 그리고 맞춰봐요
 
-이미지 추가
+![캐치마인드](https://user-images.githubusercontent.com/53360337/185413323-f7404297-32a4-479e-90ce-c1fc5c6ed90f.gif)
+
+
+### 고요속의 외침
+* 입모양을 보고 말하는 것을 맞춰봐요
+
+
   
 <br />
 
@@ -174,17 +190,17 @@
 <table>
     <tr>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502226-97b9774c-31f9-4a6f-bc60-cc1d8d1fb426.png" width="140px" /> </a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185133988-eb3716cf-a87c-4a45-905a-0603d3466ee7.png" width="140px" /> </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502242-5b3895ee-6eef-42d2-a68b-2ba7b45ebe16.png" width="140px" /></a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185134234-fd849d9d-ff45-42c9-9971-0f75902687ed.png" width="140px" /></a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502252-8b64eaee-1e1b-48f3-86cc-056e228a2359.png" width="140px" /></a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185134422-a4f0821d-b2b0-4cc0-ae98-2cd6c9683652.png" width="140px" /></a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502289-81e9a973-7d28-4eee-8537-5a6492a003e7.png" width="140px" /> </a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185134769-c0801c1b-48cd-4c86-b0f6-1ef68c15380b.png" width="140px" /> </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502297-00174606-1664-49de-b008-4307accf5578.png" width="140px" /> </a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185135010-0e5c4ff6-54c7-4a12-add0-30193b32ba6b.png" width="140px" /> </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="https://user-images.githubusercontent.com/53360337/184502283-048ee421-1a7e-4507-b72a-8130c926c819.png" width="140px" /></a> <br></td>
+            <img src="https://user-images.githubusercontent.com/53360337/185134598-e16bc8a7-6cc4-4467-be12-3c684d70a091.png" width="140px" /></a> <br></td>
     </tr>
     <tr>
         <td align="center">유영진</td>
@@ -201,14 +217,6 @@
         <td align="center">Front-End</td>
         <td align="center">Front-End</td>
         <td align="center">Front-End</td>
-    </tr>
-    <tr>
-        <td align="center">1</td>
-        <td align="center">1</td>
-        <td align="center">1</td>
-        <td align="center">1</td>
-        <td align="center">1</td>
-        <td align="center">1</td>
     </tr>
 </table>
 
@@ -256,11 +264,16 @@
 
 <br />
 
+<div id="7"></div>
+
+<br />
+
 ## EC2 포트 정리
 
 | 구분       | 포트번호                    | 
 | -------- | ----------------------- |
-| Vue         |  80, 443                   | 
+| Vue         |  8081               | 
+| Jenkins         |  80, 443                 | 
 | Spring         | 8080                    | 
 | Jenkins         | 9090                    | 
 | Openvidu         | 8443                 | 
@@ -273,11 +286,65 @@
 
 서버는 AWS EC2 ubuntu를 사용했습니다
 
-## 1. Docker
 
-- openvidu 서버 : 8443
+## Openvidu
 
-- 서비스 포트 번호 : 443
+### Openvidu On premises
+ 1. 방화벽 설정   
+```
+ufw allow ssh   
+ufw allow 80/tcp   
+ufw allow 443/tcp   
+ufw allow 3478/tcp   
+ufw allow 3478/udp   
+ufw allow 40000:57000/tcp   
+ufw allow 40000:57000/udp   
+ufw allow 57001:65535/tcp   
+ufw allow 57001:65535/udp   
+ufw enable   
+```
+
+<br />
+
+2. Openvidu 파일 설치
+
+```
+sudo su   
+cd /opt   
+curl https://s3-eu-west-1.amazonaws.com/aws.openvidu.io/install_openvidu_latest.sh | bash     
+```
+
+<br />
+
+3. 설정
+
+```
+cd openvidu   
+nano .env   
+/*
+DOMAIN_OR_PUBLIC_IP= '주어진 도메인 이름'
+OPENVIDU_SECRET= '비밀키로 사용할 아무 문자열'
+CERTIFICATE_TYPY= letsencrypt
+LETSENCRYPT_EMAIL= '아무 이메일'
+HTTP= '포트번호'
+HTTPS= '포트번호'
+*/
+```
+
+<br />
+
+4. 실행
+```
+./openvidu start
+```  
+
+<br />
+
+## Docker
+
+- openvidu 서버  8443
+
+- 서비스 포트 번호  443
 
 서로 다른 도커 이미지로 저장되어 있어 각각의 이미지를 실행시킵니다.
 
@@ -287,16 +354,18 @@ docker 내부는 같은 네트워크로 묶어주기 위해 docker-compose로 �
 
 각 이미지들을 필요에 따라 하나의 컨테이너 위에 띄웁니다.
 
-### 1-1. Nginx
+<br />
 
-- conf/nginx.conf
+### Nginx
+
+- confnginx.conf
 ```
 server {
     listen 80;
     server_name i7b206.p.ssafy.io; # 도메인으로 변경
 
-    location / {
-        return 308 https://$host$request_uri;
+    location  {
+        return 308 https$host$request_uri;
     }
 }
 
@@ -304,56 +373,56 @@ server {
     listen 443 ssl;
     server_name i7b206.p.ssafy.io;
 
-    ssl_certificate /etc/letsencrypt/live/i7b206.p.ssafy.io/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/i7b206.p.ssafy.io/privkey;
+    ssl_certificate etcletsencryptlivei7b206.p.ssafy.iofullchain.pem;
+    ssl_certificate_key etcletsencryptlivei7b206.p.ssafy.ioprivkey;
 
-    location  / {
+    location   {
         proxy_intercept_errors on;
-        proxy_pass  http://3.36.88.140:8081;
-        add_header      Content-Security-Policy "upgrade-insecure-requests";
-        error_page 500 502 503 504 /50x.html;
-        error_page 404 /404.html;
+        proxy_pass  http3.36.88.1408081;
+        add_header      Content-Security-Policy upgrade-insecure-requests;
+        error_page 500 502 503 504 50x.html;
+        error_page 404 404.html;
     }
 
-    location /api/v1{
+    location apiv1{
         proxy_intercept_errors on;
 
         proxy_hide_header Access-Control-Allow-Origin;
 
-        add_header 'Access-Control-Allow-Origin' '*';
-#        add_header 'Content-Type' 'application/json';
+        add_header 'Access-Control-Allow-Origin' '';
+#        add_header 'Content-Type' 'applicationjson';
 
-        proxy_pass  http://3.36.88.140:8080$request_uri;
+        proxy_pass  http3.36.88.1408080$request_uri;
 
 
-        add_header  Content-Security-Policy "upgrade-insecure-requests";
+        add_header  Content-Security-Policy upgrade-insecure-requests;
 
-        error_page 404 /404.html;
-        error_page 500 502 503 504 /50x.html;
+        error_page 404 404.html;
+        error_page 500 502 503 504 50x.html;
     }
-    location /ws{
+    location ws{
         #websocket
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection upgrade;
         proxy_set_header Host $host;
 
         proxy_intercept_errors on;
-        proxy_pass http://3.36.88.140:8080$request_uri;
+        proxy_pass http3.36.88.1408080$request_uri;
 
 
-        error_page 404 /404.html;
-        error_page 500 502 503 504 /50x.html;
+        error_page 404 404.html;
+        error_page 500 502 503 504 50x.html;
     }
 
-    error_page 404 /404.html;
-    location = /404.html{
-        root /usr/share/nginx/html;
+    error_page 404 404.html;
+    location = 404.html{
+        root usrsharenginxhtml;
         internal;
     }
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html{
-        root /usr/share/nginx/html;
+    error_page 500 502 503 504 50x.html;
+    location = 50x.html{
+        root usrsharenginxhtml;
         internal;
     }
 }
@@ -368,44 +437,48 @@ server {
 
 - 서버는 letsencrypt를 사용하여 ssl 설정했습니다. openvidu를 사용하기 위해 받은 key의 경로를 각각 ssl_certificate, ssl_certificate_key에 연결해 주었습니다.
 
-### 1-2. Nginx docker-compose.yml
+<br />
+
+### Nginx docker-compose.yml
 - docker-compose.yml
 ```
-version: '3'
-services:
-  nginx:
-    image: nginx:latest
-    restart: unless-stopped
-    container_name: nginx
-    volumes:
-      - ./conf:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt
-      - ./error/404.html:/usr/share/nginx/html/404.html
+version '3'
+services
+  nginx
+    image nginxlatest
+    restart unless-stopped
+    container_name nginx
+    volumes
+      - .confetcnginxconf.d
+      - etcletsencryptetcletsencrypt
+      - .error404.htmlusrsharenginxhtml404.html
 
-    ports:
-      - 80:80
-      - 443:443
-networks:
-  default:
-    external:
-      name: nginx-proxy
+    ports
+      - 8080
+      - 443443
+networks
+  default
+    external
+      name nginx-proxy
 ```
 - docker에 있는 nginx 이미지를 사용하여 빌드 및 컨테이너에 띄웠습니다.
 - volumes는 빌드된 이미지와 로컬의 경로를 맞춰서 설정파일, ssl 키 등을 읽도록 했습니다.
 
-### 1-3. Vue
-- wefit/frontend/Dockerfile
+<br />
+
+### Vue
+- wefitfrontendDockerfile
 ```
-FROM node:lts-alpine as builder
+FROM nodelts-alpine as builder
 
 # install simple http server for serving static content
 RUN npm install -g http-server
 
 # make the 'app' folder the current working directory
-WORKDIR /app
+WORKDIR app
 
 # copy both 'package.json' and 'package-lock.json' (if available)
-COPY package*.json ./
+COPY package.json .
 
 # install project dependencies
 RUN npm install
@@ -416,32 +489,33 @@ COPY . .
 # build app for production with minification
 RUN npm run build
 
-FROM nginx:stable-alpine as production
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+FROM nginxstable-alpine as production
+RUN rm -rf etcnginxconf.ddefault.conf
+COPY .nginxdefault.conf etcnginxconf.ddefault.conf
 
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/dist /usr/share/nginx/html
+RUN rm -rf usrsharenginxhtml
+COPY --from=builder appdist usrsharenginxhtml
 
 EXPOSE 8081
-CMD [ "nginx", "-g", "daemon off;"]
+CMD [ nginx, -g, daemon off;]
 ```
-- alpine에 nodejs를 설치 후 app 디렉토리를 만들고 해당 위치에 package*.json을 복사 한 뒤 npm을 설치합니다.
+- alpine에 nodejs를 설치 후 app 디렉토리를 만들고 해당 위치에 package.json을 복사 한 뒤 npm을 설치합니다.
 
-- ignore로 등록된 파일 외에 모두 /app 으로 복사하고 빌드합니다.
+- ignore로 등록된 파일 외에 모두 app 으로 복사하고 빌드합니다.
 - nginx를 설치 후 기존 default.conf 파일을 제거하고 설정한 경로에 로컬의 default.conf 를 복사합니다.
 - html을 저장한 경로의 기존 파일을 삭제하고 build 해서 나온 dist 파일을 저장합니다.
-<br>
+  
+<br />
 
-- wefit/frontend/conf/default.conf
+- wefitfrontendconfdefault.conf
 
 ```
 server {
     listen 8081;
 
-    location / {
-        alias /usr/share/nginx/html/;
-        try_files $uri $uri/ /index.html;
+    location  {
+        alias usrsharenginxhtml;
+        try_files $uri $uri index.html;
     }
 
 }
@@ -450,115 +524,113 @@ server {
 
 - docker-compose.yml
 ```
-version: "3.8"
-services:
-  vue:
-    container_name: vue
-    build: ./
-    restart: on-failure
-    ports:
-      - 8081:8081
-    expose:
+version 3.8
+services
+  vue
+    container_name vue
+    build .
+    restart on-failure
+    ports
+      - 80818081
+    expose
       - 8081
 
-networks:
-  default:
-    external:
-      name: nginx-proxy
+networks
+  default
+    external
+      name nginx-proxy
 ```
-<br>
-<br>
 
-### 1-4.Backend(Spring,MySQL,Redis)
-- backend/Dockerfile
+<br />
+
+### Backend(Spring,MySQL,Redis)
+- backendDockerfile
 ```
-FROM openjdk:8-jdk-alpine
+FROM openjdk8-jdk-alpine
 RUN addgroup -S seungh1024 && adduser -S seungh1024 -G seungh1024
-USER seungh1024:seungh1024
-ARG JAR_FILE=build/libs/*.jar
+USER seungh1024seungh1024
+ARG JAR_FILE=buildlibs.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT [java,-jar,app.jar]
 ```
 - java openjdk 8버전을 사용하여 빌드
 
-<br>
+<br />
 
-- /backend/docker-compose.yml
+- backenddocker-compose.yml
 ```
-version: "3.8"
-services:
-  redis:
-    container_name: redis
-    image: redis:7-alpine
-    ports:
-      - 6379:6379
-    volumes:
-      - redis:/data
+version 3.8
+services
+  redis
+    container_name redis
+    image redis7-alpine
+    ports
+      - 63796379
+    volumes
+      - redisdata
 
-  mysqldb:
-    container_name: mysql
-    image: mysql:latest
-    restart: unless-stopped
-    environment:
+  mysqldb
+    container_name mysql
+    image mysqllatest
+    restart unless-stopped
+    environment
       - MYSQL_ROOT_PASSWORD=clsfurtkanth
       - MYSQL_DATABASE=ssafy
       - MYSQL_USER=ssafy
       - MYSQL_PASSWORD=clsfurtkanth
-    ports:
-      - 3306:3306
-    command:
+    ports
+      - 33063306
+    command
       - --character-set-server=utf8
       - --collation-server=utf8_unicode_ci
-    volumes:
-      - ./mysqldata:/var/lib/mysql
-  spring:
-    container_name: spring
-    depends_on:
+    volumes
+      - .mysqldatavarlibmysql
+  spring
+    container_name spring
+    depends_on
       - mysqldb
       - redis
-    build: ./
-    restart: on-failure
-    ports:
-      - 8080:8080
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/ssafy?useSSL=false&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: clsfurtkanth
-mysqldb:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false",
-hibernate.dialect.MySQL8InnoDBDialect",
+    build .
+    restart on-failure
+    ports
+      - 80808080
+    environment
+      SPRING_DATASOURCE_URL jdbcmysqlmysqldb3306ssafyuseSSL=false&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME root
+      SPRING_DATASOURCE_PASSWORD clsfurtkanth
+mysqldb3306ssafyallowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false,
+hibernate.dialect.MySQL8InnoDBDialect,
 
-    stdin_open: true
-    tty: true
+    stdin_open true
+    tty true
 
-networks:
-  default:
-    external:
-      name: nginx-proxy
-volumes:
-    redis:
-      driver: local
+networks
+  default
+    external
+      name nginx-proxy
+volumes
+    redis
+      driver local
 ```
 - 같은 네트워크를 공유하기 위해 하나의 컴포즈 파일에 작성
 
-<br>
+<br />
 
-<br/>
-<br/>
+## DevOps
 
-## 2. DevOps
-
-`Jenkins`로  CI/CD를 구축하여 배포용 브랜치에 `push` 이벤트 발생시 build하도록 구성했습니다.
+`Jenkins`로  CICD를 구축하여 배포용 브랜치에 `push` 이벤트 발생시 build하도록 구성했습니다.
 
 build 후 docker-compose를 실행하도록 했습니다.
 
-<br/>
-<br/>
+<br />
 
-## 3. How to
+## How to
+
+<br />
 
 ### Jenkins 설정
 
-1. Jenkins 관리 > 시스템 설정
+1. Jenkins 관리  시스템 설정
 - Jenkins가 실행중인 서버의 URL 작성
 - Gitlab URL 작성
 - ssh로 서버에 접속하기 위한 설정
@@ -571,11 +643,8 @@ build 후 docker-compose를 실행하도록 했습니다.
 - 빌드 환경설정(pipeline 코드 작성)
 - 빌드 후 조치
 
+<br />
+
 ### Gitlab Webhook 설정
 
-Jenkins 프로젝트 > 구성 > 빌드유발에서 발급한 토큰을 Webhook 설정 페이지에 작성하고 빌드 트리거를 설정한다.
-
-
-<br/>
-<br/>
-<br/>
+Jenkins 프로젝트  구성  빌드유발에서 발급한 토큰을 Webhook 설정 페이지에 작성하고 빌드 트리거를 설정한다.
