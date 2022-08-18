@@ -22,19 +22,20 @@
           <div class="matching">
             <button
               @click="[matchingReqeust(), (matching_ing = true)]"
-              v-if="!matching_ing"
+              
               class="matching_start"
+              :class="{'onclick':onClickStatus, 'validate': validateStatus}"
             >
-              매칭
+            {{matchingText}}
             </button>
+          </div>
             <button
               @click="[cancleMatchingReqeust(), (matching_ing = false)]"
-              v-if="matching_ing"
+              
               class="matching_end"
             >
               매칭 취소
             </button>
-          </div>
         </div>
       </div>
     </div>
@@ -325,7 +326,7 @@
                 <!-- 교요 속의 외침 start -->
                 <div v-if="crystartStatus">
                   <div v-if="cryBoss">
-                    <div>
+                    <div class="btn-4">
                       {{ cryList[cryCnt] }}
                     </div>
                     <div class="game_explain">
@@ -334,7 +335,7 @@
                   </div>
                   <div class="silence-cry" v-if="session && cryStatus">
                     <!--<div class="silence-cry"> -->
-                    <div id="silence-timer" v-if="cryCheck">
+                    <div id="silence-timer" v-if="cryCheck" class="btn-4">
                       <p>{{ cryTime }}</p>
                     </div>
 
@@ -396,8 +397,9 @@
 
                     <div class="game_explain">상대가 그림을 맞춰야한다.</div>
                   </div>
+                  <br>
                   <div
-                    class="pb-div"
+                    class="pb-div btn-4"
                     style="margin-top: 20px"
                     v-if="myTurn && catchMindStatus"
                   >
@@ -805,6 +807,12 @@ export default {
       cryTimerInit: null, // setInterval 취소하기 위한 변수
       // --------------cry end------------
       catchIndex : 0,
+
+      //------- matching btn status start ------
+      onClickStatus : false,
+      validateStatus: false,
+      matchingText:"매칭 시작"
+      //------- matching btn status end --------
     };
   },
   computed: {},
@@ -1240,7 +1248,18 @@ export default {
 
     //---------------- random matching start
     matchingReqeust() {
-      //매칭 요청 하기
+      //매칭 버튼 css start
+      setTimeout(()=>{
+        this.onClickStatus = true; // true 로 변경 -> class 적용
+        this.matchingText = "";
+      },250)
+      setTimeout(()=>{ //250 ms 뒤에 onClickStatus 변경 -> 250ms 만큼 유지
+        this.removeOnclick();
+      },2500)
+      //매칭 버튼 css end
+
+
+      // 매칭 요청 하기
       let self = this;
       this.socketConnect();
       setTimeout(() => {
@@ -1263,8 +1282,29 @@ export default {
       }, 3000);
     },
 
+    // .onclick css 지우고 validate css 추가
+    removeOnclick(){
+      this.onClickStatus = false; // onClick css 제거
+      this.validateStatus = true;
+      setTimeout(()=>{ //5000ms 동안 validate css 유지
+        this.removeValidate()
+      },5000);
+    },
+
+    //validate css 제거
+    removeValidate(){
+      setTimeout(()=>{
+        this.validateStatus = false;
+        this.matchingText = "매칭 시작";
+      })
+    },
+
+
     cancleMatchingReqeust() {
       //매칭 요청 취소 하기
+      this.onClickStatus = false;
+      this.validateStatus = false;
+      this.matchingText = "매칭 시작"
       let self = this;
       axios({
         url: `${OPENVIDU_SERVER_URL}/exitMatching`,
@@ -2017,17 +2057,101 @@ export default {
   border-radius: 20px;
   margin: auto;
 }
-.matching {
+/* .matching {
   text-align: center;
   color: blue;
   font-size: 30px;
 }
+.matching_start {
+  border: none;
+  background-color: transparent;
+} */
+
+
+.matcing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -65px;
+  margin-top: -20px;
+  width: 130px;
+  height: 40px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.matching_start {
+  outline: none;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius: 40px;
+  background: #fff;
+  border: 2px solid #1ECD97;
+  color: #1ECD97;
+  letter-spacing: 1px;
+  text-shadow: 0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-left: 55px;
+}
+.matching_start:hover {
+  color: white;
+  background: #1ECD97;
+}
+.matching_start:active {
+  letter-spacing: 2px;
+}
+
+
+.onclick {
+  width: 40px;
+  border-color: #bbbbbb;
+  border-width: 3px;
+  font-size: 0;
+  border-left-color: #1ECD97;
+  animation: rotating 2s 0.25s linear infinite;
+  margin-left:100px;
+}
+.onclick:after {
+  content: "";
+}
+.onclick:hover {
+  color: #1ECD97;
+  background: white;
+}
+
+.validate {
+  font-size: 13px;
+  color: white;
+  background: #1ECD97;
+}
+.validate:after {
+  font-family: "FontAwesome";
+  content: "✓";
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* -------------- */
 .hate_mbti {
-  height: 140px;
+  height: 100px;
   text-align: center;
   padding-top: 30px;
   font-size: 25px;
   color: red;
+}
+.hate_mbti:hover {
+  letter-spacing: 2px;
 }
 .matching-title {
   font-family: "Cafe24Ssurround";
@@ -2401,14 +2525,35 @@ export default {
   border-radius: 20px;
 }
 
-.matching_start {
-  border: none;
-  background-color: transparent;
-}
+
 
 .matching_end {
   border: none;
   background-color: transparent;
+  margin-left:80px;
+  margin-top:10px;
+  outline: none;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius: 40px;
+  background: #fff;
+  border: 2px solid #f10909;
+  color: #f10909;
+  letter-spacing: 1px;
+  text-shadow: 0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-left: 55px;
+}
+.matching_end:hover {
+  color: white;
+  background: #f10909;
+}
+.matching_end:active {
+  letter-spacing: 2px;
 }
 /* 캐치마인드 css */
 #myCanvas {
