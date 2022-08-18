@@ -383,8 +383,8 @@
                         type="text"
                         id="user"
                         required
-                        v-model="cryAnswer"
-                        @keydown.enter="sendCryAnswer"
+                        v-model="answer"
+                        @keydown.enter="sendAns"
                       />
                       <label for="user">정답을 입력해주세요</label>
                       <Icon
@@ -427,7 +427,7 @@
                       <div class="select-comment">
                         <span
                           >{{ game.userId }}님이 {{ game.select }}를
-                          선택하셨습니다.</span
+                          선택!</span
                         >
                       </div>
                     </div>
@@ -800,7 +800,7 @@ export default {
         // "미세먼지",
         // "거봉",
       ],
-      cryCntMax: 3, //문제 최대치
+      cryCntMax: 2, //문제 최대치
       cryBoss: false, // 출제자인지 확인
       cryTimerInit: null, // setInterval 취소하기 위한 변수
       // --------------cry end------------
