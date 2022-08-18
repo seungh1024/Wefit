@@ -144,7 +144,9 @@
     </td>
     </tr>  
     </table>
-     <button id = "submitbtn" @click.prevent = "SelectInterest">결정하기</button>
+    <p class="text-center">
+      <button id = "submitbtn" @click.prevent = "SelectInterest">결정하기</button>
+    </p>
    </div>
    </div>
 </template>
@@ -191,7 +193,7 @@ table{
 p{
     font-size : 20px;
     font :bold;
-    color:red;
+    color:rgb(211, 222, 120);
     position : relative;
     text-align: center;
 }
@@ -204,8 +206,8 @@ p{
     outline: none;
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
-    display: block;
-    width: 100px;
+    /* display: block; */
+    width: 15vw;
     height: 50px;
     padding-bottom: 1px;
     border-radius: 10px;

@@ -26,7 +26,7 @@
             <tr>
                 <td> 닉네임</td>  
                 <td v-if ="nicknameOpen === false"><span @click= "nicknameOpen = true" >입력</span></td>
-                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickname"  maxlength='8' placeholder="8자 이내로 입력해주세요."></td>
+                <td v-if ="nicknameOpen === true"><input class="input_long" type="text" v-model ="userNickName"  maxlength='8' placeholder="8자 이내로 입력해주세요."></td>
             </tr>
             <tr>   
                 <td>지역</td>
@@ -65,11 +65,11 @@
     </div>
 
     <div>
-     <SelectMbtiModal v-if="mbtiModalOpen ==true" v-model ="userMbti" v-click-outside="mbtimodalclose" v-on:selectmbti="selectmbti" >
+     <SelectMbtiModal v-if="mbtiModalOpen ==true" v-model ="userMbti" v-click-outside="modalClose" v-on:selectmbti="selectmbti" v-on:modalClose ="MBTImodalClose"  >
      </SelectMbtiModal>
-    </div>
+    </div>  
     <div>
-        <SelectInterestModal v-if="interestModalOpen == true" v-model = "userInterestList"  v-click-outside="interestmodalclose" v-on:SelectInterest = "SelectInterest">
+        <SelectInterestModal v-if="interestModalOpen == true" v-model = "userInterestList"  v-click-outside="interestModalClose" v-on:SelectInterest = "SelectInterest" v-on:interestModalClose = "interestModalClose" >
         </SelectInterestModal>
     </div>
 </template>
@@ -97,7 +97,7 @@ export default {
         userName   : '',
         userField  : '',
         userPhone  : '',
-        userNickname : '',
+        userNickName : '',
         userInterestList : [],
         mbtiModalOpen : false,
         interestModalOpen: false,
@@ -116,24 +116,22 @@ export default {
         "userEmail" : this.$store.getters.getUserEmail,
         "userMBTI": this.userMBTI,
         "userGender": this.userGender,
-        "userNickname" : this.userNickname,
+        "userNickname" : this.userNickName,
         "userName": this.userName,
         "userField" : this.userField,
         "userPhone": this.userPhone,   
       }
        console.log(userDetailData);
-       const userInterestList = this.userInterestList
-       this.$store.dispatch('signupdetail', userDetailData, userInterestList);
-       //잘되는듯?
+      let userInterestLists = []
+      for (var i = 0; i < this.userInterestList.length; i++) {
+        userInterestLists.push(
+         {
+            'InterestName':this.userInterestList[i]
+          })      
+      }
+       this.$store.dispatch('signupdetail', userDetailData, userInterestLists);
+       
      },
-    mbtimodalclose(event){
-        this.mbtiModalOpen = false;
-        //왜안될까...
-    },
-    interestmodalclose(event){
-        this.interestModalOpen = false;
-        //왜안될까...
-    },
     selectmbti(value){
         this.mbtiModalOpen = false;
         this.userMBTI = value;
@@ -145,6 +143,14 @@ export default {
         this.userInterestList = value;
         console.log(this.userInterestList) 
     },
+    MBTImodalClose(){
+        //모달 내부의 x 클릭 시 모달 닫힘
+        this.mbtiModalOpen = false;
+    },
+    interestModalClose(){
+        //모달 내부의 x 클릭 시 모달 닫힘
+        this.interestModalOpen = false;
+    }
     },
 
 
@@ -271,7 +277,7 @@ input[type=text] {
   height: 8px;
   box-sizing: border-box;
   border: none;
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid rgb(211, 222, 120);
   background-color: rgba(22, 22, 22, 22);
   color:white;
 }

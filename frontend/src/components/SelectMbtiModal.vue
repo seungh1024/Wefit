@@ -1,6 +1,7 @@
 <template>
    <div class="mbtimodal">
    <div class="white-bg">
+    <div class="close close1" @click.prevent = "modalClose"></div>
     <p>MBTI를 선택해 주세요</p>
     <table>
     <tr>
@@ -60,7 +61,9 @@
     </td>
     </tr>
     </table>
-    <button id = "submitbtn" @click.prevent = "selectmbti">결정하기</button>
+    <p class="text-center">
+      <button id = "submitbtn" @click.prevent = "selectmbti">결정하기</button>
+    </p>
    </div>
    </div>
 </template>
@@ -87,6 +90,9 @@ export default{
     selectmbti(){
       let mbti = this.checkedValues[0];
       this.$emit("selectmbti", mbti);
+    },
+    modalClose(){
+      this.$emit('modalClose')
     }    
   }
 };
@@ -117,7 +123,7 @@ table{
 p{
     font-size : 20px;
     font :bold;
-    color:red;
+    color:rgb(211, 222, 120);
     position : relative;
     text-align: center;
 }
@@ -130,8 +136,8 @@ p{
     outline: none;
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "Droid Sans", "Helvetica Neue", "Apple SD Gothic Neo", "sans-serif", sans-serif;
-    display: block;
-    width: 100px;
+    /* display: block; */
+    width: 15vw;
     height: 50px;
     padding-bottom: 1px;
     border-radius: 10px;
@@ -143,4 +149,19 @@ p{
     margin-top: 30px;
     font-size: 17px;
 }
+.close{
+  height : 30px;
+  width : 30px;
+  display:inline-block;
+  *display:inline;
+  cursor:pointer;
+  }
+.close:after {
+  display: inline-block;
+  content: "\00d7";
+  position : fixed;
+  right: 4%;
+  font-size:30pt;
+  cursor:pointer;
+  }
 </style>
