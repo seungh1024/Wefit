@@ -338,19 +338,23 @@
                       <p>{{ cryTime }}</p>
                     </div>
 
-                    <div id="silence-input" v-if="cryCheck">
+                    <!-- good input -->
+                    <div class="input-wrapper">
                       <input
-                        id="cry-enter"
-                        v-model="cryAnswer"
                         type="text"
-                        placeholder="정답을 입력해주세요"
+                        id="user"
+                        required
+                        v-model="cryAnswer"
                         @keydown.enter="sendCryAnswer"
                       />
+                      <label for="user">정답을 입력해주세요</label>
                       <Icon
                         icon="fluent:send-24-filled"
-                        @click="sendCryAnswer"
+                        @click="sendMsg"
+                        class="send-icon"
                       />
                     </div>
+
                     <div class="game_explain">
                       상대방에게 입모양만으로 정답을 전달해야만 한다!
                     </div>
@@ -372,16 +376,31 @@
                   <!-- 정답 입력란 -->
                   <div v-if="catchMindStatus && !myTurn">
                     <!-- 캐치마인드가 실행중 && 내가 그리는 차례가 아닐때-->
-                    <input
-                      class="ans-block"
-                      type="text"
-                      v-model="answer"
-                      placeholder="정답을 입력하세요"
-                      @keydown.enter="sendAns"
-                    />
+
+                    <!-- good input -->
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        id="user"
+                        required
+                        v-model="cryAnswer"
+                        @keydown.enter="sendCryAnswer"
+                      />
+                      <label for="user">정답을 입력해주세요</label>
+                      <Icon
+                        icon="fluent:send-24-filled"
+                        @click="sendMsg"
+                        class="send-icon"
+                      />
+                    </div>
+
                     <div class="game_explain">상대가 그림을 맞춰야한다.</div>
                   </div>
-                  <div class="pb-div" style="margin-top:20px;" v-if="myTurn && catchMindStatus">
+                  <div
+                    class="pb-div"
+                    style="margin-top: 20px"
+                    v-if="myTurn && catchMindStatus"
+                  >
                     {{ problem }}
                   </div>
                   <div class="game_explain" v-if="myTurn && catchMindStatus">
@@ -2364,7 +2383,7 @@ export default {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(30px);
   margin-top: 15px;
-  margin-bottom:27px;
+  margin-bottom: 27px;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   border-radius: 20px;
@@ -2536,8 +2555,51 @@ export default {
     transform: scale(1.15) rotate(0);
   }
 }
-.game_explain{
-  margin-top:20%;
+.game_explain {
+  margin-top: 20%;
 }
 
+body {
+  padding: 40px;
+  font-family: "Helvetica Neue";
+}
+.input-wrapper {
+  position: relative;
+  line-height: 14px;
+  margin: 0 5px;
+  display: inline-block;
+}
+label {
+  color: #bbb;
+  font-size: 20px;
+  text-transform: uppercase;
+  position: absolute;
+  z-index: 2;
+  left: 25px;
+  top: 20px;
+  padding: 0 2px;
+  pointer-events: none;
+  background: #fff;
+  transition: transform 100ms ease;
+  transform: translateY(-30px);
+}
+input {
+  font-size: 20px;
+  color: #555;
+  outline: none;
+  border: 1px solid #bbb;
+  padding: 13px 20px;
+  border-radius: 20px;
+  position: relative;
+}
+input:invalid + label {
+  transform: translateY(0);
+}
+input:focus {
+  border-color: #2b96f1;
+}
+input:focus + label {
+  color: #2b96f1;
+  transform: translateY(-30px);
+}
 </style>
