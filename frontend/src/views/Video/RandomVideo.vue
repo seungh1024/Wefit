@@ -209,7 +209,7 @@
                         <div v-if="!talkStatus" class="carousel-inner">
                           <div class="carousel-item active">
                             <img
-                              src="@/assets/talkcard/대화카드1.jpg"
+                              src="@/assets/talkcard/대화카드4.jpg"
                               class="img-center"
                               alt="nonLoginPage.jpg"
                             />
@@ -224,7 +224,7 @@
                           </div>
                           <div class="carousel-item">
                             <img
-                              src="@/assets/talkcard/대화카드1.jpg"
+                              src="@/assets/talkcard/대화카드4.jpg"
                               class="img-center"
                               alt="nonLoginPage.jpg"
                             />
