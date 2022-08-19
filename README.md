@@ -14,17 +14,15 @@
 <br />
 
 # 목차
-1. [서비스 소개](#1)
-2. [기술 스택](#2)
-3. [시스템 아키텍처](#3)
-4. [주요 기능](#4)
-5. [팀원 소개](#5)
-6. [프로젝트 산출물](#6)
-7. [배포](#7)
+1. [서비스 소개](#서비스-소개)
+2. [기술 스택](#기술-스택)
+3. [시스템 아키텍처](#시스템-아키텍처)
+4. [주요 기능](#주요-기능)
+5. [팀원 소개](#팀원-소개)
+6. [프로젝트 산출물](#프로젝트-산출물)
+7. [배포](#배포)
    
 <br />
-
-<div id='1'> </div>
 
 # 서비스 소개
 
@@ -45,10 +43,7 @@
 
 ## **We Fit에서 친구를 만나봐요**
 
-
 <br />
-
-<div id='2'></div>
 
 # 기술 스택
 
@@ -73,6 +68,7 @@
 <img src="https://img.shields.io/badge/-EC2-lightgrey" /> 
 <img src="https://img.shields.io/badge/-OPENVIDU-brightgreen" /> 
 <img src="https://img.shields.io/badge/-UBUNTU-yellow" /> 
+<img src="https://img.shields.io/badge/-FIREBASE-blue" /> 
 <img src="https://img.shields.io/badge/-REDIS-red" /> 
 <img src="https://img.shields.io/badge/-GRADLE-lightgrey" /> 
 <img src="https://img.shields.io/badge/-JIRA-blue" />
@@ -117,10 +113,6 @@
 
 <br />
 
-<div id="3"></div>
-
-<br />
-
 # 시스템 아키텍처
 
 ## 시스템 구성
@@ -137,8 +129,6 @@
 ![image](https://user-images.githubusercontent.com/53360337/185148535-3ae41e28-9d5c-4665-bd8e-a682b66bf204.png)
 
 <br />
-
-<div id = "4"></div>
 
 # 주요 기능
 ### MBTI 및 관심사 정보를 통한 랜덤 매칭
@@ -180,11 +170,7 @@
 ### 고요속의 외침
 * 입모양을 보고 말하는 것을 맞춰봐요
 
-
-  
 <br />
-
-<div id="5"></div>
 
 # 팀원소개
 <table>
@@ -221,8 +207,6 @@
 </table>
 
 <br />
-
-<div id="6"></div>
 
 # 프로젝트 산출물
 
@@ -264,7 +248,9 @@
 
 <br />
 
-<div id="7"></div>
+# 배포
+
+서버는 AWS EC2 ubuntu를 사용했습니다
 
 <br />
 
@@ -281,11 +267,6 @@
 | MySQL         | 3306                 | 
 
 <br />
-
-# 배포
-
-서버는 AWS EC2 ubuntu를 사용했습니다
-
 
 ## Openvidu
 
